@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web to Markdown - Convertisseur URL vers .md</title>
 <meta name="description" content="Convertit n'importe quelle page web en Markdown propre. Copie intégrale, telechargement .md et export SVG.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 
 <!-- Librairies (CDN, OK sur GitHub Pages) -->
 <script src="https://cdn.jsdelivr.net/npm/turndown@7.2.0/dist/turndown.min.js"></script>
@@ -32,8 +33,12 @@
   header h1{font-size:18px;margin:0;font-weight:650;letter-spacing:-.01em}
   header .tag{font-size:11px;color:var(--muted);border:1px solid var(--border);padding:2px 8px;border-radius:20px}
   .grow{flex:1}
-  a.gh{color:var(--muted);text-decoration:none;font-size:13px}
-  a.gh:hover{color:var(--accent)}
+  a.idea{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;font-weight:500;
+    color:#ffd84d;background:linear-gradient(135deg,#8b7cf6,#6d5cf0);
+    padding:6px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(109,92,240,.35);transition:.15s;white-space:nowrap}
+  a.idea:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(109,92,240,.45)}
+  a.idea b{font-weight:700;color:#ffe680;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+  a.idea .bulb{filter:none}
 
   .bar{padding:16px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel)}
   .urlwrap{flex:1;min-width:280px;display:flex;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
@@ -95,7 +100,9 @@
   <h1>Web &rarr; Markdown</h1>
   <span class="tag">URL &rarr; .md</span>
   <span class="grow"></span>
-  <a class="gh" href="https://webiw.github.io/" target="_blank" rel="noopener">webiw.github.io</a>
+  <a class="idea" href="https://webiw.github.io/" target="_blank" rel="noopener">
+    <span class="bulb">&#128161;</span> Idea by <b>Webiwant</b>
+  </a>
 </header>
 
 <div class="bar">
