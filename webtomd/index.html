@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web to Markdown - Convertisseur URL vers .md</title>
+<meta name="description" content="Convertit n'importe quelle page web en Markdown propre. Copie intégrale, telechargement .md et export SVG.">
+
+<!-- Librairies (CDN, OK sur GitHub Pages) -->
+<script src="https://cdn.jsdelivr.net/npm/turndown@7.2.0/dist/turndown.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/turndown-plugin-gfm@1.0.2/dist/turndown-plugin-gfm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2430; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e; --accent:#2f81f7; --accent2:#238636;
+    --danger:#f85149; --radius:10px; --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f8fa; --panel:#ffffff; --panel2:#f0f3f6; --border:#d0d7de;
+      --text:#1f2328; --muted:#636c76; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;
+    display:flex;flex-direction:column;min-height:100vh}
+  header{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{font-size:18px;margin:0;font-weight:650;letter-spacing:-.01em}
+  header .tag{font-size:11px;color:var(--muted);border:1px solid var(--border);padding:2px 8px;border-radius:20px}
+  .grow{flex:1}
+  a.gh{color:var(--muted);text-decoration:none;font-size:13px}
+  a.gh:hover{color:var(--accent)}
+
+  .bar{padding:16px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:var(--panel)}
+  .urlwrap{flex:1;min-width:280px;display:flex;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .urlwrap svg{width:16px;height:16px;margin:0 10px;color:var(--muted);flex:none}
+  input[type=url]{flex:1;background:transparent;border:0;color:var(--text);padding:11px 12px 11px 0;font-size:14px;outline:none;font-family:var(--sans)}
+  select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:10px 12px;font-size:13px;font-family:var(--sans);cursor:pointer}
+  button{font-family:var(--sans);font-size:13px;font-weight:600;border-radius:var(--radius);padding:10px 16px;cursor:pointer;border:1px solid var(--border);background:var(--panel2);color:var(--text);transition:.12s;white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
+  button:hover{border-color:var(--accent)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+  button.primary:hover{filter:brightness(1.1)}
+  button svg{width:15px;height:15px}
+
+  #status{padding:0 24px;font-size:13px;color:var(--muted);min-height:0;transition:.2s}
+  #status.show{padding:12px 24px}
+  #status.err{color:var(--danger)}
+
+  main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);min-height:0}
+  @media (max-width:820px){ main{grid-template-columns:1fr} }
+  .pane{background:var(--bg);display:flex;flex-direction:column;min-height:0;min-width:0}
+  .pane-head{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--panel);flex-wrap:wrap}
+  .pane-head .t{font-size:12px;font-weight:650;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .pane-head .grow{flex:1}
+  .pane-head button{padding:6px 11px;font-size:12px}
+  #md{flex:1;width:100%;border:0;resize:none;background:var(--bg);color:var(--text);
+    font-family:var(--mono);font-size:13px;line-height:1.6;padding:16px 20px;outline:none;tab-size:2}
+  #preview{flex:1;overflow:auto;padding:20px 28px}
+
+  /* rendu markdown */
+  .md-body{max-width:760px}
+  .md-body h1,.md-body h2,.md-body h3{line-height:1.25;margin:1.4em 0 .5em}
+  .md-body h1{font-size:1.7em;border-bottom:1px solid var(--border);padding-bottom:.3em}
+  .md-body h2{font-size:1.35em;border-bottom:1px solid var(--border);padding-bottom:.25em}
+  .md-body h3{font-size:1.1em}
+  .md-body p,.md-body li{color:var(--text)}
+  .md-body a{color:var(--accent);text-decoration:none}
+  .md-body a:hover{text-decoration:underline}
+  .md-body img{max-width:100%;border-radius:6px}
+  .md-body pre{background:var(--panel2);padding:14px;border-radius:8px;overflow:auto}
+  .md-body code{background:var(--panel2);padding:.15em .4em;border-radius:4px;font-family:var(--mono);font-size:.9em}
+  .md-body pre code{background:none;padding:0}
+  .md-body blockquote{border-left:3px solid var(--border);margin:0;padding:.2em 1em;color:var(--muted)}
+  .md-body table{border-collapse:collapse;width:100%;margin:1em 0}
+  .md-body th,.md-body td{border:1px solid var(--border);padding:6px 12px;text-align:left}
+  .md-body th{background:var(--panel2)}
+  .placeholder{color:var(--muted);font-size:13px;padding:40px 20px;text-align:center}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:var(--panel);border:1px solid var(--accent2);color:var(--text);padding:10px 18px;border-radius:24px;
+    font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;transition:.25s;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .spin{animation:s 0.7s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Web &rarr; Markdown</h1>
+  <span class="tag">URL &rarr; .md</span>
+  <span class="grow"></span>
+  <a class="gh" href="https://webiw.github.io/" target="_blank" rel="noopener">webiw.github.io</a>
+</header>
+
+<div class="bar">
+  <div class="urlwrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <input id="url" type="url" placeholder="https://exemple.com/page-a-convertir" autocomplete="off" spellcheck="false">
+  </div>
+  <select id="mode" title="Mode d'extraction">
+    <option value="full">Page intégrale</option>
+    <option value="article">Article seul (nettoyé)</option>
+  </select>
+  <button id="go" class="primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    Convertir
+  </button>
+</div>
+
+<div id="status"></div>
+
+<main>
+  <div class="pane">
+    <div class="pane-head">
+      <span class="t">Markdown</span>
+      <span id="mdmeta" class="t" style="text-transform:none;letter-spacing:0"></span>
+      <span class="grow"></span>
+      <button id="copy" disabled title="Copier tout le markdown">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copier
+      </button>
+      <button id="dl" disabled title="Telecharger .md">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        .md
+      </button>
+      <button id="svg" disabled title="Exporter le rendu en SVG">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 12l2 2 4-4"/></svg>
+        SVG
+      </button>
+    </div>
+    <textarea id="md" placeholder="Le markdown apparaitra ici..." spellcheck="false"></textarea>
+  </div>
+
+  <div class="pane">
+    <div class="pane-head">
+      <span class="t">Apercu</span>
+      <span class="grow"></span>
+    </div>
+    <div id="preview"><div class="placeholder">Colle une URL puis clique sur Convertir.<br>L'apercu du markdown rendu s'affichera ici.</div></div>
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const urlIn=$("#url"), modeSel=$("#mode"), goBtn=$("#go"), statusEl=$("#status"),
+        mdEl=$("#md"), previewEl=$("#preview"), mdmeta=$("#mdmeta"),
+        copyBtn=$("#copy"), dlBtn=$("#dl"), svgBtn=$("#svg"), toastEl=$("#toast");
+  let lastTitle="page";
+
+  // ---- Recuperation du contenu ----
+  // Moteur principal : Jina Reader (rapide, rend le JS, CORS OK). Fallbacks si rate-limit.
+  function fetchWithTimeout(url, opts, ms){
+    const ctrl = new AbortController();
+    const id = setTimeout(()=>ctrl.abort(), ms);
+    return fetch(url, Object.assign({signal:ctrl.signal}, opts)).finally(()=>clearTimeout(id));
+  }
+
+  // ---- Turndown ----
+  const td = new TurndownService({
+    headingStyle:"atx", hr:"---", bulletListMarker:"-",
+    codeBlockStyle:"fenced", emDelimiter:"*", strongDelimiter:"**", linkStyle:"inlined"
+  });
+  if (window.turndownPluginGfm) td.use(window.turndownPluginGfm.gfm);
+  // garder les retours a la ligne <br>
+  td.addRule("lineBreak",{filter:"br",replacement:()=>"  \n"});
+
+  function setStatus(msg, isErr){
+    statusEl.textContent = msg||"";
+    statusEl.className = (msg?"show ":"") + (isErr?"err":"");
+  }
+  function toast(msg){
+    toastEl.textContent=msg; toastEl.classList.add("show");
+    clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove("show"),1800);
+  }
+  function slug(s){ return (s||"page").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,60)||"page"; }
+
+  // resout les URLs relatives (href/src) en absolu
+  function absolutize(doc, base){
+    let b; try{ b=new URL(base); }catch(e){ return; }
+    doc.querySelectorAll("a[href]").forEach(a=>{ try{ a.setAttribute("href", new URL(a.getAttribute("href"), b).href); }catch(e){} });
+    doc.querySelectorAll("img[src]").forEach(im=>{
+      const ds = im.getAttribute("data-src"); if(ds && !im.getAttribute("src")) im.setAttribute("src",ds);
+      try{ im.setAttribute("src", new URL(im.getAttribute("src"), b).href); }catch(e){}
+    });
+  }
+
+  // Renvoie {type:"md"|"html", data:string}
+  async function getContent(url, mode){
+    let lastErr;
+    // 1. Jina Reader
+    try{
+      setStatus("Recuperation de la page (Jina Reader)...");
+      const headers = mode==="full" ? {"X-Return-Format":"html"} : {};
+      const res = await fetchWithTimeout("https://r.jina.ai/"+url, {headers}, 30000);
+      if(res.ok){
+        const t = await res.text();
+        if(t && t.length>20) return {type: mode==="full" ? "html" : "md", data:t};
+      } else lastErr = new Error("Jina HTTP "+res.status + (res.status===429?" (limite : 20 req/min, patiente)":""));
+    }catch(e){ lastErr=e; }
+
+    // 2. allorigins (JSON) -> HTML
+    try{
+      setStatus("Jina indisponible, essai proxy de secours...");
+      const res = await fetchWithTimeout("https://api.allorigins.win/get?url="+encodeURIComponent(url), {}, 20000);
+      if(res.ok){ const j = await res.json(); if(j && j.contents) return {type:"html", data:j.contents}; }
+    }catch(e){ lastErr = lastErr||e; }
+
+    // 3. codetabs -> HTML brut
+    try{
+      const res = await fetchWithTimeout("https://api.codetabs.com/v1/proxy/?quest="+encodeURIComponent(url), {}, 20000);
+      if(res.ok){ const t = await res.text(); if(t && t.length>20) return {type:"html", data:t}; }
+    }catch(e){ lastErr = lastErr||e; }
+
+    throw lastErr || new Error("Aucune source accessible");
+  }
+
+  // Nettoie la sortie markdown de Jina (retire l'en-tete Title/URL/Warning...)
+  function parseJinaMarkdown(raw, url){
+    let title = "page";
+    const m = raw.match(/^Title:\s*(.+)$/m);
+    if(m) title = m[1].trim();
+    let body = raw;
+    const idx = raw.indexOf("Markdown Content:");
+    if(idx>=0) body = raw.slice(idx + "Markdown Content:".length);
+    body = body.replace(/\n{3,}/g,"\n\n").trim();
+    lastTitle = title;
+    return `# ${title}\n\n> Source : ${url}\n\n---\n\n${body}\n`;
+  }
+
+  function htmlToMarkdown(html, url, mode){
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    // titre pour nom de fichier
+    lastTitle = (doc.querySelector("title")?.textContent || doc.querySelector("h1")?.textContent || "page").trim();
+    absolutize(doc, url);
+
+    let sourceNode = doc.body;
+    if(mode==="article"){
+      try{
+        const clone = doc.cloneNode(true);
+        const art = new Readability(clone).parse();
+        if(art && art.content){
+          const holder = document.createElement("div");
+          holder.innerHTML = art.content;
+          absolutize(holder, url);
+          sourceNode = holder;
+          if(art.title) lastTitle = art.title;
+        }
+      }catch(e){ /* fallback page complete */ }
+    } else {
+      // nettoyage leger en mode page complete
+      sourceNode = doc.body.cloneNode(true);
+      sourceNode.querySelectorAll("script,style,noscript,svg,iframe,link,meta").forEach(n=>n.remove());
+    }
+    let md = td.turndown(sourceNode.innerHTML || sourceNode);
+    // compresser les lignes vides multiples
+    md = md.replace(/\n{3,}/g,"\n\n").trim();
+    // en-tete
+    const header = `# ${lastTitle}\n\n> Source : ${url}\n\n---\n\n`;
+    return header + md + "\n";
+  }
+
+  function renderPreview(md){
+    marked.setOptions({gfm:true, breaks:true});
+    const dirty = marked.parse(md);
+    const clean = DOMPurify.sanitize(dirty, {ADD_ATTR:["target"]});
+    previewEl.innerHTML = `<div class="md-body">${clean}</div>`;
+  }
+
+  async function convert(){
+    let url = urlIn.value.trim();
+    if(!url){ setStatus("Entre une URL.", true); urlIn.focus(); return; }
+    if(!/^https?:\/\//i.test(url)) url = "https://"+url;
+    urlIn.value = url;
+
+    goBtn.disabled=true;
+    goBtn.innerHTML = '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg> Conversion...';
+    [copyBtn,dlBtn,svgBtn].forEach(b=>b.disabled=true);
+    try{
+      const {type, data} = await getContent(url, modeSel.value);
+      setStatus("Conversion en markdown...");
+      const md = type==="md" ? parseJinaMarkdown(data, url) : htmlToMarkdown(data, url, modeSel.value);
+      mdEl.value = md;
+      renderPreview(md);
+      const words = (md.match(/\S+/g)||[]).length;
+      mdmeta.textContent = `${md.length.toLocaleString("fr")} car. / ${words.toLocaleString("fr")} mots`;
+      setStatus(`Termine : ${lastTitle}`);
+      [copyBtn,dlBtn,svgBtn].forEach(b=>b.disabled=false);
+    }catch(e){
+      setStatus("Echec : "+ (e.message||e) +". La page bloque peut-etre les proxys CORS.", true);
+      console.error(e);
+    }finally{
+      goBtn.disabled=false;
+      goBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Convertir';
+    }
+  }
+
+  // ---- Copier ----
+  copyBtn.onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(mdEl.value); }
+    catch(e){ mdEl.select(); document.execCommand("copy"); }
+    toast("Markdown copie");
+  };
+
+  // ---- Telecharger .md ----
+  dlBtn.onclick = ()=>{
+    const blob = new Blob([mdEl.value], {type:"text/markdown;charset=utf-8"});
+    triggerDownload(blob, slug(lastTitle)+".md");
+    toast("Fichier .md telecharge");
+  };
+
+  // ---- Export SVG (rendu markdown embarque via foreignObject) ----
+  svgBtn.onclick = ()=>{
+    const bodyHtml = previewEl.querySelector(".md-body")?.innerHTML || "";
+    const light = window.matchMedia("(prefers-color-scheme: light)").matches;
+    const bg = light?"#ffffff":"#0d1117", fg = light?"#1f2328":"#e6edf3",
+          border=light?"#d0d7de":"#30363d", accent="#2f81f7", panel=light?"#f0f3f6":"#1c2430";
+    const width = 760, pad = 40;
+    const style = `
+      *{box-sizing:border-box} body{margin:0}
+      .wrap{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:${fg};font-size:15px;line-height:1.6;padding:${pad}px;width:${width}px}
+      h1,h2,h3{line-height:1.25;margin:1.3em 0 .5em}
+      h1{font-size:1.8em;border-bottom:1px solid ${border};padding-bottom:.3em}
+      h2{font-size:1.4em;border-bottom:1px solid ${border};padding-bottom:.25em}
+      h3{font-size:1.15em}
+      a{color:${accent};text-decoration:none} img{max-width:100%;border-radius:6px}
+      pre{background:${panel};padding:14px;border-radius:8px;overflow:auto;white-space:pre-wrap}
+      code{background:${panel};padding:.15em .4em;border-radius:4px;font-family:monospace;font-size:.9em}
+      pre code{background:none;padding:0}
+      blockquote{border-left:3px solid ${border};margin:0;padding:.2em 1em;color:${light?"#636c76":"#8b949e"}}
+      table{border-collapse:collapse;width:100%;margin:1em 0}
+      th,td{border:1px solid ${border};padding:6px 12px;text-align:left} th{background:${panel}}`;
+
+    // mesurer la hauteur reelle du rendu
+    const meas = document.createElement("div");
+    meas.style.cssText = `position:absolute;left:-9999px;top:0;width:${width}px`;
+    meas.innerHTML = `<div class="wrap">${bodyHtml}</div>`;
+    const st = document.createElement("style"); st.textContent = style;
+    meas.prepend(st);
+    document.body.appendChild(meas);
+    const height = Math.ceil(meas.querySelector(".wrap").getBoundingClientRect().height) + pad;
+    document.body.removeChild(meas);
+
+    const svg =
+`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+<rect width="100%" height="100%" fill="${bg}"/>
+<foreignObject x="0" y="0" width="${width}" height="${height}">
+<div xmlns="http://www.w3.org/1999/xhtml"><style>${style}</style><div class="wrap">${bodyHtml}</div></div>
+</foreignObject>
+</svg>`;
+    const blob = new Blob([svg], {type:"image/svg+xml;charset=utf-8"});
+    triggerDownload(blob, slug(lastTitle)+".svg");
+    toast("SVG exporte");
+  };
+
+  function triggerDownload(blob, name){
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 100);
+  }
+
+  // live preview quand on edite le markdown a la main
+  let t; mdEl.addEventListener("input", ()=>{ clearTimeout(t); t=setTimeout(()=>renderPreview(mdEl.value),250); });
+
+  goBtn.onclick = convert;
+  urlIn.addEventListener("keydown", e=>{ if(e.key==="Enter") convert(); });
+
+  // pre-remplir depuis ?url= (partage)
+  const q = new URLSearchParams(location.search).get("url");
+  if(q){ urlIn.value=q; convert(); }
+})();
+</script>
+</body>
+</html>
