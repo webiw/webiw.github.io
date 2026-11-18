@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 110" role="img" aria-label="Erd’évènement Vôtre et Comité des fêtes d’Erdeven">
+  <rect width="280" height="110" rx="12" fill="#FFFDF9"/>
+  <text x="140" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="21" font-weight="700" fill="#1C1624">Erd’évènement Vôtre</text>
+  <line x1="80" y1="60" x2="200" y2="60" stroke="#D98218" stroke-width="2"/>
+  <text x="140" y="82" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#524860" letter-spacing="1.5">COMITÉ DES FÊTES · ERDEVEN</text>
+</svg>

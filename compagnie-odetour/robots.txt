@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://webiw.github.io/sitemap.xml
