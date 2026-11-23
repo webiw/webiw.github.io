@@ -659,7 +659,9 @@ const STATIONS = [
     realPhotos: [
       { key: 'facade_1', cat: 'common', fr: 'Façade sur la Rua Itaporanga (Apto 9 est tout en haut, côté arrière opposé à la rue)', pt: 'Fachada na Rua Itaporanga (o Apto 9 fica no último andar, nos fundos do prédio)' },
       { key: 'facade_2', cat: 'common', fr: 'Façade avec banderole commerciale (« Aptos Tipo, Garden e Cobertura »)', pt: 'Fachada com faixa comercial (« Vendo Aptos Tipo, Garden e Cobertura »)' },
-      { key: 'cour_jardin', cat: 'common', fr: 'Portail piéton (acesso social) & jardinière à droite de l\'entrée garage', pt: 'Portão social de pedestres e floreira ao lado da entrada da garagem' }
+      { key: 'cour_jardin', cat: 'common', fr: 'Portail piéton (acesso social) & jardinière à droite de l\'entrée garage', pt: 'Portão social de pedestres e floreira ao lado da entrada da garagem' },
+      { key: 'garage_escalier', cat: 'common', fr: 'Derrière le portail voitures : garage couvert et escalier commun en granit noir qui monte à l\'Apto 9', pt: 'Atrás do portão de veículos: garagem coberta e escada comum em granito preto que sobe até o Apto 9' },
+      { key: 'garage_places', cat: 'common', fr: 'Places de stationnement tracées au rez-de-chaussée (10 places pour 9 logements)', pt: 'Vagas demarcadas no térreo (10 vagas para 9 unidades)' }
     ],
     renders3d: [],
     hotspots: [
@@ -684,7 +686,9 @@ const STATIONS = [
     realPhotos: [
       { key: 'garage_escalier', cat: 'common', fr: 'Garage couvert (en fin de chantier) et escalier commun en granit noir à droite', pt: 'Garagem coberta (em finalização) e escada comum em granito preto à direita' },
       { key: 'garage_places', cat: 'common', fr: 'Places de stationnement tracées (10 places prévues sur le plan pour 9 appartements)', pt: 'Vagas demarcadas em amarelo (10 vagas previstas em planta para 9 apartamentos)' },
-      { key: 'cour_jardin', cat: 'common', fr: 'Accès piéton devant Vaga 1', pt: 'Acesso de pedestres em frente à Vaga 1' }
+      { key: 'cour_jardin', cat: 'common', fr: 'Accès piéton devant Vaga 1', pt: 'Acesso de pedestres em frente à Vaga 1' },
+      { key: 'facade_1', cat: 'common', fr: 'Façade sur la Rua Itaporanga : portail voitures du garage au rez-de-chaussée', pt: 'Fachada na Rua Itaporanga: portão de veículos da garagem no térreo' },
+      { key: 'facade_2', cat: 'common', fr: 'Façade avec banderole : entrée du garage et portail piéton vus de la rue', pt: 'Fachada com faixa: entrada da garagem e portão social vistos da rua' }
     ],
     renders3d: [],
     hotspots: [
@@ -711,7 +715,17 @@ const STATIONS = [
         fr: 'VRAIE PHOTO APTO 9 : Cuisine à gauche, escalier granit noir horaire, porte d\'entrée à droite',
         pt: 'FOTO REAL DO APTO 9: Cozinha à esquerda, escada granito preto (giro horário), porta à direita',
         angleFr: 'Angle réel : depuis le séjour vers la porte d\'entrée (cuisine à gauche, escalier au centre, porte à droite)',
-        anglePt: 'Ângulo real: da sala olhando para a porta de entrada (cozinha à esquerda, escada ao centro, porta à direita)' }
+        anglePt: 'Ângulo real: da sala olhando para a porta de entrada (cozinha à esquerda, escada ao centro, porta à direita)' },
+      { key: 'apto4_sala_entree', cat: 'apto6',
+        fr: 'Réf. chantier APTO 6 (2e arrière, juste sous l\'Apto 9) : même angle vers l\'entrée, mais sans escalier',
+        pt: 'Ref. obra APTO 6 (2º fundos, logo abaixo do Apto 9): mesmo ângulo para a entrada, mas sem escada',
+        angleFr: 'Même direction vers la porte d\'entrée (Apto 6, sans escalier)',
+        anglePt: 'Mesma direção para a porta de entrada (Apto 6, sem escada)' },
+      { key: 'apto7_sala_escalier', cat: 'apto7', mirrorable: true,
+        fr: 'Réf. chantier APTO 7 (jumeau avant, MIROIR) : même escalier granit noir, vu du séjour vers la fenêtre',
+        pt: 'Ref. obra APTO 7 (gêmeo da frente, ESPELHADO): mesma escada de granito preto, vista da sala para a janela',
+        angleFr: 'Angle opposé, Apto 7 (miroir : escalier & cuisine à gauche)',
+        anglePt: 'Ângulo oposto, Apto 7 (espelhado: escada e cozinha à esquerda)' }
     ],
     renders3d: [
       { key: 'r3d_plan_apt', cat: '3d', fr: 'Plan 3D meublé (correspondance exacte avec Apto 9)', pt: 'Planta 3D humanizada (layout exato do Apto 9)',
@@ -761,14 +775,23 @@ const STATIONS = [
       { key: 'apto4_sala_entree', cat: 'apto6',
         fr: 'Réf. chantier APTO 6 (2e arrière, sans escalier) : même orientation qu\'Apto 9 vers l\'entrée',
         pt: 'Ref. obra APTO 6 (2º fundos, sem escada): mesma orientação do Apto 9 olhando para a entrada',
-        angleFr: 'Apto 6 arrière vers l\'entrée (sans escalier)', anglePt: 'Apto 6 fundos olhando para a entrada (sem escada)' }
+        angleFr: 'Apto 6 arrière vers l\'entrée (sans escalier)', anglePt: 'Apto 6 fundos olhando para a entrada (sem escada)' },
+      { key: 'apto9_sala_escalier', cat: 'apto9',
+        fr: 'VRAIE PHOTO APTO 9 : mur de cuisine carrelé blanc à gauche et escalier granit noir (vue vers l\'entrée)',
+        pt: 'FOTO REAL DO APTO 9: parede azulejada da cozinha à esquerda e escada de granito preto (vista para a entrada)',
+        angleFr: 'Angle réel Apto 9 : depuis le séjour vers l\'entrée (cuisine à gauche, escalier au centre)',
+        anglePt: 'Ângulo real Apto 9: da sala para a entrada (cozinha à esquerda, escada ao centro)' }
     ],
     renders3d: [
       { key: 'r3d_sala', cat: '3d',
         fr: 'Rendu 3D Apto 9 : séjour avec baie vitrée, meuble TV ajouré séparant la cuisine à droite',
         pt: 'Render 3D Apto 9: sala com porta-balcão, painel de TV dividindo a cozinha à direita',
         angleFr: 'Depuis l\'entrée vers la baie vitrée : escalier au premier plan à droite, cuisine au fond à droite',
-        anglePt: 'Da entrada olhando para a porta-balcão: escada em primeiro plano à direita, cozinha ao fundo à direita' }
+        anglePt: 'Da entrada olhando para a porta-balcão: escada em primeiro plano à direita, cozinha ao fundo à direita' },
+      { key: 'r3d_plan_apt', cat: '3d',
+        fr: 'Plan 3D Apto 9 : séjour et cuisine ouverte à droite, escalier en bas à droite',
+        pt: 'Planta 3D Apto 9: sala e cozinha americana à direita, escada embaixo à direita',
+        angleFr: 'Plan 3D : séjour + cuisine à droite', anglePt: 'Planta 3D: sala + cozinha à direita' }
     ],
     hotspots: [
       { x: 16, y: 46, target: 4, fr: '🛏️ Aller vers les Chambres', pt: '🛏️ Ir para os Quartos' },
@@ -801,7 +824,11 @@ const STATIONS = [
         fr: 'Rendu 3D Apto 9 : lit simple au fond sous fenêtre + bureau à gauche + armoire à droite',
         pt: 'Render 3D Apto 9: cama de solteiro sob a janela + escrivaninha à esquerda + armário à direita',
         angleFr: 'Même angle vers la fenêtre : lit sous la fenêtre + bureau à gauche',
-        anglePt: 'Mesmo ângulo olhando para a janela: cama sob a janela + escrivaninha à esquerda' }
+        anglePt: 'Mesmo ângulo olhando para a janela: cama sob a janela + escrivaninha à esquerda' },
+      { key: 'r3d_plan_apt', cat: '3d',
+        fr: 'Plan 3D Apto 9 : 2e chambre au centre, entre la suite et le séjour',
+        pt: 'Planta 3D Apto 9: 2º dormitório no centro, entre a suíte e a sala',
+        angleFr: 'Plan 3D : 2e chambre au centre', anglePt: 'Planta 3D: 2º dormitório no centro' }
     ],
     hotspots: [
       { x: 16, y: 55, target: 5, fr: '🛏️ Voir la Suite Parentale', pt: '🛏️ Ver a Suíte' },
@@ -822,7 +849,12 @@ const STATIONS = [
       warning: 'Detalhe importante da planta: os dois banheiros do andar de baixo têm ventilação mecânica (exaustor, sem janela direta), enquanto o lavabo/banheiro da cobertura tem janela própria.',
       specs: ['Suíte: 2,30 m × 3,45 m (~7,9 m² + circulação)', 'W.C. Suíte: 2,00 m × 1,10 m (ventilação mecânica)', 'W.C. Social: 2,00 m × 1,10 m (ventilação mecânica)']
     },
-    realPhotos: [],
+    realPhotos: [
+      { key: 'apto4_dormitorio', cat: 'apto1',
+        fr: 'Réf. finitions APTO 1 (2e chambre, pas la suite) : sol, plinthes et menuiserie noire livrés dans l\'immeuble',
+        pt: 'Ref. acabamento APTO 1 (2º dormitório, não a suíte): piso, rodapé e esquadria preta entregues no prédio',
+        angleFr: 'Chambre Apto 1 vers la fenêtre (référence finitions)', anglePt: 'Quarto do Apto 1 olhando para a janela (referência de acabamento)' }
+    ],
     renders3d: [
       { key: 'r3d_suite', cat: '3d',
         fr: 'Rendu 3D Apto 9 : Suite parentale (lit double, armoire vitrée à gauche, fenêtre au fond)',
@@ -842,16 +874,21 @@ const STATIONS = [
     fr: {
       title: 'Cobertura · Espace Couvert, BBQ & Lavabo', subtitle: 'Cobertura Leve 15,46 m² + Lavabo W.C. (1,50 × 1,10 m) + Buanderie',
       description: 'En haut de l\'escalier privé (+11,86 m), on débouche sous la charpente bois et tuiles de la Cobertura Leve (15,46 m² couverts). Sur place se trouvent : les attentes pour le coin buanderie (tanque / lave-linge), un 3e sanitaire complet avec fenêtre (W.C. / Lavabo 1,50 × 1,10 m), et l\'espace parfait pour recevoir autour d\'un barbecue / espace gourmet.',
-      warning: 'Aucune photo chantier de l\'espace couvert de l\'Apto 9 n\'a été envoyée : ces 3 photos proviennent de l\'Apto 7 (façade rue, en miroir). Sur l\'Apto 7, l\'alcôve buanderie/W.C. est à droite et la porte d\'accès aux parties communes à gauche ; sur votre Apto 9, buanderie et Lavabo sont devant vous en montant l\'escalier.',
+      warning: 'Une seule photo chantier de l\'Apto 9 à ce niveau (vignette A9) : prise sous la toiture, vers la piscine. Les vues de la buanderie, du W.C. et de l\'abri proviennent de l\'Apto 7 (façade rue, en miroir). Sur l\'Apto 7, l\'alcôve buanderie/W.C. est à droite et la porte d\'accès aux parties communes à gauche ; sur votre Apto 9, buanderie et Lavabo sont devant vous en montant l\'escalier.',
       specs: ['Surface couverte (Cobertura Leve) : 15,46 m²', 'W.C. / Lavabo avec fenêtre : 1,50 m × 1,10 m', 'Toiture tuiles terre cuite sur charpente bois apparente']
     },
     pt: {
       title: 'Cobertura · Área Gourmet Coberta & Lavabo', subtitle: 'Cobertura Leve 15,46 m² + Lavabo W.C. (1,50 × 1,10 m) + Lavanderia',
       description: 'Subindo a escada privativa (+11,86 m), sai-se sob o telhado com madeiramento aparente da Cobertura Leve (15,46 m² cobertos). Nesse espaço ficam: os pontos hidráulicos para lavanderia (tanque / máquina de lavar), um 3º banheiro/lavabo completo com janela (W.C. 1,50 × 1,10 m) e toda a área de mesa e churrasqueira.',
-      warning: 'Nenhuma foto da obra da área coberta do Apto 9 foi enviada: estas 3 fotos são do Apto 7 (frente, espelhado) para referência de acabamento. No Apto 7, o nicho da lavanderia/W.C. fica à direita (atrás da parede branca) e a porta à esquerda dá para a área comum; no seu Apto 9, lavanderia e Lavabo ficam logo à frente ao subir a escada.',
+      warning: 'Só há uma foto de obra do Apto 9 neste nível (miniatura A9): tirada sob o telhado, olhando para a piscina. As vistas da lavanderia, do W.C. e da área coberta são do Apto 7 (frente, espelhado) para referência de acabamento. No Apto 7, o nicho da lavanderia/W.C. fica à direita (atrás da parede branca) e a porta à esquerda dá para a área comum; no seu Apto 9, lavanderia e Lavabo ficam logo à frente ao subir a escada.',
       specs: ['Área coberta (Cobertura Leve): 15,46 m²', 'W.C. / Lavabo com janela: 1,50 m × 1,10 m', 'Cobertura com telhas cerâmicas e madeiramento aparente']
     },
     realPhotos: [
+      { key: 'apto9_cob_piscine', cat: 'apto9',
+        fr: 'VRAIE PHOTO APTO 9 : depuis l\'espace couvert (charpente bois) vers la terrasse et le bassin',
+        pt: 'FOTO REAL DO APTO 9: da área coberta (madeiramento aparente) para o terraço e a piscina',
+        angleFr: 'Angle réel Apto 9 : sous la toiture vers la piscine (même angle que le rendu 3D)',
+        anglePt: 'Ângulo real Apto 9: sob o telhado olhando para a piscina (mesmo ângulo do render 3D)' },
       { key: 'apto7_cob_lavabo', cat: 'apto7', mirrorable: true,
         fr: 'Réf. chantier APTO 7 (MIROIR) : muret escalier granit noir, coin machine à laver & porte W.C. (alcôve droite)',
         pt: 'Ref. obra APTO 7 (ESPELHADO): mureta da escada, ponto de máquina de lavar e porta do W.C. (nicho direito)',
@@ -863,7 +900,19 @@ const STATIONS = [
       { key: 'apto7_cob_vue', cat: 'apto7',
         fr: 'Réf. chantier APTO 7 : vue sous la toiture vers garde-corps vitré (panorama rue)',
         pt: 'Ref. obra APTO 7: vista sob o telhado para o guarda-corpo de vidro (frente da rua)',
-        angleFr: 'Sous toiture vers garde-corps rue (Apto 7)', anglePt: 'Sob o telhado olhando para o guarda-corpo da rua (Apto 7)' }
+        angleFr: 'Sous toiture vers garde-corps rue (Apto 7)', anglePt: 'Sob o telhado olhando para o guarda-corpo da rua (Apto 7)' },
+      { key: 'apto7_cob_pergola_1', cat: 'apto7',
+        fr: 'Réf. chantier APTO 7 : sous la toiture vers le bassin, garde-corps vitré à gauche',
+        pt: 'Ref. obra APTO 7: sob o telhado olhando para a piscina, guarda-corpo de vidro à esquerda',
+        angleFr: 'Apto 7 : sous la toiture vers le bassin', anglePt: 'Apto 7: sob o telhado para a piscina' },
+      { key: 'apto7_cob_pergola_2', cat: 'apto7',
+        fr: 'Réf. chantier APTO 7 : vue large de la terrasse depuis l\'abri couvert',
+        pt: 'Ref. obra APTO 7: vista ampla do terraço a partir da área coberta',
+        angleFr: 'Apto 7 : vue large de la terrasse', anglePt: 'Apto 7: vista ampla do terraço' },
+      { key: 'apto7_cob_piscine', cat: 'apto7',
+        fr: 'Réf. chantier APTO 7 : détail du bassin béton et des attentes hydrauliques',
+        pt: 'Ref. obra APTO 7: detalhe da piscina em concreto e das esperas hidráulicas',
+        angleFr: 'Apto 7 : gros plan bassin', anglePt: 'Apto 7: detalhe da piscina' }
     ],
     renders3d: [
       { key: 'r3d_cob_2', cat: '3d',
@@ -873,7 +922,11 @@ const STATIONS = [
       { key: 'r3d_plan_cob', cat: '3d',
         fr: 'Plan 3D Cobertura Apto 9 : Lavabo en haut à droite, Buanderie & Escalier à droite',
         pt: 'Planta 3D Cobertura Apto 9: Lavabo no topo à direita, Lavanderia e Escada à direita',
-        angleFr: 'Plan 3D Cobertura Apto 9', anglePt: 'Planta 3D Cobertura Apto 9' }
+        angleFr: 'Plan 3D Cobertura Apto 9', anglePt: 'Planta 3D Cobertura Apto 9' },
+      { key: 'r3d_cob_1', cat: '3d',
+        fr: 'Rendu 3D Apto 9 : depuis la piscine vers la pergola, le BBQ, le frigo et l\'accès escalier/lavabo',
+        pt: 'Render 3D Apto 9: da piscina para o pergolado, churrasqueira, geladeira e acesso à escada/lavabo',
+        angleFr: 'Vue depuis la piscine vers l\'espace couvert', anglePt: 'Vista da piscina para a área coberta' }
     ],
     hotspots: [
       { x: 25, y: 45, target: 7, fr: '🏊 Aller vers la Piscine & Solarium', pt: '🏊 Ir para a Piscina & Solário' },
@@ -911,14 +964,34 @@ const STATIONS = [
       { key: 'apto7_cob_piscine', cat: 'apto7',
         fr: 'Réf. chantier APTO 7 (avant) : détail du bassin béton et des tuyaux en attente',
         pt: 'Ref. obra APTO 7 (frente): detalhe do tanque de concreto e tubulação de espera',
-        angleFr: 'Apto 7 (façade rue) : gros plan bassin', anglePt: 'Apto 7 (frente): detalhe do tanque de concreto' }
+        angleFr: 'Apto 7 (façade rue) : gros plan bassin', anglePt: 'Apto 7 (frente): detalhe do tanque de concreto' },
+      { key: 'apto7_cob_retour', cat: 'apto7', mirrorable: true,
+        fr: 'Réf. chantier APTO 7 (MIROIR) : depuis la piscine vers l\'abri couvert et l\'escalier',
+        pt: 'Ref. obra APTO 7 (ESPELHADO): da piscina olhando para a área coberta e a escada',
+        angleFr: 'Apto 7 : depuis la piscine vers l\'abri (miroir)', anglePt: 'Apto 7: da piscina para a área coberta (espelhado)' },
+      { key: 'apto7_cob_vue', cat: 'apto7',
+        fr: 'Réf. chantier APTO 7 : panorama côté rue (l\'Apto 9 donne côté arrière, avec mur plein mitoyen)',
+        pt: 'Ref. obra APTO 7: panorama da frente (o Apto 9 dá para os fundos, com muro de divisa)',
+        angleFr: 'Apto 7 : panorama rue', anglePt: 'Apto 7: panorama da rua' },
+      { key: 'apto7_cob_lavabo', cat: 'apto7', mirrorable: true,
+        fr: 'Réf. chantier APTO 7 (MIROIR) : buanderie et porte W.C. sous l\'abri',
+        pt: 'Ref. obra APTO 7 (ESPELHADO): lavanderia e porta do W.C. na área coberta',
+        angleFr: 'Apto 7 : buanderie & W.C. (miroir)', anglePt: 'Apto 7: lavanderia & W.C. (espelhado)' }
     ],
     renders3d: [
       { key: 'r3d_cob_1', cat: '3d',
         fr: 'Rendu 3D Apto 9 : bassin habillé deck bois + cascade, pergola et espace repas/BBQ',
         pt: 'Render 3D Apto 9: piscina revestida com deck de madeira e cascata, pergolado e espaço gourmet',
         angleFr: 'Rendu 3D Apto 9 : vue autour du bassin vers la pergola et la cuisine d\'été',
-        anglePt: 'Render 3D Apto 9: olhando da piscina para o pergolado e cozinha externa' }
+        anglePt: 'Render 3D Apto 9: olhando da piscina para o pergolado e cozinha externa' },
+      { key: 'r3d_cob_2', cat: '3d',
+        fr: 'Rendu 3D Apto 9 : depuis la table sous pergola vers le bassin à cascade et le mur végétalisé',
+        pt: 'Render 3D Apto 9: da mesa sob o pergolado para a piscina com cascata e jardim vertical',
+        angleFr: 'Vue sous pergola vers la piscine (Apto 9)', anglePt: 'Sob o pergolado olhando para a piscina (Apto 9)' },
+      { key: 'r3d_plan_cob', cat: '3d',
+        fr: 'Plan 3D Cobertura Apto 9 : bassin à gauche, table et espace couvert à droite',
+        pt: 'Planta 3D Cobertura Apto 9: piscina à esquerda, mesa e área coberta à direita',
+        angleFr: 'Plan 3D Cobertura Apto 9 (vue d\'ensemble)', anglePt: 'Planta 3D Cobertura Apto 9 (visão geral)' }
     ],
     hotspots: [
       { x: 75, y: 55, target: 6, fr: '🍖 Retour sous l\'Espace Couvert', pt: '🍖 Voltar para a Área Coberta' }
