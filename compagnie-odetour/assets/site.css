@@ -776,6 +776,11 @@ p {
   gap: 28px;
 }
 
+.shows-grid.three-cols {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
 .show-card {
   display: flex;
   flex-direction: column;
@@ -802,7 +807,7 @@ p {
 
 .show-card-media.is-poster {
   background: #F6F2EB;
-  padding: 12px;
+  padding: 50px 12px 12px;
 }
 
 .show-card-media img {
@@ -1897,6 +1902,7 @@ p {
     grid-template-columns: 1fr;
   }
   .shows-grid,
+  .shows-grid.three-cols,
   .pillars-grid,
   .schedule-grid,
   .team-grid,

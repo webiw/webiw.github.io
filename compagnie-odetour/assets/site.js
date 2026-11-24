@@ -200,12 +200,15 @@
         const id = btn.dataset.ytId;
         const title = btn.dataset.ytTitle || "Vidéo YouTube";
         if (!id) return;
+        const wrap = document.createElement("div");
+        wrap.className = "youtube-facade";
         const iframe = document.createElement("iframe");
         iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
         iframe.title = title;
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
-        btn.replaceWith(iframe);
+        wrap.appendChild(iframe);
+        btn.replaceWith(wrap);
       });
     });
   }
