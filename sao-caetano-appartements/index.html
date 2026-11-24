@@ -6,6 +6,8 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Comparateur Appartements & Coberturas - São Caetano & Santo André</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     body[data-theme="light"] {
       --bg-page: #f8fafc;
@@ -46,7 +48,7 @@
     }
     .photo-wrap {
       position: relative;
-      height: 175px;
+      height: 170px;
       overflow: hidden;
       background: #1e293b;
     }
@@ -60,38 +62,92 @@
       transform: scale(1.03);
     }
     th, td {
-      padding: 7px 8px;
+      padding: 6px 8px;
+    }
+    /* Custom map markers */
+    .price-pin {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 7px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .price-pin:hover {
+      transform: scale(1.12);
+      z-index: 9999 !important;
+    }
+    .pin-grande {
+      background-color: #059669;
+      color: #ffffff;
+    }
+    .pin-petite {
+      background-color: #d97706;
+      color: #ffffff;
+    }
+    .pin-none {
+      background-color: #334155;
+      color: #ffffff;
+    }
+    .pin-anchor {
+      background-color: #e11d48;
+      color: #ffffff;
+      padding: 4px 9px;
+      font-size: 12px;
+    }
+    .leaflet-tooltip.prop-tip {
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      white-space: normal;
+      width: 230px;
     }
   </style>
 </head>
 <body data-theme="light" class="min-h-screen pb-14">
 
-  <!-- HEADER COMPACT -->
+  <!-- HEADER COMPACT AVEC NAVIGATION ÉVIDENTE ENTRE LES 2 SITES -->
   <header class="sticky top-0 z-30 border-b" style="background-color: var(--bg-card); border-color: var(--border-col);">
-    <div class="max-w-7xl mx-auto px-3 py-2.5 flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-3 flex-wrap">
-        <h1 id="ui-title" class="text-base md:text-lg font-bold">Comparateur São Caetano & Santo André (26 biens)</h1>
-        <a id="link-apto9" href="https://webiw.github.io/santo-andre-paraiso-apto9/" class="px-2.5 py-1 rounded-md text-xs font-semibold border hover:bg-sky-500/10 text-sky-600 dark:text-sky-400" style="border-color: var(--border-col);">
-          Voir réf. Apto 9 (vendu) ↗
-        </a>
+    <div class="max-w-7xl mx-auto px-3 py-2 flex flex-wrap items-center justify-between gap-2">
+      <!-- Navigation evidente entre les 2 pages du projet -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex rounded-md border overflow-hidden text-xs font-bold" style="border-color: var(--border-col);">
+          <span id="nav-current" class="px-2.5 py-1.5 bg-slate-900 text-white dark:bg-sky-600">
+            1. Comparateur 26 biens (SCS / SA)
+          </span>
+          <a id="link-apto9" href="https://webiw.github.io/santo-andre-paraiso-apto9/" class="px-2.5 py-1.5 hover:bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center gap-1">
+            <span>2. Visite virtuelle Apto 9 (réf. vendue)</span> <span>↗</span>
+          </a>
+        </div>
+
         <button onclick="toggleCriteria()" id="btn-criteria" class="px-2.5 py-1 rounded-md text-xs font-medium border hover:opacity-80" style="border-color: var(--border-col); color: var(--text-sub);">
           Critères & budget ▾
         </button>
       </div>
 
+      <!-- Actions : WhatsApp + Mode d'affichage (Cartes / Tableau / Carte) + Langue + Thème -->
       <div class="flex items-center gap-1.5 flex-wrap">
-        <!-- Sélection WhatsApp -->
         <button onclick="copyWhatsApp()" id="btn-wa" class="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
-          Copier pour WhatsApp (0)
+          Copier la liste WhatsApp
         </button>
         <button onclick="clearSelection()" id="btn-clear-sel" class="hidden px-2 py-1.5 rounded-md text-xs border hover:opacity-80" style="border-color: var(--border-col);">
           Décocher
         </button>
 
-        <!-- Switch Cartes / Tableau -->
+        <!-- Switch Cartes / Tableau / Carte interactive -->
         <div class="flex rounded-md border overflow-hidden text-xs font-bold" style="border-color: var(--border-col);">
-          <button id="btn-view-cards" onclick="setView('cards')" class="px-3 py-1.5 chip-active">Photos / Cartes</button>
-          <button id="btn-view-table" onclick="setView('table')" class="px-3 py-1.5">Tableau complet</button>
+          <button id="btn-view-cards" onclick="setView('cards')" class="px-2.5 py-1.5 chip-active">Photos</button>
+          <button id="btn-view-table" onclick="setView('table')" class="px-2.5 py-1.5 border-l" style="border-color: var(--border-col);">Tableau</button>
+          <button id="btn-view-map" onclick="setView('map')" class="px-2.5 py-1.5 border-l" style="border-color: var(--border-col);">Carte (26)</button>
         </div>
 
         <!-- Langue & Thème -->
@@ -106,7 +162,7 @@
     </div>
 
     <!-- PANNEAU CRITÈRES CACHÉ PAR DÉFAUT -->
-    <div id="criteria-panel" class="hidden border-t px-3 py-3 text-xs" style="background-color: var(--bg-muted); border-color: var(--border-col);">
+    <div id="criteria-panel" class="hidden border-t px-3 py-2.5 text-xs" style="background-color: var(--bg-muted); border-color: var(--border-col);">
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
         <div>
           <strong id="box1-title" class="block mb-0.5">Objectif & Budget</strong>
@@ -126,8 +182,8 @@
 
   <main class="max-w-7xl mx-auto px-3 pt-3">
 
-    <!-- BARRE DE FILTRES COMPACTE EN UNE SEULE CARTE -->
-    <section class="card rounded-lg p-2.5 mb-4 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
+    <!-- BARRE DE FILTRES COMPACTE -->
+    <section class="card rounded-lg p-2.5 mb-3 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
       <div class="flex flex-wrap items-center gap-1.5">
         <!-- Terrasse -->
         <div class="flex rounded border overflow-hidden" style="border-color: var(--border-col);" id="filter-terrace">
@@ -164,7 +220,7 @@
 
       <!-- Recherche + Tri -->
       <div class="flex items-center gap-1.5 flex-wrap">
-        <input id="search-input" type="text" oninput="render()" placeholder="Quartier, réf..." class="px-2 py-1 rounded border text-xs w-36 bg-transparent" style="border-color: var(--border-col);" />
+        <input id="search-input" type="text" oninput="render()" placeholder="Quartier, réf..." class="px-2 py-1 rounded border text-xs w-32 bg-transparent" style="border-color: var(--border-col);" />
         <select id="sort-select" onchange="render()" class="px-2 py-1 rounded border text-xs font-semibold" style="border-color: var(--border-col); background-color: var(--bg-card);">
           <option value="terrace_rank">Tri : Terrasse & intérêt</option>
           <option value="price_asc">Tri : Prix croissant</option>
@@ -178,10 +234,10 @@
       </div>
     </section>
 
-    <!-- CONTENEUR CARTES -->
+    <!-- 1. CONTENEUR CARTES -->
     <section id="cards-container" class="space-y-6"></section>
 
-    <!-- CONTENEUR TABLEAU COMPACT -->
+    <!-- 2. CONTENEUR TABLEAU COMPACT -->
     <section id="table-container" class="hidden card rounded-lg overflow-x-auto shadow-sm">
       <table class="w-full text-left border-collapse text-xs">
         <thead>
@@ -189,27 +245,65 @@
             <th class="w-8 text-center">
               <input type="checkbox" id="th-check-all" onchange="toggleSelectAll(this.checked)" class="cursor-pointer" />
             </th>
-            <th class="w-16" id="th-photo">Photo</th>
+            <th class="w-14" id="th-photo">Photo</th>
             <th id="th-prop" class="cursor-pointer hover:underline" onclick="quickSort('terrace_rank')">Quartier & Bien ↕</th>
             <th id="th-city" class="cursor-pointer hover:underline" onclick="quickSort('time_asc')">Ville (dist.) ↕</th>
+            <th id="th-map-col" class="text-center">Carte</th>
             <th id="th-price" class="cursor-pointer hover:underline text-right" onclick="quickSort('price_asc')">Prix ↕</th>
             <th id="th-condo" class="cursor-pointer hover:underline text-right" onclick="quickSort('condo_asc')">Charges ↕</th>
             <th id="th-area" class="cursor-pointer hover:underline text-right" onclick="quickSort('area_desc')">m² ↕</th>
-            <th id="th-rooms" class="text-center">Ch / Suíte</th>
+            <th id="th-rooms" class="text-center">Ch/Suíte</th>
             <th id="th-park" class="text-center">Park.</th>
             <th id="th-terr" class="text-center">Terrasse</th>
             <th id="th-dup" class="text-center">Duplex</th>
             <th id="th-elev" class="text-center">Asc.</th>
             <th id="th-pool" class="text-center">Pisc.</th>
             <th id="th-state" class="text-center">État</th>
-            <th id="th-notes">Détails & Annonce</th>
+            <th id="th-notes">Détails</th>
           </tr>
         </thead>
         <tbody id="table-body"></tbody>
       </table>
     </section>
 
+    <!-- 3. CONTENEUR CARTE GÉNÉRALE INTERACTIVE DES 26 BIENS -->
+    <section id="map-view-container" class="hidden card rounded-lg overflow-hidden shadow-sm">
+      <div class="px-3 py-2 border-b flex flex-wrap items-center justify-between gap-2 text-xs" style="border-color: var(--border-col);">
+        <div class="flex flex-wrap items-center gap-3">
+          <strong id="map-legend-title">Légende (clic sur un prix = ouvre l'annonce immobilière) :</strong>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-600 text-white">☀ Grande terrasse</span>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-600 text-white">⛅ Petite terrasse / Véranda</span>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-700 text-white">🏢 Sans terrasse (Apto)</span>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-600 text-white">★ Repère Boa Vista (09560-000)</span>
+        </div>
+        <span id="map-hint" style="color: var(--text-sub);">Survolez un point pour voir la photo et la zone approximative du quartier</span>
+      </div>
+      <div id="main-map" style="height: 620px; width: 100%;"></div>
+    </section>
+
   </main>
+
+  <!-- MODAL POPUP CARTE POUR UN BIEN -->
+  <div id="map-modal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3" onclick="if(event.target===this)closeMapModal()">
+    <div class="card rounded-xl w-full max-w-3xl overflow-hidden shadow-2xl">
+      <div class="px-4 py-3 border-b flex items-center justify-between gap-2" style="border-color: var(--border-col);">
+        <div>
+          <h3 id="modal-map-title" class="font-bold text-sm md:text-base">Localisation</h3>
+          <p id="modal-map-sub" class="text-xs" style="color: var(--text-sub);"></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="modal-gmaps-link" href="#" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded text-xs font-semibold border hover:bg-sky-500/10 text-sky-600 dark:text-sky-400" style="border-color: var(--border-col);">
+            Google Maps ↗
+          </a>
+          <a id="modal-listing-link" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white">
+            Ouvrir l'annonce ↗
+          </a>
+          <button onclick="closeMapModal()" class="px-2.5 py-1 rounded text-xs font-bold border hover:opacity-80" style="border-color: var(--border-col);">✕</button>
+        </div>
+      </div>
+      <div id="modal-map-canvas" style="height: 430px; width: 100%;"></div>
+    </div>
+  </div>
 
   <script>
     let currentLang = 'fr';
@@ -218,10 +312,15 @@
     let filters = { terrace: 'all', duplex: 'all', city: 'all', extra: 'all' };
     let selected = JSON.parse(localStorage.getItem('scs_sel_2026') || '[]');
 
+    const BOA_VISTA_CENTER = [-23.6355, -46.5560]; // Boa Vista, São Caetano do Sul (09560-000)
+
     const PROPERTIES = [
       // 1. GRANDES TERRASSES (7)
       {
         id: 'maia_17223', isNew: false, groupOrder: 1, city: 'SCS', neighborhood: 'Nova Gerty', timeMin: 3,
+        lat: -23.6410, lng: -46.5612, exactAddr: false, zoneRadius: 420,
+        addrFr: 'Zone du quartier Nova Gerty (adresse exacte non publiée par Maia)',
+        addrPt: 'Região do bairro Nova Gerty (endereço exato não divulgado pela Maia)',
         area: 98, rooms: 2, suites: 1, parking: 2, price: 580000, oldPrice: 600000, condo: 368,
         terrace: 'grande', terraceShortFr: 'Grande', terraceShortPt: 'Grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Rénové', statePt: 'Reformado',
@@ -234,6 +333,9 @@
       },
       {
         id: 'yeti_4016365', isNew: true, groupOrder: 2, city: 'SA', neighborhood: 'Santa Maria (SA)', timeMin: 5,
+        lat: -23.6432, lng: -46.5442, exactAddr: false, zoneRadius: 400,
+        addrFr: 'Zone du quartier Santa Maria, Santo André (à 2 km de Boa Vista SCS)',
+        addrPt: 'Região do bairro Santa Maria, Santo André (a 2 km do Boa Vista SCS)',
         area: 91, rooms: 2, suites: 1, parking: 2, price: 569000, condo: 200,
         terrace: 'grande', terraceShortFr: 'Grande', terraceShortPt: 'Grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Neuf', statePt: 'Novo',
@@ -246,6 +348,9 @@
       },
       {
         id: 'viva_campestre_595k', isNew: false, groupOrder: 3, city: 'SA', neighborhood: 'Campestre', timeMin: 6,
+        lat: -23.6352, lng: -46.5415, exactAddr: false, zoneRadius: 500,
+        addrFr: 'Zone Campestre, Santo André (en limite immédiate de São Caetano)',
+        addrPt: 'Região do Campestre, Santo André (na divisa imediata com São Caetano)',
         area: 90, rooms: 2, suites: 1, parking: 1, price: 595000, condo: 300,
         terrace: 'grande', terraceShortFr: 'Grande (~45 m²)', terraceShortPt: 'Grande (~45 m²)',
         isDuplex: true, elevator: false, pool: false, stateFr: 'Neuf', statePt: 'Novo',
@@ -258,6 +363,9 @@
       },
       {
         id: 'maia_27607', isNew: true, groupOrder: 4, city: 'SA', neighborhood: 'Campestre', timeMin: 6,
+        lat: -23.6375, lng: -46.5400, exactAddr: false, zoneRadius: 500,
+        addrFr: 'Zone Campestre, Santo André (proche Av. Dom Pedro II / limite SCS)',
+        addrPt: 'Região do Campestre, Santo André (próximo à Av. Dom Pedro II / divisa SCS)',
         area: 115.6, rooms: 2, suites: 1, parking: 1, price: 575000, condo: 150,
         terrace: 'grande', terraceShortFr: 'Grande', terraceShortPt: 'Grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Neuf', statePt: 'Novo',
@@ -270,6 +378,9 @@
       },
       {
         id: 'maia_26315', isNew: true, groupOrder: 5, city: 'SA', neighborhood: 'Campestre', timeMin: 6,
+        lat: -23.6330, lng: -46.5428, exactAddr: false, zoneRadius: 500,
+        addrFr: 'Zone Campestre, Santo André (proche Av. Dom Pedro II)',
+        addrPt: 'Região do Campestre, Santo André (próximo à Av. Dom Pedro II)',
         area: 96, rooms: 2, suites: 1, parking: 2, price: 590000, condo: 235,
         terrace: 'grande', terraceShortFr: 'Grande', terraceShortPt: 'Grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Vide', statePt: 'Vazio',
@@ -282,6 +393,9 @@
       },
       {
         id: 'yeti_3725004', isNew: true, groupOrder: 6, city: 'SA', neighborhood: 'Casa Branca', timeMin: 10,
+        lat: -23.6572, lng: -46.5215, exactAddr: true, zoneRadius: 120,
+        addrFr: 'Adresse exacte : Rua Antônio Cardoso Franco, 196 - Casa Branca, Santo André',
+        addrPt: 'Endereço exato: Rua Antônio Cardoso Franco, 196 - Casa Branca, Santo André',
         area: 102, rooms: 2, suites: 1, parking: 1, price: 579000, condo: 200,
         terrace: 'grande', terraceShortFr: 'Grande', terraceShortPt: 'Grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Neuf 2025', statePt: 'Novo 2025',
@@ -289,11 +403,14 @@
         url: 'https://www.yetiimoveis.com.br/imovel/3725004/cobertura-venda-santo-andre-sp-casa-branca-residencial-casa-branca',
         titleFr: 'Casa Branca · Duplex neuf 102 m² (Yeti VECO199)',
         titlePt: 'Casa Branca · Duplex novo 102 m² (Yeti VECO199)',
-        descFr: 'Livré en 2025, très grande terrasse ouverte en longueur, coin bureau + 3 SDB/lavabo, ascenseur.',
-        descPt: 'Entregue em 2025, amplo terraço aberto, espaço home office + 3 banheiros/lavabo, elevador.'
+        descFr: 'Livré en 2025 (Rua Antônio Cardoso Franco 196), très grande terrasse ouverte, coin bureau + 3 SDB, ascenseur.',
+        descPt: 'Entregue em 2025 (Rua Antônio Cardoso Franco 196), amplo terraço aberto, home office + 3 banheiros, elevador.'
       },
       {
         id: 'maia_38035', isNew: false, groupOrder: 7, city: 'SCS', neighborhood: 'Nova Gerty', timeMin: 3,
+        lat: -23.6430, lng: -46.5635, exactAddr: false, zoneRadius: 420,
+        addrFr: 'Zone du quartier Nova Gerty, São Caetano do Sul',
+        addrPt: 'Região do bairro Nova Gerty, São Caetano do Sul',
         area: 123.7, rooms: 2, suites: 1, parking: 2, price: 615000, condo: 480,
         terrace: 'grande', terraceShortFr: 'Très grande', terraceShortPt: 'Muito grande',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Planejados ch.', statePt: 'Planejados qts',
@@ -308,6 +425,9 @@
       // 2. DUPLEX AVEC PETITE TERRASSE OU VÉRANDA (4)
       {
         id: 'maia_11655', isNew: true, groupOrder: 8, city: 'SA', neighborhood: 'Santa Maria (SA)', timeMin: 5,
+        lat: -23.6450, lng: -46.5465, exactAddr: false, zoneRadius: 400,
+        addrFr: 'Zone Santa Maria, Santo André (à 5 min de Boa Vista SCS)',
+        addrPt: 'Região do bairro Santa Maria, Santo André (a 5 min do Boa Vista SCS)',
         area: 90, rooms: 2, suites: 0, parking: 1, price: 530000, condo: 224,
         terrace: 'petite', terraceShortFr: 'Véranda couv.', terraceShortPt: 'Coberto',
         isDuplex: true, elevator: false, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -320,6 +440,9 @@
       },
       {
         id: 'maia_34307', isNew: true, groupOrder: 9, city: 'SA', neighborhood: 'Santa Maria (SA)', timeMin: 5,
+        lat: -23.6415, lng: -46.5458, exactAddr: false, zoneRadius: 400,
+        addrFr: 'Zone Santa Maria, Santo André (à 5 min de Boa Vista SCS)',
+        addrPt: 'Região do bairro Santa Maria, Santo André (a 5 min do Boa Vista SCS)',
         area: 103, rooms: 2, suites: 1, parking: 2, price: 580000, condo: 402,
         terrace: 'petite', terraceShortFr: 'Petite', terraceShortPt: 'Pequeno',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -332,18 +455,24 @@
       },
       {
         id: 'viva_xingu_590k', isNew: false, groupOrder: 10, city: 'SCS', neighborhood: 'Santa Maria (Xingu)', timeMin: 3,
+        lat: -23.6388, lng: -46.5498, exactAddr: true, zoneRadius: 110,
+        addrFr: 'Adresse exacte : Rua Xingu, 371 - Santa Maria, São Caetano do Sul',
+        addrPt: 'Endereço exato: Rua Xingu, 371 - Santa Maria, São Caetano do Sul',
         area: 106, rooms: 2, suites: 2, parking: 2, price: 590000, condo: 360,
         terrace: 'petite', terraceShortFr: 'Petite', terraceShortPt: 'Pequeno',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Vide à finir', statePt: 'Vazio',
         img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/31599/sao-caetano-do-sul-apartamento-cobertura-santa-maria-23-10-2026_12-03-48-6adb7754e41ee.webp',
         url: 'https://www.vivareal.com.br/imovel/cobertura-2-quartos-santa-maria-bairros-sao-caetano-do-sul-com-garagem-106m2-venda-RS590000-id-2897542692/',
-        titleFr: 'Santa Maria (SCS) · Duplex 106 m², rue Xingu',
-        titlePt: 'Santa Maria (SCS) · Duplex 106 m², Rua Xingu',
+        titleFr: 'Santa Maria (SCS) · Duplex 106 m², rue Xingu 371',
+        titlePt: 'Santa Maria (SCS) · Duplex 106 m², Rua Xingu 371',
         descFr: '2 suites, ascenseur, vue dégagée, mais petite terrasse avec couloir latéral et cuisine/SDB vides à équiper.',
         descPt: '2 suítes, elevador, vista livre, porém terraço pequeno com corredor lateral e cozinha/banheiros vazios.'
       },
       {
         id: 'maia_17695', isNew: false, groupOrder: 11, city: 'SCS', neighborhood: 'Barcelona', timeMin: 7,
+        lat: -23.6215, lng: -46.5502, exactAddr: false, zoneRadius: 480,
+        addrFr: 'Zone du quartier Barcelona, São Caetano do Sul (proche Rua Taipas / USCS)',
+        addrPt: 'Região do bairro Barcelona, São Caetano do Sul (próximo à Rua Taipas / USCS)',
         area: 130, rooms: 3, suites: 1, parking: 2, price: 650000, oldPrice: 690000, condo: 600,
         terrace: 'petite', terraceShortFr: 'Petite', terraceShortPt: 'Pequeno',
         isDuplex: true, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -358,6 +487,9 @@
       // 3. PLAIN-PIED & APPARTEMENTS (15)
       {
         id: 'maia_20435', isNew: false, groupOrder: 12, city: 'SCS', neighborhood: 'Boa Vista', timeMin: 1,
+        lat: -23.6368, lng: -46.5548, exactAddr: false, zoneRadius: 380,
+        addrFr: 'Zone du quartier Boa Vista, São Caetano do Sul (09560-000)',
+        addrPt: 'Região do bairro Boa Vista, São Caetano do Sul (09560-000)',
         area: 74.5, rooms: 2, suites: 0, parking: 1, price: 575000, condo: 550,
         terrace: 'petite', terraceShortFr: 'Coin BBQ', terraceShortPt: 'Churrasq.',
         isDuplex: false, elevator: false, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -370,6 +502,9 @@
       },
       {
         id: 'cnm_ceramica_462k', isNew: false, groupOrder: 13, city: 'SCS', neighborhood: 'Cerâmica', timeMin: 6,
+        lat: -23.6272, lng: -46.5782, exactAddr: true, zoneRadius: 150,
+        addrFr: 'Rue exacte : Rua Luiz Cláudio Capovilla Filho - Cerâmica, São Caetano do Sul',
+        addrPt: 'Rua exata: Rua Luiz Cláudio Capovilla Filho - Cerâmica, São Caetano do Sul',
         area: 65, rooms: 2, suites: 0, parking: 1, price: 462500, condo: 740,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Meublé', statePt: 'Mobiliado',
@@ -382,6 +517,9 @@
       },
       {
         id: 'maia_46939', isNew: true, groupOrder: 14, city: 'SA', neighborhood: 'Bairro Jardim (SA)', timeMin: 8,
+        lat: -23.6505, lng: -46.5365, exactAddr: false, zoneRadius: 480,
+        addrFr: 'Zone du Bairro Jardim, Santo André (proche Rua das Figueiras / Grand Plaza)',
+        addrPt: 'Região do Bairro Jardim, Santo André (próximo à Rua das Figueiras / Grand Plaza)',
         area: 61, rooms: 2, suites: 1, parking: 2, price: 560000, condo: 577,
         terrace: 'none', terraceShortFr: 'Balcon', terraceShortPt: 'Sacada',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Planejados', statePt: 'Planejados',
@@ -394,6 +532,9 @@
       },
       {
         id: 'maia_49167', isNew: false, groupOrder: 15, city: 'SCS', neighborhood: 'Barcelona', timeMin: 7,
+        lat: -23.6238, lng: -46.5522, exactAddr: false, zoneRadius: 480,
+        addrFr: 'Zone du quartier Barcelona, São Caetano do Sul',
+        addrPt: 'Região do bairro Barcelona, São Caetano do Sul',
         area: 65.5, rooms: 2, suites: 1, parking: 1, price: 550000, condo: 540,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -406,6 +547,9 @@
       },
       {
         id: 'maia_48387', isNew: false, groupOrder: 16, city: 'SCS', neighborhood: 'Santa Paula', timeMin: 8,
+        lat: -23.6190, lng: -46.5618, exactAddr: false, zoneRadius: 450,
+        addrFr: 'Zone du quartier Santa Paula, São Caetano do Sul',
+        addrPt: 'Região do bairro Santa Paula, São Caetano do Sul',
         area: 62, rooms: 2, suites: 0, parking: 1, price: 560000, condo: 734,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -418,6 +562,9 @@
       },
       {
         id: 'cnm_santoantonio_550k', isNew: false, groupOrder: 17, city: 'SCS', neighborhood: 'Santo Antônio', timeMin: 7,
+        lat: -23.6212, lng: -46.5698, exactAddr: true, zoneRadius: 110,
+        addrFr: 'Adresse exacte : Rua Rui Barbosa, 80 - Santo Antônio, São Caetano do Sul',
+        addrPt: 'Endereço exato: Rua Rui Barbosa, 80 - Santo Antônio, São Caetano do Sul',
         area: 63, rooms: 2, suites: 1, parking: 1, price: 550000, condo: 800,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Planejados', statePt: 'Planejados',
@@ -430,6 +577,9 @@
       },
       {
         id: 'cnm_barcelona_585k', isNew: false, groupOrder: 18, city: 'SCS', neighborhood: 'Barcelona (Votorantim)', timeMin: 7,
+        lat: -23.6252, lng: -46.5485, exactAddr: true, zoneRadius: 160,
+        addrFr: 'Rue exacte : Rua Votorantim - Barcelona, São Caetano do Sul',
+        addrPt: 'Rua exata: Rua Votorantim - Barcelona, São Caetano do Sul',
         area: 75, rooms: 2, suites: 1, parking: 1, price: 585000, condo: 1000,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Partiel', statePt: 'Parcial',
@@ -442,6 +592,9 @@
       },
       {
         id: 'maia_49111', isNew: false, groupOrder: 19, city: 'SCS', neighborhood: 'Cerâmica / Sto Antônio', timeMin: 6,
+        lat: -23.6258, lng: -46.5745, exactAddr: false, zoneRadius: 420,
+        addrFr: 'Zone Cerâmica / Santo Antônio, proche ParkShopping São Caetano',
+        addrPt: 'Região Cerâmica / Santo Antônio, próximo ao ParkShopping São Caetano',
         area: 67, rooms: 2, suites: 1, parking: 1, price: 590000, condo: 800,
         terrace: 'none', terraceShortFr: 'Balcon', terraceShortPt: 'Varanda',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Planejados', statePt: 'Planejados',
@@ -454,6 +607,9 @@
       },
       {
         id: 'maia_45919', isNew: true, groupOrder: 20, city: 'SA', neighborhood: 'Campestre', timeMin: 6,
+        lat: -23.6395, lng: -46.5385, exactAddr: false, zoneRadius: 500,
+        addrFr: 'Zone Campestre, Santo André (à 6 min de Boa Vista SCS)',
+        addrPt: 'Região do Campestre, Santo André (a 6 min do Boa Vista SCS)',
         area: 85, rooms: 3, suites: 1, parking: 2, price: 510000, condo: 150,
         terrace: 'none', terraceShortFr: 'Balcon', terraceShortPt: 'Varanda',
         isDuplex: false, elevator: false, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -466,6 +622,9 @@
       },
       {
         id: 'maia_25791', isNew: true, groupOrder: 21, city: 'SBC', neighborhood: 'Rudge Ramos (SBC)', timeMin: 6,
+        lat: -23.6498, lng: -46.5655, exactAddr: false, zoneRadius: 500,
+        addrFr: 'Zone Rudge Ramos, São Bernardo do Campo (touche Boa Vista / Nova Gerty)',
+        addrPt: 'Região do Rudge Ramos, São Bernardo do Campo (divisa com Boa Vista / Nova Gerty)',
         area: 50, rooms: 2, suites: 0, parking: 1, price: 530000, condo: 459,
         terrace: 'none', terraceShortFr: 'Balcon', terraceShortPt: 'Sacada',
         isDuplex: false, elevator: true, pool: true, stateFr: 'Planejados', statePt: 'Planejados',
@@ -478,6 +637,9 @@
       },
       {
         id: 'maia_49185', isNew: false, groupOrder: 22, city: 'SCS', neighborhood: 'Oswaldo Cruz', timeMin: 4,
+        lat: -23.6288, lng: -46.5610, exactAddr: false, zoneRadius: 420,
+        addrFr: 'Zone du quartier Oswaldo Cruz, São Caetano do Sul',
+        addrPt: 'Região do bairro Oswaldo Cruz, São Caetano do Sul',
         area: 65, rooms: 2, suites: 1, parking: 1, price: 522000, condo: 470,
         terrace: 'none', terraceShortFr: 'Balcon', terraceShortPt: 'Sacada',
         isDuplex: false, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -490,6 +652,9 @@
       },
       {
         id: 'maia_48530', isNew: false, groupOrder: 23, city: 'SCS', neighborhood: 'Santa Maria (SCS)', timeMin: 3,
+        lat: -23.6370, lng: -46.5480, exactAddr: false, zoneRadius: 380,
+        addrFr: 'Zone Santa Maria, São Caetano do Sul (proche Cidade das Crianças)',
+        addrPt: 'Região do Santa Maria, São Caetano do Sul (próximo à Cidade das Crianças)',
         area: 65, rooms: 2, suites: 2, parking: 1, price: 550000, condo: 550,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -502,6 +667,9 @@
       },
       {
         id: 'yeti_3082149', isNew: false, groupOrder: 24, city: 'SCS', neighborhood: 'Santa Maria (SCS)', timeMin: 3,
+        lat: -23.6402, lng: -46.5515, exactAddr: false, zoneRadius: 380,
+        addrFr: 'Zone Santa Maria, São Caetano do Sul',
+        addrPt: 'Região do Santa Maria, São Caetano do Sul',
         area: 94, rooms: 2, suites: 1, parking: 1, price: 460000, condo: 515,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: false, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -514,6 +682,9 @@
       },
       {
         id: 'maia_48768', isNew: false, groupOrder: 25, city: 'SCS', neighborhood: 'Santa Paula', timeMin: 8,
+        lat: -23.6175, lng: -46.5642, exactAddr: false, zoneRadius: 450,
+        addrFr: 'Zone du quartier Santa Paula, São Caetano do Sul',
+        addrPt: 'Região do bairro Santa Paula, São Caetano do Sul',
         area: 69, rooms: 2, suites: 1, parking: 2, price: 620000, condo: 726,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: false, stateFr: 'Planejados', statePt: 'Planejados',
@@ -526,6 +697,9 @@
       },
       {
         id: 'cnm_santapaula_585k', isNew: false, groupOrder: 26, city: 'SCS', neighborhood: 'Santa Paula (J. Paolone)', timeMin: 8,
+        lat: -23.6202, lng: -46.5592, exactAddr: true, zoneRadius: 130,
+        addrFr: 'Rue exacte : Rua José Paolone - Santa Paula, São Caetano do Sul',
+        addrPt: 'Rua exata: Rua José Paolone - Santa Paula, São Caetano do Sul',
         area: 82, rooms: 3, suites: 1, parking: 1, price: 585000, condo: 780,
         terrace: 'none', terraceShortFr: 'Non', terraceShortPt: 'Não',
         isDuplex: false, elevator: true, pool: false, stateFr: 'À vérifier', statePt: 'Verificar',
@@ -581,7 +755,7 @@
       const btn = document.getElementById('btn-wa');
       const clearBtn = document.getElementById('btn-clear-sel');
       if (n > 0) {
-        btn.textContent = isFr ? `Copier ${n} coché(s) pour WhatsApp` : `Copiar ${n} selecionado(s) WhatsApp`;
+        btn.textContent = isFr ? `Copier ${n} coché(s) WhatsApp` : `Copiar ${n} selecionado(s) WhatsApp`;
         clearBtn.classList.remove('hidden');
         clearBtn.textContent = isFr ? 'Tout décocher' : 'Limpar seleção';
       } else {
@@ -613,9 +787,14 @@
       currentView = v;
       document.getElementById('btn-view-cards').classList.toggle('chip-active', v === 'cards');
       document.getElementById('btn-view-table').classList.toggle('chip-active', v === 'table');
+      document.getElementById('btn-view-map').classList.toggle('chip-active', v === 'map');
       document.getElementById('cards-container').classList.toggle('hidden', v !== 'cards');
       document.getElementById('table-container').classList.toggle('hidden', v !== 'table');
+      document.getElementById('map-view-container').classList.toggle('hidden', v !== 'map');
       render();
+      if (v === 'map') {
+        setTimeout(() => renderMainMap(), 60);
+      }
     }
 
     function setLang(l) {
@@ -625,17 +804,18 @@
       document.getElementById('btn-lang-fr').classList.toggle('chip-active', isFr);
       document.getElementById('btn-lang-pt').classList.toggle('chip-active', !isFr);
 
-      document.getElementById('ui-title').textContent = isFr
-        ? 'Comparateur São Caetano & Santo André (26 biens)'
-        : 'Comparador São Caetano e Santo André (26 imóveis)';
-      document.getElementById('link-apto9').textContent = isFr
-        ? 'Voir réf. Apto 9 (vendu) ↗'
-        : 'Ver ref. Apto 9 (vendido) ↗';
+      document.getElementById('nav-current').textContent = isFr
+        ? '1. Comparateur 26 biens (SCS / SA)'
+        : '1. Comparador 26 imóveis (SCS / SA)';
+      document.getElementById('link-apto9').innerHTML = isFr
+        ? '<span>2. Visite virtuelle Apto 9 (réf. vendue)</span> <span>↗</span>'
+        : '<span>2. Visita virtual Apto 9 (ref. vendido)</span> <span>↗</span>';
       document.getElementById('btn-criteria').textContent = isFr
         ? 'Critères & budget ▾'
         : 'Critérios e orçamento ▾';
-      document.getElementById('btn-view-cards').textContent = isFr ? 'Photos / Cartes' : 'Fotos / Cards';
-      document.getElementById('btn-view-table').textContent = isFr ? 'Tableau complet' : 'Tabela completa';
+      document.getElementById('btn-view-cards').textContent = isFr ? 'Photos' : 'Fotos';
+      document.getElementById('btn-view-table').textContent = isFr ? 'Tableau' : 'Tabela';
+      document.getElementById('btn-view-map').textContent = isFr ? 'Carte (26)' : 'Mapa (26)';
       document.getElementById('btn-theme').textContent = currentTheme === 'light'
         ? (isFr ? 'Sombre' : 'Escuro')
         : (isFr ? 'Clair' : 'Claro');
@@ -690,6 +870,7 @@
       document.getElementById('th-photo').textContent = isFr ? 'Photo' : 'Foto';
       document.getElementById('th-prop').textContent = isFr ? 'Quartier & Bien ↕' : 'Bairro e Imóvel ↕';
       document.getElementById('th-city').textContent = isFr ? 'Ville (dist.) ↕' : 'Cidade (dist.) ↕';
+      document.getElementById('th-map-col').textContent = isFr ? 'Carte' : 'Mapa';
       document.getElementById('th-price').textContent = isFr ? 'Prix ↕' : 'Preço ↕';
       document.getElementById('th-condo').textContent = isFr ? 'Charges ↕' : 'Cond. ↕';
       document.getElementById('th-area').textContent = 'm² ↕';
@@ -700,9 +881,17 @@
       document.getElementById('th-elev').textContent = isFr ? 'Asc.' : 'Elev.';
       document.getElementById('th-pool').textContent = 'Pisc.';
       document.getElementById('th-state').textContent = isFr ? 'État' : 'Estado';
-      document.getElementById('th-notes').textContent = isFr ? 'Détails & Annonce' : 'Detalhes e Anúncio';
+      document.getElementById('th-notes').textContent = isFr ? 'Détails' : 'Detalhes';
+
+      document.getElementById('map-legend-title').textContent = isFr
+        ? 'Légende (clic sur un prix = ouvre l\'annonce immobilière) :'
+        : 'Legenda (clique no preço = abre o anúncio na imobiliária):';
+      document.getElementById('map-hint').textContent = isFr
+        ? 'Survolez un point pour voir la photo et le rayon approximatif du quartier'
+        : 'Passe o mouse em um ponto para ver a foto e o raio aproximado do bairro';
 
       render();
+      if (currentView === 'map') renderMainMap();
     }
 
     function toggleTheme() {
@@ -770,22 +959,18 @@
       return `
         <article class="card rounded-lg overflow-hidden shadow-sm hover:shadow transition flex flex-col justify-between ${isSel ? 'card-selected' : ''}">
           <div>
-            <!-- Photo directement cliquable vers l'annonce -->
             <div class="photo-wrap">
               <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="block w-full h-full">
                 <img src="${p.img}" alt="${title}" loading="lazy" onerror="this.style.opacity='0.2'" />
               </a>
-              <!-- Checkbox de sélection en haut à gauche -->
               <label class="absolute top-2 left-2 px-2 py-1 rounded bg-white/95 text-slate-900 text-xs font-bold shadow cursor-pointer flex items-center gap-1.5 select-none">
                 <input type="checkbox" ${isSel ? 'checked' : ''} onchange="toggleSelect('${p.id}')" class="w-3.5 h-3.5 cursor-pointer" />
-                <span>${isSel ? (isFr ? 'Sélectionné' : 'Selecionado') : (isFr ? 'Sélectionner' : 'Selecionar')}</span>
+                <span>${isSel ? (isFr ? 'Coché' : 'Selecionado') : (isFr ? 'Cocher' : 'Selecionar')}</span>
               </label>
-              <!-- Badge Nouveau / Ville en haut à droite -->
               <div class="absolute top-2 right-2 flex items-center gap-1">
                 ${p.isNew ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-fuchsia-600 text-white shadow">${isFr ? 'Nouveau' : 'Novo'}</span>` : ''}
                 <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-900/85 text-white">${p.city} · ${p.timeMin} min</span>
               </div>
-              <!-- Bandeau bas photo : Terrasse + Duplex -->
               <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-1 pointer-events-none">
                 <span class="px-2 py-0.5 rounded text-[11px] font-bold ${terrColor}">
                   ${isFr ? 'Terrasse' : 'Terraço'} : ${terrShort}
@@ -796,7 +981,6 @@
               </div>
             </div>
 
-            <!-- Corps compact -->
             <div class="p-3">
               <div class="flex items-baseline justify-between gap-2 mb-1.5">
                 <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="font-bold text-sm hover:text-sky-600 dark:hover:text-sky-400 hover:underline leading-tight">
@@ -804,8 +988,7 @@
                 </a>
               </div>
 
-              <!-- Chiffres clés en 1 ligne -->
-              <div class="grid grid-cols-4 gap-1 p-2 rounded muted-box mb-2 text-center text-xs">
+              <div class="grid grid-cols-4 gap-1 p-1.5 rounded muted-box mb-2 text-center text-xs">
                 <div>
                   <div class="text-[10px]" style="color: var(--text-sub);">${isFr ? 'Prix' : 'Preço'}</div>
                   <div class="font-extrabold text-sky-600 dark:text-sky-400">${(p.price / 1000).toFixed(0)}k R$</div>
@@ -819,12 +1002,11 @@
                   <div class="font-bold">${p.condo} R$</div>
                 </div>
                 <div>
-                  <div class="text-[10px]" style="color: var(--text-sub);">${isFr ? 'Config' : 'Config'}</div>
+                  <div class="text-[10px]" style="color: var(--text-sub);">Ch/Park</div>
                   <div class="font-bold">${p.rooms}ch/${p.parking}pl</div>
                 </div>
               </div>
 
-              <!-- Mini tags sobres -->
               <div class="flex flex-wrap gap-1 mb-1.5 text-[11px]">
                 <span class="px-1.5 py-0.5 rounded border" style="border-color: var(--border-col);">${stateLbl}</span>
                 ${p.suites > 0 ? `<span class="px-1.5 py-0.5 rounded border" style="border-color: var(--border-col);">${p.suites} suíte</span>` : ''}
@@ -837,8 +1019,11 @@
           </div>
 
           <div class="px-3 pb-3 pt-1 flex gap-1.5">
+            <button onclick="openMapModal('${p.id}')" class="px-2.5 py-1.5 rounded text-xs font-semibold border hover:bg-sky-500/10" style="border-color: var(--border-col);">
+              ${isFr ? 'Carte' : 'Mapa'}
+            </button>
             <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-1.5 px-2 rounded text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white transition">
-              ${isFr ? 'Ouvrir l\'annonce ↗' : 'Abrir anúncio ↗'}
+              ${isFr ? 'Annonce ↗' : 'Anúncio ↗'}
             </a>
           </div>
         </article>
@@ -858,18 +1043,9 @@
         const g3 = list.filter(p => p.terrace === 'none' || (!p.isDuplex && p.terrace === 'petite'));
 
         const sections = [
-          {
-            title: isFr ? '1. Grandes terrasses (Duplex)' : '1. Grandes terraços (Duplex)',
-            items: g1
-          },
-          {
-            title: isFr ? '2. Duplex avec petite terrasse ou véranda couverte' : '2. Duplex com pequeno terraço ou área coberta',
-            items: g2
-          },
-          {
-            title: isFr ? '3. Appartements & cobertura de plain-pied' : '3. Apartamentos e cobertura linear',
-            items: g3
-          }
+          { title: isFr ? '1. Grandes terrasses (Duplex)' : '1. Grandes terraços (Duplex)', items: g1 },
+          { title: isFr ? '2. Duplex avec petite terrasse ou véranda couverte' : '2. Duplex com pequeno terraço ou área coberta', items: g2 },
+          { title: isFr ? '3. Appartements & cobertura de plain-pied' : '3. Apartamentos e cobertura linear', items: g3 }
         ];
 
         cardsEl.innerHTML = sections.filter(s => s.items.length > 0).map(s => `
@@ -890,7 +1066,7 @@
         `;
       }
 
-      // Tableau compact avec toutes les colonnes
+      // Tableau compact avec bouton Carte
       const tbody = document.getElementById('table-body');
       tbody.innerHTML = list.map(p => {
         const isSel = selected.includes(p.id);
@@ -911,7 +1087,7 @@
               <input type="checkbox" ${isSel ? 'checked' : ''} onchange="toggleSelect('${p.id}')" class="w-3.5 h-3.5 cursor-pointer" />
             </td>
             <td>
-              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="block w-14 h-10 rounded overflow-hidden bg-slate-800">
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="block w-12 h-9 rounded overflow-hidden bg-slate-800">
                 <img src="${p.img}" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none'" />
               </a>
             </td>
@@ -919,11 +1095,16 @@
               <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="text-sky-600 dark:text-sky-400 hover:underline">${title} ↗</a>
               ${p.isNew ? `<span class="ml-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-fuchsia-600 text-white">${isFr ? 'Nouveau' : 'Novo'}</span>` : ''}
             </td>
-            <td class="whitespace-nowrap">${p.city} <span class="opacity-70">(${p.timeMin} min)</span></td>
+            <td class="whitespace-nowrap">${p.city} <span class="opacity-70">(${p.timeMin}m)</span></td>
+            <td class="text-center whitespace-nowrap">
+              <button onclick="openMapModal('${p.id}')" class="px-2 py-0.5 rounded border text-[11px] font-semibold hover:bg-sky-500/10 text-sky-600 dark:text-sky-400" style="border-color: var(--border-col);">
+                ${isFr ? 'Zone' : 'Mapa'}
+              </button>
+            </td>
             <td class="text-right font-bold text-sky-600 dark:text-sky-400 whitespace-nowrap">${fmtBRL(p.price)}</td>
             <td class="text-right whitespace-nowrap">${p.condo} R$</td>
             <td class="text-right font-bold whitespace-nowrap">${p.area}</td>
-            <td class="text-center whitespace-nowrap">${p.rooms} / ${p.suites}</td>
+            <td class="text-center whitespace-nowrap">${p.rooms}/${p.suites}</td>
             <td class="text-center whitespace-nowrap">${p.parking}</td>
             <td class="text-center whitespace-nowrap">${terrBadge}</td>
             <td class="text-center whitespace-nowrap">${p.isDuplex ? (isFr ? 'Oui' : 'Sim') : (isFr ? 'Non' : 'Não')}</td>
@@ -936,6 +1117,179 @@
           </tr>
         `;
       }).join('');
+
+      if (currentView === 'map') {
+        renderMainMap();
+      }
+    }
+
+    // ================= CARTE GÉNÉRALE INTERACTIVE (26 BIENS) =================
+    let mainMap = null;
+    let mainMarkersLayer = null;
+    let hoverZoneCircle = null;
+
+    function renderMainMap() {
+      if (typeof L === 'undefined') return;
+      const isFr = currentLang === 'fr';
+      const list = getFilteredList();
+
+      if (!mainMap) {
+        mainMap = L.map('main-map').setView(BOA_VISTA_CENTER, 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap'
+        }).addTo(mainMap);
+        mainMarkersLayer = L.layerGroup().addTo(mainMap);
+      }
+      mainMap.invalidateSize();
+      mainMarkersLayer.clearLayers();
+
+      // Point repère Boa Vista (09560-000)
+      const anchorIcon = L.divIcon({
+        className: '',
+        html: `<div class="price-pin pin-anchor">★ Boa Vista (09560-000)</div>`,
+        iconSize: [150, 26],
+        iconAnchor: [75, 13]
+      });
+      L.marker(BOA_VISTA_CENTER, { icon: anchorIcon, zIndexOffset: 1000 })
+        .bindTooltip(isFr ? 'Point de repère : Boa Vista, São Caetano do Sul (09560-000)' : 'Ponto de referência: Boa Vista, São Caetano do Sul (09560-000)')
+        .addTo(mainMarkersLayer);
+
+      // Marqueurs des biens avec prix + picto terrasse (clic = ouvre l'annonce)
+      list.forEach(p => {
+        const picto = p.terrace === 'grande' ? '☀' : (p.terrace === 'petite' ? '⛅' : '🏢');
+        const pinClass = p.terrace === 'grande' ? 'pin-grande' : (p.terrace === 'petite' ? 'pin-petite' : 'pin-none');
+        const priceShort = Math.round(p.price / 1000) + 'k R$';
+        const title = isFr ? p.titleFr : p.titlePt;
+        const addrInfo = isFr ? p.addrFr : p.addrPt;
+        const terrShort = isFr ? p.terraceShortFr : p.terraceShortPt;
+
+        const icon = L.divIcon({
+          className: '',
+          html: `<div class="price-pin ${pinClass}"><span>${picto}</span><span>${priceShort}</span></div>`,
+          iconSize: [86, 26],
+          iconAnchor: [43, 13]
+        });
+
+        const marker = L.marker([p.lat, p.lng], { icon });
+
+        const tipHtml = `
+          <div>
+            <img src="${p.img}" style="width:100%;height:95px;object-fit:cover;border-radius:5px;margin-bottom:5px;" onerror="this.style.display='none'" />
+            <div style="font-weight:700;font-size:12px;margin-bottom:2px;">${title}</div>
+            <div style="font-size:11px;color:#38bdf8;font-weight:700;">${fmtBRL(p.price)} · ${p.area} m² · ${isFr ? 'Terrasse' : 'Terraço'}: ${terrShort}</div>
+            <div style="font-size:10px;color:#cbd5e1;margin-top:3px;">${addrInfo}</div>
+            <div style="font-size:10px;color:#34d399;margin-top:4px;font-weight:700;">
+              ${isFr ? '👉 Cliquez sur le point pour ouvrir l\'annonce ↗' : '👉 Clique no ponto para abrir o anúncio ↗'}
+            </div>
+          </div>
+        `;
+        marker.bindTooltip(tipHtml, { className: 'prop-tip', direction: 'top', offset: [0, -10] });
+
+        marker.on('mouseover', () => {
+          if (hoverZoneCircle) mainMarkersLayer.removeLayer(hoverZoneCircle);
+          hoverZoneCircle = L.circle([p.lat, p.lng], {
+            radius: p.zoneRadius,
+            color: p.exactAddr ? '#10b981' : '#0284c7',
+            fillColor: p.exactAddr ? '#10b981' : '#0284c7',
+            fillOpacity: 0.14,
+            weight: 2,
+            dashArray: p.exactAddr ? null : '5, 5'
+          }).addTo(mainMarkersLayer);
+        });
+
+        marker.on('mouseout', () => {
+          if (hoverZoneCircle) {
+            mainMarkersLayer.removeLayer(hoverZoneCircle);
+            hoverZoneCircle = null;
+          }
+        });
+
+        // Clic sur le marqueur -> ouvre directement l'annonce immobilière !
+        marker.on('click', () => {
+          window.open(p.url, '_blank', 'noopener');
+        });
+
+        marker.addTo(mainMarkersLayer);
+      });
+    }
+
+    // ================= MODAL POPUP CARTE POUR UN BIEN =================
+    let modalMap = null;
+    let modalLayer = null;
+
+    function openMapModal(id) {
+      const p = PROPERTIES.find(x => x.id === id);
+      if (!p) return;
+      const isFr = currentLang === 'fr';
+      const title = isFr ? p.titleFr : p.titlePt;
+      const addrInfo = isFr ? p.addrFr : p.addrPt;
+
+      document.getElementById('modal-map-title').textContent = `${title} - ${fmtBRL(p.price)}`;
+      document.getElementById('modal-map-sub').textContent = `${addrInfo} · 🚗 ${p.timeMin} min de Boa Vista (09560-000)`;
+      document.getElementById('modal-listing-link').href = p.url;
+      document.getElementById('modal-listing-link').textContent = isFr ? 'Ouvrir l\'annonce ↗' : 'Abrir anúncio ↗';
+
+      const gQuery = encodeURIComponent(`${p.neighborhood}, ${p.city === 'SCS' ? 'São Caetano do Sul' : (p.city === 'SA' ? 'Santo André' : 'São Bernardo do Campo')}, SP, Brasil`);
+      document.getElementById('modal-gmaps-link').href = `https://www.google.com/maps/search/?api=1&query=${gQuery}`;
+
+      document.getElementById('map-modal').classList.remove('hidden');
+
+      setTimeout(() => {
+        if (!modalMap) {
+          modalMap = L.map('modal-map-canvas').setView([p.lat, p.lng], 15);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+          }).addTo(modalMap);
+          modalLayer = L.layerGroup().addTo(modalMap);
+        }
+        modalMap.invalidateSize();
+        modalLayer.clearLayers();
+
+        // Zone ou adresse exacte du bien
+        L.circle([p.lat, p.lng], {
+          radius: p.zoneRadius,
+          color: p.exactAddr ? '#059669' : '#0284c7',
+          fillColor: p.exactAddr ? '#059669' : '#0284c7',
+          fillOpacity: 0.18,
+          weight: 2,
+          dashArray: p.exactAddr ? null : '6, 6'
+        }).addTo(modalLayer);
+
+        const picto = p.terrace === 'grande' ? '☀' : (p.terrace === 'petite' ? '⛅' : '🏢');
+        const pinClass = p.terrace === 'grande' ? 'pin-grande' : (p.terrace === 'petite' ? 'pin-petite' : 'pin-none');
+        const pinIcon = L.divIcon({
+          className: '',
+          html: `<div class="price-pin ${pinClass}"><span>${picto}</span><span>${Math.round(p.price/1000)}k R$</span></div>`,
+          iconSize: [90, 26],
+          iconAnchor: [45, 13]
+        });
+
+        const m = L.marker([p.lat, p.lng], { icon: pinIcon }).addTo(modalLayer);
+        m.on('click', () => window.open(p.url, '_blank', 'noopener'));
+
+        // Point de repère Boa Vista (09560-000) + ligne pointillée
+        const bvIcon = L.divIcon({
+          className: '',
+          html: `<div class="price-pin pin-anchor">★ Boa Vista</div>`,
+          iconSize: [100, 24],
+          iconAnchor: [50, 12]
+        });
+        L.marker(BOA_VISTA_CENTER, { icon: bvIcon }).addTo(modalLayer);
+        L.polyline([BOA_VISTA_CENTER, [p.lat, p.lng]], {
+          color: '#e11d48',
+          weight: 2,
+          dashArray: '4, 6'
+        }).addTo(modalLayer);
+
+        const bounds = L.latLngBounds([BOA_VISTA_CENTER, [p.lat, p.lng]]);
+        modalMap.fitBounds(bounds.pad(0.35), { maxZoom: 15 });
+      }, 60);
+    }
+
+    function closeMapModal() {
+      document.getElementById('map-modal').classList.add('hidden');
     }
 
     function copyWhatsApp() {
@@ -960,7 +1314,6 @@
       });
       navigator.clipboard.writeText(lines.join('\n')).then(() => {
         const btn = document.getElementById('btn-wa');
-        const old = btn.textContent;
         btn.textContent = isFr ? 'Copié dans le presse-papiers !' : 'Copiado!';
         setTimeout(() => { updateWaButton(); }, 2000);
       });
