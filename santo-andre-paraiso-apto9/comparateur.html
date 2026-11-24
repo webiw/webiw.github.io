@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Comparateur Appartements & Coberturas - São Caetano & Santo André</title>
+  <title>Apartamentos e Coberturas - São Caetano e Santo André</title>
+  <meta property="og:title" content="Apartamentos e Coberturas - São Caetano e Santo André" />
+  <meta property="og:description" content="Seleção de 26 apartamentos e coberturas verificados em São Caetano do Sul e Santo André (até 15 min do Boa Vista)." />
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -792,6 +794,9 @@
       currentLang = l;
       const isFr = l === 'fr';
       document.documentElement.lang = isFr ? 'fr' : 'pt-BR';
+      document.title = isFr
+        ? 'Comparateur Appartements & Coberturas - São Caetano & Santo André'
+        : 'Apartamentos e Coberturas - São Caetano e Santo André';
       document.getElementById('btn-lang-fr').classList.toggle('chip-active', isFr);
       document.getElementById('btn-lang-pt').classList.toggle('chip-active', !isFr);
 
