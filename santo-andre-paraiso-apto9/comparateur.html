@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Comparateur Appartements & Coberturas - Autour de Boa Vista (São Caetano / Santo André)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body[data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-muted: #f1f5f9;
+      --border-col: #e2e8f0;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --accent: #0284c7;
+    }
+    body[data-theme="dark"] {
+      --bg-page: #0f172a;
+      --bg-card: #1e293b;
+      --bg-muted: #334155;
+      --border-col: #334155;
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --accent: #38bdf8;
+    }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-col);
+    }
+    .muted-box {
+      background-color: var(--bg-muted);
+    }
+    .chip-active {
+      background-color: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0284c7 !important;
+    }
+    .photo-wrap {
+      position: relative;
+      height: 195px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    }
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .card:hover .photo-wrap img {
+      transform: scale(1.04);
+    }
+  </style>
+</head>
+<body data-theme="light" class="min-h-screen pb-16">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-30 backdrop-blur-md bg-opacity-90 border-b border-slate-200 dark:border-slate-700" style="background-color: var(--bg-card);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🏡</span>
+          <h1 id="ui-title" class="text-lg md:text-xl font-bold tracking-tight">Comparateur Appartements & Coberturas (≤ 15 min de Boa Vista, SCS)</h1>
+        </div>
+        <p id="ui-subtitle" class="text-xs md:text-sm" style="color: var(--text-sub);">
+          25 biens vérifiés (photos inspectées) : tes 17 biens + 8 nouvelles pépites à Santo André / Rudge Ramos à 5-10 min de Boa Vista (09560-000)
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        <button onclick="copyWhatsApp()" id="btn-wa" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm flex items-center gap-1.5">
+          <span>📲</span> <span id="ui-wa-label">Copier sélection WhatsApp</span>
+        </button>
+        <div class="flex rounded-lg border overflow-hidden text-xs font-semibold" style="border-color: var(--border-col);">
+          <button id="btn-view-cards" onclick="setView('cards')" class="px-2.5 py-1.5 chip-active">🗂️ Cartes</button>
+          <button id="btn-view-table" onclick="setView('table')" class="px-2.5 py-1.5">📊 Tableau</button>
+        </div>
+        <div class="flex rounded-lg border overflow-hidden text-xs font-semibold" style="border-color: var(--border-col);">
+          <button id="btn-lang-fr" onclick="setLang('fr')" class="px-2.5 py-1.5 chip-active">🇫🇷 FR</button>
+          <button id="btn-lang-pt" onclick="setLang('pt')" class="px-2.5 py-1.5">🇧🇷 PT</button>
+        </div>
+        <button onclick="toggleTheme()" id="btn-theme" class="px-2.5 py-1.5 rounded-lg border text-xs font-semibold" style="border-color: var(--border-col);">
+          🌙 Sombre
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 pt-5">
+
+    <!-- ENCART CONTEXTE & NOTE DE DAVID -->
+    <section class="card rounded-xl p-4 mb-5 shadow-sm">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
+        <div class="p-3 rounded-lg muted-box">
+          <div class="font-bold mb-1 text-sky-600 dark:text-sky-400" id="box1-title">🎯 Objectif & Budget</div>
+          <p id="box1-text" style="color: var(--text-sub);">
+            Remplacer l'Apto 9 (vendu à 565 000 R$) pour Carla puis location. Plafond idéal : <strong>560 000 R$ hors frais</strong> (~585 000 R$ frais d'acte/ITBI inclus), ou jusqu'à <strong>580-595k R$</strong> si déjà meublé / équipé en <em>planejados</em> (économie sur les 35 000 R$ d'aménagement).
+          </p>
+        </div>
+        <div class="p-3 rounded-lg muted-box">
+          <div class="font-bold mb-1 text-amber-600 dark:text-amber-400" id="box2-title">☀️ Vraie taille des terrasses (vérifiée sur photos)</div>
+          <p id="box2-text" style="color: var(--text-sub);">
+            Les annonces ne donnent presque jamais les m² de terrasse (sauf Campestre : ~45 m²). Chaque bien a été classé d'après ses photos : <strong>Grande terrasse</strong> (ex: Nova Gerty 17223, Campestre 27607, Santa Maria Yeti 569k), <strong>Petite terrasse / Véranda</strong> ou <strong>Appartement classique</strong>.
+          </p>
+        </div>
+        <div class="p-3 rounded-lg muted-box">
+          <div class="font-bold mb-1 text-emerald-600 dark:text-emerald-400" id="box3-title">🚗 Rayon ≤ 15 min de Boa Vista (09560-000)</div>
+          <p id="box3-text" style="color: var(--text-sub);">
+            Boa Vista touche directement <strong>Santa Maria, Campestre et Bairro Jardim</strong> à Santo André (5 à 8 min) et <strong>Rudge Ramos</strong> à São Bernardo (6 min). À budget égal, Santo André offre des coberturas neuves avec ascenseur et 2 places !
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BARRE DE FILTRES & TRI -->
+    <section class="card rounded-xl p-4 mb-5 shadow-sm space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Recherche & Tri -->
+        <div class="flex flex-wrap items-center gap-2 flex-1">
+          <input id="search-input" type="text" oninput="render()" placeholder="🔍 Filtrer par quartier, rue, réf, piscine..." class="px-3 py-1.5 rounded-lg border text-xs md:text-sm w-full sm:w-64 bg-transparent" style="border-color: var(--border-col);" />
+          <div class="flex items-center gap-1.5 text-xs">
+            <span id="lbl-sort" class="font-semibold" style="color: var(--text-sub);">Trier par :</span>
+            <select id="sort-select" onchange="render()" class="px-2.5 py-1.5 rounded-lg border text-xs font-semibold bg-transparent" style="border-color: var(--border-col); background-color: var(--bg-card);">
+              <option value="terrace_rank">⭐ Catégorie de terrasse & intérêt (défaut)</option>
+              <option value="price_asc">💰 Prix : du - cher au + cher</option>
+              <option value="price_desc">💰 Prix : du + cher au - cher</option>
+              <option value="area_desc">📐 Surface (m²) : de la + grande à la + petite</option>
+              <option value="area_asc">📐 Surface (m²) : de la + petite à la + grande</option>
+              <option value="condo_asc">🧾 Charges / mois : les + basses d'abord</option>
+              <option value="time_asc">🚗 Temps depuis Boa Vista (SCS) : le + proche</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <span id="count-badge" class="px-2.5 py-1 rounded-full font-bold bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200">25 biens</span>
+          <button onclick="resetFilters()" id="btn-reset" class="px-2.5 py-1 rounded-lg border hover:opacity-80" style="border-color: var(--border-col);">Réinitialiser</button>
+        </div>
+      </div>
+
+      <!-- Lignes de boutons filtres rapides -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-2 border-t text-xs" style="border-color: var(--border-col);">
+        <!-- Filtre Terrasse -->
+        <div>
+          <div id="lbl-f-terrace" class="font-semibold mb-1 text-[11px] uppercase tracking-wider" style="color: var(--text-sub);">☀️ Terrasse</div>
+          <div class="flex flex-wrap gap-1" id="filter-terrace">
+            <button data-val="all" onclick="setFilter('terrace','all')" class="px-2 py-1 rounded border chip-active" style="border-color: var(--border-col);">Tous</button>
+            <button data-val="grande" onclick="setFilter('terrace','grande')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">☀️ Grande terrasse</button>
+            <button data-val="any_terrace" onclick="setFilter('terrace','any_terrace')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">🌤️ Grande ou petite</button>
+            <button data-val="none" onclick="setFilter('terrace','none')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">🏢 Sans terrasse</button>
+          </div>
+        </div>
+
+        <!-- Filtre Duplex -->
+        <div>
+          <div id="lbl-f-duplex" class="font-semibold mb-1 text-[11px] uppercase tracking-wider" style="color: var(--text-sub);">🪜 Duplex ou Plain-pied</div>
+          <div class="flex flex-wrap gap-1" id="filter-duplex">
+            <button data-val="all" onclick="setFilter('duplex','all')" class="px-2 py-1 rounded border chip-active" style="border-color: var(--border-col);">Tous</button>
+            <button data-val="duplex" onclick="setFilter('duplex','duplex')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">🪜 Duplex</button>
+            <button data-val="flat" onclick="setFilter('duplex','flat')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">➡️ Plain-pied</button>
+          </div>
+        </div>
+
+        <!-- Filtre Ville -->
+        <div>
+          <div id="lbl-f-city" class="font-semibold mb-1 text-[11px] uppercase tracking-wider" style="color: var(--text-sub);">📍 Ville (≤ 12 min Boa Vista)</div>
+          <div class="flex flex-wrap gap-1" id="filter-city">
+            <button data-val="all" onclick="setFilter('city','all')" class="px-2 py-1 rounded border chip-active" style="border-color: var(--border-col);">Toutes</button>
+            <button data-val="SCS" onclick="setFilter('city','SCS')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">São Caetano (17)</button>
+            <button data-val="SA" onclick="setFilter('city','SA')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">Santo André (7)</button>
+            <button data-val="SBC" onclick="setFilter('city','SBC')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">São Bernardo (1)</button>
+          </div>
+        </div>
+
+        <!-- Filtre Source / Bonus -->
+        <div>
+          <div id="lbl-f-extra" class="font-semibold mb-1 text-[11px] uppercase tracking-wider" style="color: var(--text-sub);">✨ Sélection & Atouts</div>
+          <div class="flex flex-wrap gap-1" id="filter-extra">
+            <button data-val="all" onclick="setFilter('extra','all')" class="px-2 py-1 rounded border chip-active" style="border-color: var(--border-col);">Tous (25)</button>
+            <button data-val="new" onclick="setFilter('extra','new')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">✨ Nouveaux (8)</button>
+            <button data-val="initial" onclick="setFilter('extra','initial')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">📋 Liste initiale (17)</button>
+            <button data-val="budget" onclick="setFilter('extra','budget')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">✅ ≤ 580k R$</button>
+            <button data-val="fav" onclick="setFilter('extra','fav')" class="px-2 py-1 rounded border" style="border-color: var(--border-col);">❤️ Favoris</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENEUR CARTES -->
+    <section id="cards-container" class="space-y-8"></section>
+
+    <!-- CONTENEUR TABLEAU -->
+    <section id="table-container" class="hidden card rounded-xl overflow-x-auto shadow-sm">
+      <table class="w-full text-left border-collapse text-xs md:text-sm">
+        <thead>
+          <tr class="border-b muted-box font-bold" style="border-color: var(--border-col);">
+            <th class="p-3">❤️</th>
+            <th class="p-3 cursor-pointer hover:underline" onclick="quickSort('terrace_rank')">Bien & Quartier ↕</th>
+            <th class="p-3 cursor-pointer hover:underline" onclick="quickSort('time_asc')">Ville (dist. Boa Vista) ↕</th>
+            <th class="p-3">Terrasse</th>
+            <th class="p-3">Type</th>
+            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('area_desc')">Surface ↕</th>
+            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('price_asc')">Prix ↕</th>
+            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('condo_asc')">Charges ↕</th>
+            <th class="p-3">Points clés & Lien</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script>
+    let currentLang = 'fr';
+    let currentTheme = 'light';
+    let currentView = 'cards';
+    let filters = { terrace: 'all', duplex: 'all', city: 'all', extra: 'all' };
+    let favs = JSON.parse(localStorage.getItem('scs_favs_2026') || '[]');
+
+    const PROPERTIES = [
+      // ================= 1. GRANDES TERRASSES (7 biens : 3 de la liste de David + 4 nouveaux à Santo André) =================
+      {
+        id: 'maia_17223',
+        isNew: false,
+        groupOrder: 1,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Nova Gerty',
+        timeMin: 3,
+        timeLabelFr: '3 min de Boa Vista',
+        timeLabelPt: '3 min do Boa Vista',
+        area: 98,
+        totalArea: 98,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 580000,
+        oldPrice: 600000,
+        condo: 368,
+        iptu: 89,
+        terrace: 'grande',
+        terraceFr: '☀️ Grande terrasse (couverte + ouverte)',
+        terracePt: '☀️ Grande terraço (coberto + aberto)',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'partiel',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/17223/sao-caetano-do-sul-apartamento-cobertura-nova-gerti-23-11-2026_10-46-40-6b0443c05da7a.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Cobertura/Nova-Gerti/17223',
+        titleFr: 'Nova Gerty - Cobertura duplex rénovée 98 m² (Réf. 17223)',
+        titlePt: 'Nova Gerty - Cobertura duplex reformada 98 m² (Ref. 17223)',
+        descFr: 'La meilleure cobertura de São Caetano sur photos : espace barbecue couvert + vraie terrasse ouverte avec vue panoramique, 2 chambres (1 suite), ascenseur, 2 places couvertes. Prix baissé de 600k à 580k R$.',
+        descPt: 'A melhor cobertura de São Caetano nas fotos: espaço churrasqueira coberto + terraço aberto com vista panorâmica, 2 quartos (1 suíte), elevador e 2 vagas cobertas. Baixou de R$ 600 mil para R$ 580 mil.'
+      },
+      {
+        id: 'yeti_4016365',
+        isNew: true,
+        groupOrder: 2,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Santa Maria (Santo André)',
+        timeMin: 5,
+        timeLabelFr: '5 min de Boa Vista (2 km)',
+        timeLabelPt: '5 min do Boa Vista (2 km)',
+        area: 91,
+        totalArea: 91,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 569000,
+        condo: 200,
+        iptu: 60,
+        terrace: 'grande',
+        terraceFr: '☀️ Grande terrasse gourmet + ouverte',
+        terracePt: '☀️ Grande terraço gourmet + aberto',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'neuf',
+        topPick: true,
+        img: 'https://www.yetiimoveis.com.br/imagens/imoveis/202510241111535782.jpeg',
+        url: 'https://www.yetiimoveis.com.br/imovel/4016365/cobertura-venda-santo-andre-sp-santa-maria',
+        titleFr: 'Santa Maria (SA) - Cobertura duplex neuve 91 m² (Yeti VECO292)',
+        titlePt: 'Santa Maria (SA) - Cobertura duplex nova 91 m² (Yeti VECO292)',
+        descFr: 'NOUVEAU : chez Yeti Imóveis (même agence que l\'Apto 9), pile au même prix (569k R$) et à 5 min de Boa Vista ! Dernière unité neuve (Construtora Villa), escalier intérieur en granit, grand espace gourmet + terrasse ouverte, ascenseur, 2 places, parquet dans les chambres.',
+        descPt: 'NOVO: na Yeti Imóveis (mesma do Apto 9), mesmo preço (R$ 569 mil) e a 5 min do Boa Vista! Última unidade nova (Construtora Villa), escada interna em granito, amplo espaço gourmet + terraço aberto, elevador, 2 vagas e piso laminado nos quartos.'
+      },
+      {
+        id: 'viva_campestre_595k',
+        isNew: false,
+        groupOrder: 3,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Campestre',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista (2,5 km)',
+        timeLabelPt: '6 min do Boa Vista (2,5 km)',
+        area: 90,
+        totalArea: 134.57,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 595000,
+        condo: 300,
+        iptu: 80,
+        terrace: 'grande',
+        terraceFr: '☀️ Grande terrasse vitrée (~45 m²)',
+        terracePt: '☀️ Grande terraço envidraçado (~45 m²)',
+        isDuplex: true,
+        elevator: false,
+        pool: false,
+        furnished: 'neuf',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/27607/santo-andre-apartamento-cobertura-campestre-23-10-2026_20-31-10-6adbee3e84222.webp',
+        url: 'https://www.vivareal.com.br/imovel/cobertura-2-quartos-campestre-bairros-santo-andre-com-garagem-90m2-venda-RS595000-id-2887852780/',
+        titleFr: 'Campestre (SA) - Cobertura duplex neuve 90 m² hab. / 134,5 m² tot.',
+        titlePt: 'Campestre (SA) - Cobertura duplex nova 90 m² úteis / 134,5 m² tot.',
+        descFr: 'Neuf, carrelage grand format partout, grande terrasse vitrée d\'environ 45 m² (134,57 m² au total moins 90 m² habitables), 2 chambres dont 1 suite, charges très basses (sem condomínio).',
+        descPt: 'Nova, porcelanato grande formato em tudo, amplo terraço envidraçado de ~45 m² (134,57 m² total menos 90 m² úteis), 2 quartos sendo 1 suíte, baixo custo (sem condomínio).'
+      },
+      {
+        id: 'maia_27607',
+        isNew: true,
+        groupOrder: 4,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Campestre',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista (2,5 km)',
+        timeLabelPt: '6 min do Boa Vista (2,5 km)',
+        area: 115.6,
+        totalArea: 115.6,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 575000,
+        condo: 150,
+        iptu: 60,
+        terrace: 'grande',
+        terraceFr: '☀️ Grande terrasse ouverte + ascenseur',
+        terracePt: '☀️ Grande terraço aberto + elevador',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'neuf',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/27607/santo-andre-apartamento-cobertura-campestre-23-10-2026_20-31-10-6adbee3e84222.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Cobertura/Campestre/27607',
+        titleFr: 'Campestre (SA) - Cobertura duplex neuve 115,6 m² avec ascenseur (Réf. 27607)',
+        titlePt: 'Campestre (SA) - Cobertura duplex nova 115,6 m² com elevador (Ref. 27607)',
+        descFr: 'NOUVEAU : 20 000 R$ moins cher que celle de VivaReal à Campestre (575k vs 595k R$) et avec ASCENSEUR visible sur les photos ! 115,6 m², escalier intérieur en granit noir, carrelage marbré, parquet chambres et grande terrasse ouverte.',
+        descPt: 'NOVO: R$ 20 mil mais barata que a do VivaReal no Campestre (R$ 575 mil vs R$ 595 mil) e com ELEVADOR visível nas fotos! 115,6 m², escada interna em granito preto, porcelanato marmorizado, laminado nos quartos e grande terraço aberto.'
+      },
+      {
+        id: 'maia_26315',
+        isNew: true,
+        groupOrder: 5,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Campestre',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista (2,5 km)',
+        timeLabelPt: '6 min do Boa Vista (2,5 km)',
+        area: 96,
+        totalArea: 96,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 590000,
+        condo: 235,
+        iptu: 250,
+        terrace: 'grande',
+        terraceFr: '☀️ Grande terrasse ouverte panoramique',
+        terracePt: '☀️ Grande terraço aberto panorâmico',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'vide',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/26315/santo-andre-apartamento-cobertura-campestre-23-10-2026_11-17-07-6adb6c63266d3.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Cobertura/Campestre/26315',
+        titleFr: 'Campestre (SA) - Cobertura duplex 96 m², ascenseur & 2 places (Réf. 26315)',
+        titlePt: 'Campestre (SA) - Cobertura duplex 96 m², elevador e 2 vagas (Ref. 26315)',
+        descFr: 'NOUVEAU : très belle terrasse ouverte ensoleillée avec vue dégagée sur Campestre, immeuble récent avec ascenseur, 2 chambres (1 suite) et 2 places de parking. Charges très basses (235 R$/mois).',
+        descPt: 'NOVO: ótimo terraço aberto ensolarado com vista livre no Campestre, prédio recente com elevador, 2 quartos (1 suíte) e 2 vagas de garagem. Condomínio muito baixo (R$ 235/mês).'
+      },
+      {
+        id: 'yeti_3725004',
+        isNew: true,
+        groupOrder: 6,
+        city: 'SA',
+        cityFr: 'Santo André',
+        cityPt: 'Santo André',
+        neighborhood: 'Casa Branca',
+        timeMin: 10,
+        timeLabelFr: '10 min de Boa Vista (4 km)',
+        timeLabelPt: '10 min do Boa Vista (4 km)',
+        area: 102,
+        totalArea: 102,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 579000,
+        condo: 200,
+        iptu: 50,
+        terrace: 'grande',
+        terraceFr: '☀️ Très grande terrasse ouverte',
+        terracePt: '☀️ Amplo terraço aberto',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'neuf',
+        topPick: false,
+        img: 'https://www.yetiimoveis.com.br/imagens/imoveis/202505120908496133.jpg',
+        url: 'https://www.yetiimoveis.com.br/imovel/3725004/cobertura-venda-santo-andre-sp-casa-branca-residencial-casa-branca',
+        titleFr: 'Casa Branca (SA) - Cobertura neuve (2025) 102 m² + bureau (Yeti VECO199)',
+        titlePt: 'Casa Branca (SA) - Cobertura nova (2025) 102 m² + escritório (Yeti VECO199)',
+        descFr: 'NOUVEAU : livrée en 2025 (Yeti Imóveis), immense terrasse découverte sur les photos, 102 m², 2 chambres (1 suite) + coin bureau (home office) + 3 SDB/lavabo, ascenseur, charges mini (200 R$/mois).',
+        descPt: 'NOVO: entregue em 2025 (Yeti Imóveis), enorme terraço descoberto nas fotos, 102 m², 2 quartos (1 suíte) + espaço home office + 3 banheiros/lavabo, elevador, taxa baixa (R$ 200/mês).'
+      },
+      {
+        id: 'maia_38035',
+        isNew: false,
+        groupOrder: 7,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Nova Gerty',
+        timeMin: 3,
+        timeLabelFr: '3 min de Boa Vista',
+        timeLabelPt: '3 min do Boa Vista',
+        area: 123.7,
+        totalArea: 123.7,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 615000,
+        condo: 480,
+        iptu: 113,
+        terrace: 'grande',
+        terraceFr: '☀️ La plus grande terrasse ouverte (SCS)',
+        terracePt: '☀️ O maior terraço aberto (SCS)',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'partiel',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/38035/sao-caetano-do-sul-apartamento-cobertura-nova-gerti-19-11-2026_12-23-34-6aff147631cf4.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Cobertura/Nova-Gerti/38035',
+        titleFr: 'Nova Gerty - Cobertura duplex 124 m², ascenseur & 2 places (Réf. 38035)',
+        titlePt: 'Nova Gerty - Cobertura duplex 124 m², elevador e 2 vagas (Ref. 38035)',
+        descFr: 'La plus grande terrasse ouverte du lot à São Caetano avec vue dégagée, ascenseur et 2 places couvertes, mais au-dessus du budget (615 000 R$, à négocier).',
+        descPt: 'O maior terraço aberto do lote em São Caetano com vista livre, elevador e 2 vagas cobertas, porém acima do orçamento (R$ 615 mil, para negociar).'
+      },
+
+      // ================= 2. DUPLEX AVEC PETITE TERRASSE OU VÉRANDA COUVERTE (4 biens : 2 initiaux + 2 nouveaux) =================
+      {
+        id: 'maia_11655',
+        isNew: true,
+        groupOrder: 8,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Santa Maria (Santo André)',
+        timeMin: 5,
+        timeLabelFr: '5 min de Boa Vista (2 km)',
+        timeLabelPt: '5 min do Boa Vista (2 km)',
+        area: 90,
+        totalArea: 90,
+        rooms: 2,
+        suites: 0,
+        parking: 1,
+        price: 530000,
+        condo: 224,
+        iptu: 138,
+        terrace: 'petite',
+        terraceFr: '🌤️ Grande véranda couverte (gazon synth. + BBQ)',
+        terracePt: '🌤️ Amplo espaço coberto (grama sint. + churrasqueira)',
+        isDuplex: true,
+        elevator: false,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/11655/santo-andre-apartamento-cobertura-santa-maria-07-10-2026_12-22-27-6ac663b3e21f0.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Cobertura/Santa-Maria/11655',
+        titleFr: 'Santa Maria (SA) - Cobertura duplex équipée 90 m² (Réf. 11655)',
+        titlePt: 'Santa Maria (SA) - Cobertura duplex planejada 90 m² (Ref. 11655)',
+        descFr: 'NOUVEAU : à 530 000 R$ seulement (35k R$ sous le plafond !), 2 chambres et cuisine déjà équipées en planejados, étage supérieur aménagé en grande véranda couverte et vitrée avec cuisine d\'été et churrasqueira.',
+        descPt: 'NOVO: por apenas R$ 530 mil, 2 quartos e cozinha já com planejados, piso superior fechado em ampla varanda coberta com cozinha gourmet, grama sintética e churrasqueira.'
+      },
+      {
+        id: 'maia_34307',
+        isNew: true,
+        groupOrder: 9,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Santa Maria (Santo André)',
+        timeMin: 5,
+        timeLabelFr: '5 min de Boa Vista (2 km)',
+        timeLabelPt: '5 min do Boa Vista (2 km)',
+        area: 103,
+        totalArea: 103,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 580000,
+        condo: 402,
+        iptu: 104,
+        terrace: 'petite',
+        terraceFr: '🌤️ Petite terrasse couloir + BBQ & douche',
+        terracePt: '🌤️ Terraço compacto + churrasqueira e ducha',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/34307/santo-andre-apartamento-cobertura-santa-maria-10-11-2026_16-29-21-6af370911a1d5.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Cobertura/Santa-Maria/34307',
+        titleFr: 'Santa Maria (SA) - Cobertura duplex 103 m², ascenseur & 2 places (Réf. 34307)',
+        titlePt: 'Santa Maria (SA) - Cobertura duplex 103 m², elevador e 2 vagas (Ref. 34307)',
+        descFr: 'NOUVEAU : 103 m² bien finis, cuisine planejada, ascenseur et 2 places de parking. Sur les photos, la terrasse extérieure est un couloir assez étroit avec barbecue en briques et douche.',
+        descPt: 'NOVO: 103 m² bem acabados, cozinha planejada, elevador e 2 vagas. Nas fotos, a área aberta da cobertura é um corredor compacto com churrasqueira e ducha.'
+      },
+      {
+        id: 'viva_xingu_590k',
+        isNew: false,
+        groupOrder: 10,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Maria (rue Xingu 371)',
+        timeMin: 3,
+        timeLabelFr: '3 min de Boa Vista',
+        timeLabelPt: '3 min do Boa Vista',
+        area: 106,
+        totalArea: 106,
+        rooms: 2,
+        suites: 2,
+        parking: 2,
+        price: 590000,
+        condo: 360,
+        iptu: 110,
+        terrace: 'petite',
+        terraceFr: '🌤️ Petite terrasse BBQ + couloir latéral',
+        terracePt: '🌤️ Pequeno terraço c/ churrasqueira + corredor',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'vide',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/31599/sao-caetano-do-sul-apartamento-cobertura-santa-maria-23-10-2026_12-03-48-6adb7754e41ee.webp',
+        url: 'https://www.vivareal.com.br/imovel/cobertura-2-quartos-santa-maria-bairros-sao-caetano-do-sul-com-garagem-106m2-venda-RS590000-id-2897542692/',
+        titleFr: 'Santa Maria (SCS), rue Xingu - Duplex 106 m², 2 suites',
+        titlePt: 'Santa Maria (SCS), Rua Xingu - Duplex 106 m², 2 suítes',
+        descFr: '2 suites, ascenseur, 4 SDB, vue dégagée, mais petite terrasse avec barbecue et couloir latéral, et immeuble années 2000 vide (cuisine et SDB à équiper).',
+        descPt: '2 suítes, elevador, 4 banheiros, vista livre, porém terraço pequeno com churrasqueira e corredor lateral, prédio anos 2000 vazio (cozinha e banheiros para equipar).'
+      },
+      {
+        id: 'maia_17695',
+        isNew: false,
+        groupOrder: 11,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Barcelona',
+        timeMin: 7,
+        timeLabelFr: '7 min de Boa Vista',
+        timeLabelPt: '7 min do Boa Vista',
+        area: 130,
+        totalArea: 130,
+        rooms: 3,
+        suites: 1,
+        parking: 2,
+        price: 650000,
+        oldPrice: 690000,
+        condo: 600,
+        iptu: 130,
+        terrace: 'petite',
+        terraceFr: '🌤️ Petite terrasse avec barbecue',
+        terracePt: '🌤️ Pequeno terraço com churrasqueira',
+        isDuplex: true,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/17695/sao-caetano-do-sul-apartamento-cobertura-barcelona-13-10-2026_18-54-58-6acea8b2e2506.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Cobertura/Barcelona/17695',
+        titleFr: 'Barcelona (SCS) - Cobertura 130 m², 3 chambres, 2 places (Réf. 17695)',
+        titlePt: 'Barcelona (SCS) - Cobertura 130 m², 3 quartos, 2 vagas (Ref. 17695)',
+        descFr: 'Quartier premium (Barcelona), 130 m², 3 chambres dont 1 suite, cuisine planejada, ascenseur et 2 places couvertes. Petite terrasse avec barbecue, hors budget (650 000 R$, baissé de 690 000 R$).',
+        descPt: 'Bairro nobre (Barcelona), 130 m², 3 quartos sendo 1 suíte, cozinha planejada, elevador e 2 vagas cobertas. Pequeno terraço com churrasqueira, acima do orçamento (R$ 650 mil).'
+      },
+
+      // ================= 3. COBERTURA DE PLAIN-PIED & APPARTEMENTS (14 biens : 12 initiaux + 2 nouveaux au Bairro Jardim / Campestre) =================
+      {
+        id: 'maia_20435',
+        isNew: false,
+        groupOrder: 12,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Boa Vista',
+        timeMin: 1,
+        timeLabelFr: 'Au cœur de Boa Vista (0 min)',
+        timeLabelPt: 'No coração do Boa Vista (0 min)',
+        area: 74.5,
+        totalArea: 74.5,
+        rooms: 2,
+        suites: 0,
+        parking: 1,
+        price: 575000,
+        condo: 550,
+        iptu: 46,
+        terrace: 'petite',
+        terraceFr: '🌤️ Plain-pied avec petit coin barbecue',
+        terracePt: '🌤️ Cobertura linear c/ pequeno espaço churrasqueira',
+        isDuplex: false,
+        elevator: false,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/20435/sao-caetano-do-sul-apartamento-cobertura-boa-vista-15-10-2026_14-12-15-6ad1096feb687.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Cobertura/Boa-Vista/20435',
+        titleFr: 'Boa Vista (SCS) - Cobertura de plain-pied 74,5 m² (Réf. 20435)',
+        titlePt: 'Boa Vista (SCS) - Cobertura linear 74,5 m² (Ref. 20435)',
+        descFr: 'Pas un duplex : cobertura de plain-pied de 74,5 m² directement à Boa Vista, 2 chambres et cuisine avec planejados, balcon et petit coin barbecue.',
+        descPt: 'Não é duplex: cobertura linear de 74,5 m² diretamente no Boa Vista, 2 quartos e cozinha planejados, sacada e pequeno espaço com churrasqueira.'
+      },
+      {
+        id: 'cnm_ceramica_462k',
+        isNew: false,
+        groupOrder: 13,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Cerâmica (rue L. C. Capovilla Filho)',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista',
+        timeLabelPt: '6 min do Boa Vista',
+        area: 65,
+        totalArea: 65,
+        rooms: 2,
+        suites: 0,
+        parking: 1,
+        price: 462500,
+        condo: 740,
+        iptu: 90,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (piscine en copro)',
+        terracePt: '🏢 Apartamento (piscina no condomínio)',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'meuble',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49111/sao-caetano-do-sul-apartamento-apartamento-ceramica-18-11-2026_12-01-28-6afdbdc83b99c.webp',
+        url: 'https://www.chavesnamao.com.br/imovel/apartamento-a-venda-2-quartos-com-garagem-sp-sao-caetano-do-sul-ceramica-65m2-RS462500/id-46468383/',
+        titleFr: 'Cerâmica (SCS) - Appartement 65 m² VENDU MEUBLÉ (N° 1 shortlist)',
+        titlePt: 'Cerâmica (SCS) - Apartamento 65 m² MOBILIADO (Nº 1 shortlist)',
+        descFr: 'Priorité n° 1 en appartement : quartier Cerâmica (près ParkShopping et parc Chico Mendes), vendu tout meublé (machine à laver comprise), piscine, terrain de sport, barbecue. ~100 000 R$ moins cher que l\'Apto 9 (15 000 € de moins à emprunter).',
+        descPt: 'Prioridade nº 1 em apartamento: bairro Cerâmica (próximo ao ParkShopping e Parque Chico Mendes), vendido mobiliado (máquina de lavar inclusa), piscina, quadra, churrasqueira. ~R$ 100 mil mais barato que o Apto 9.'
+      },
+      {
+        id: 'maia_46939',
+        isNew: true,
+        groupOrder: 14,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Bairro Jardim',
+        timeMin: 8,
+        timeLabelFr: '8 min de Boa Vista (3,5 km)',
+        timeLabelPt: '8 min do Boa Vista (3,5 km)',
+        area: 61,
+        totalArea: 61,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 560000,
+        condo: 577,
+        iptu: 30,
+        terrace: 'none',
+        terraceFr: '🏢 Balcon + Piscine & Lazer complet',
+        terracePt: '🏢 Sacada + Piscina e Lazer completo',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'planejados',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/46939/1014783.jpg',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Apartamento/Jardim/46939',
+        titleFr: 'Bairro Jardim (SA) - 61 m², 1 suite, 2 places + piscine (Réf. 46939)',
+        titlePt: 'Bairro Jardim (SA) - 61 m², 1 suíte, 2 vagas + piscina (Ref. 46939)',
+        descFr: 'NOUVEAU : dans le quartier n° 1 le plus chic de Santo André (Rua das Figueiras / Grand Plaza), pile à 560 000 R$ ! 2 chambres (1 suite) et cuisine avec planejados, balcon, 2 places couvertes, piscine, salle de sport, portaria et charges modérées (577 R$).',
+        descPt: 'NOVO: no bairro nº 1 mais nobre de Santo André (Rua das Figueiras / Grand Plaza), cravado em R$ 560 mil! 2 quartos (1 suíte) e cozinha planejados, sacada, 2 vagas cobertas, piscina, academia, portaria e condomínio moderado (R$ 577).'
+      },
+      {
+        id: 'maia_49167',
+        isNew: false,
+        groupOrder: 15,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Barcelona',
+        timeMin: 7,
+        timeLabelFr: '7 min de Boa Vista',
+        timeLabelPt: '7 min do Boa Vista',
+        area: 65.5,
+        totalArea: 65.5,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 550000,
+        condo: 540,
+        iptu: 101,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement avec ascenseur & portaria',
+        terracePt: '🏢 Apartamento com elevador e portaria',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49167/sao-caetano-do-sul-apartamento-apartamento-barcelona-23-11-2026_14-22-19-6b04764beed90.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Barcelona/49167',
+        titleFr: 'Barcelona (SCS) - 65,5 m², 2 ch. dont 1 suite, planejados (Réf. 49167)',
+        titlePt: 'Barcelona (SCS) - 65,5 m², 2 quartos (1 suíte), planejados (Ref. 49167)',
+        descFr: 'Quartier Barcelona sous les 560k R$ : chambres et cuisine équipées en planejados, 1 suite, ascenseur, portaria et charges moitié moins chères (540 R$/mois) que celui de la rue Votorantim.',
+        descPt: 'Bairro Barcelona abaixo de R$ 560 mil: quartos e cozinha com planejados, 1 suíte, elevador, portaria e condomínio metade do valor (R$ 540/mês) do da Rua Votorantim.'
+      },
+      {
+        id: 'maia_48387',
+        isNew: false,
+        groupOrder: 16,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Paula',
+        timeMin: 8,
+        timeLabelFr: '8 min de Boa Vista',
+        timeLabelPt: '8 min do Boa Vista',
+        area: 62,
+        totalArea: 62,
+        rooms: 2,
+        suites: 0,
+        parking: 1,
+        price: 560000,
+        condo: 734,
+        iptu: 94,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (quadra + BBQ en copro)',
+        terracePt: '🏢 Apartamento (quadra + churrasqueira)',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: true,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/48387/sao-caetano-do-sul-apartamento-apartamento-santa-paula-04-09-2026_09-37-44-6a9abb984ce0a.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Santa-Paula/48387',
+        titleFr: 'Santa Paula (SCS) - 62 m², 2 chambres avec planejados (Réf. 48387)',
+        titlePt: 'Santa Paula (SCS) - 62 m², 2 quartos com planejados (Ref. 48387)',
+        descFr: 'Dans le quartier le plus coté de São Caetano (Santa Paula), pile au plafond de 560 000 R$ : chambres et cuisine planejados, 1 place couverte, ascenseur, portaria, terrain de sport et barbecue.',
+        descPt: 'No bairro mais valorizado de São Caetano (Santa Paula), no teto de R$ 560 mil: quartos e cozinha planejados, 1 vaga coberta, elevador, portaria, quadra e churrasqueira.'
+      },
+      {
+        id: 'cnm_santoantonio_550k',
+        isNew: false,
+        groupOrder: 17,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santo Antônio (rue Rui Barbosa 80)',
+        timeMin: 7,
+        timeLabelFr: '7 min de Boa Vista',
+        timeLabelPt: '7 min do Boa Vista',
+        area: 63,
+        totalArea: 63,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 550000,
+        condo: 800,
+        iptu: 95,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (piscine & salle de sport)',
+        terracePt: '🏢 Apartamento (piscina e academia)',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49111/sao-caetano-do-sul-apartamento-apartamento-ceramica-18-11-2026_12-01-28-6afdbdc8b9523.webp',
+        url: 'https://www.chavesnamao.com.br/imovel/apartamento-a-venda-2-quartos-com-garagem-sp-sao-caetano-do-sul-santo-antonio-105m2-RS550000/id-44372513/',
+        titleFr: 'Santo Antônio (SCS), rue Rui Barbosa 80 - 63 m², 1 suite, piscine',
+        titlePt: 'Santo Antônio (SCS), Rua Rui Barbosa 80 - 63 m², 1 suíte, piscina',
+        descFr: 'Placards sur mesure (planejados), piscine, salle de sport, aire de jeux, papiers en ordre selon l\'annonce. Sous le plafond de 560 000 R$.',
+        descPt: 'Móveis planejados, piscina, academia, playground, documentação em ordem segundo o anúncio. Abaixo do teto de R$ 560 mil.'
+      },
+      {
+        id: 'cnm_barcelona_585k',
+        isNew: false,
+        groupOrder: 18,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Barcelona (rue Votorantim)',
+        timeMin: 7,
+        timeLabelFr: '7 min de Boa Vista',
+        timeLabelPt: '7 min do Boa Vista',
+        area: 75,
+        totalArea: 75,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 585000,
+        condo: 1000,
+        iptu: 110,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (piscine & gardien 24h)',
+        terracePt: '🏢 Apartamento (piscina e portaria 24h)',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'partiel',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49167/sao-caetano-do-sul-apartamento-apartamento-barcelona-23-11-2026_14-22-21-6b04764d4f7d2.webp',
+        url: 'https://www.chavesnamao.com.br/imovel/apartamento-a-venda-2-quartos-com-garagem-sp-sao-caetano-do-sul-barcelona-75m2-RS585000/id-48099522/',
+        titleFr: 'Barcelona (SCS), rue Votorantim - 75 m², 1 suite, piscine',
+        titlePt: 'Barcelona (SCS), Rua Votorantim - 75 m², 1 suíte, piscina',
+        descFr: 'Surface confortable (75 m²), gardien 24h/24, piscine et salle de sport, mais charges élevées (1 000 R$/mois).',
+        descPt: 'Boa metragem (75 m²), portaria 24h, piscina e academia, porém condomínio mais alto (R$ 1.000/mês).'
+      },
+      {
+        id: 'maia_49111',
+        isNew: false,
+        groupOrder: 19,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Cerâmica / Santo Antônio',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista',
+        timeLabelPt: '6 min do Boa Vista',
+        area: 67,
+        totalArea: 67,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 590000,
+        condo: 800,
+        iptu: 100,
+        terrace: 'none',
+        terraceFr: '🏢 Balcon + Piscine & Lazer complet',
+        terracePt: '🏢 Varanda + Piscina e Lazer completo',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49111/sao-caetano-do-sul-apartamento-apartamento-ceramica-18-11-2026_12-01-28-6afdbdc83b99c.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Ceramica/49111',
+        titleFr: 'Cerâmica / Santo Antônio (SCS) - 67 m², 1 suite, piscine (Réf. 49111)',
+        titlePt: 'Cerâmica / Santo Antônio (SCS) - 67 m², 1 suíte, piscina (Ref. 49111)',
+        descFr: 'À côté du ParkShopping São Caetano : 2 chambres (1 suite) et cuisine avec planejados, balcon, piscine, salle de sport, brinquedoteca, portaria.',
+        descPt: 'Ao lado do ParkShopping São Caetano: 2 quartos (1 suíte) e cozinha planejados, varanda, piscina, academia, brinquedoteca e portaria.'
+      },
+      {
+        id: 'maia_45919',
+        isNew: true,
+        groupOrder: 20,
+        city: 'SA',
+        cityFr: 'Santo André (limite SCS)',
+        cityPt: 'Santo André (divisa SCS)',
+        neighborhood: 'Campestre',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista (2,5 km)',
+        timeLabelPt: '6 min do Boa Vista (2,5 km)',
+        area: 85,
+        totalArea: 85,
+        rooms: 3,
+        suites: 1,
+        parking: 2,
+        price: 510000,
+        condo: 150,
+        iptu: 60,
+        terrace: 'none',
+        terraceFr: '🏢 Balcon (grand 3 chambres)',
+        terracePt: '🏢 Varanda (amplo 3 quartos)',
+        isDuplex: false,
+        elevator: false,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/45919/996695.jpeg',
+        url: 'https://www.maiaimoveis.com/comprar/Santo-Andre/Apartamento/Apartamento/Campestre/45919',
+        titleFr: 'Campestre (SA) - Grand 85 m², 3 chambres (1 suite), 2 places (Réf. 45919)',
+        titlePt: 'Campestre (SA) - Amplo 85 m², 3 quartos (1 suíte), 2 vagas (Ref. 45919)',
+        descFr: 'NOUVEAU : à 510 000 R$ seulement dans le quartier Campestre (à 6 min de Boa Vista), grand 85 m² avec 3 chambres (1 suite) et cuisine équipées en planejados, 2 places de parking et charges mini (150 R$/mois).',
+        descPt: 'NOVO: por apenas R$ 510 mil no bairro Campestre (a 6 min do Boa Vista), amplo 85 m² com 3 quartos (1 suíte) e cozinha planejados, 2 vagas e condomínio mínimo (R$ 150/mês).'
+      },
+      {
+        id: 'maia_25791',
+        isNew: true,
+        groupOrder: 21,
+        city: 'SBC',
+        cityFr: 'São Bernardo (limite SCS)',
+        cityPt: 'São Bernardo (divisa SCS)',
+        neighborhood: 'Rudge Ramos',
+        timeMin: 6,
+        timeLabelFr: '6 min de Boa Vista (2,5 km)',
+        timeLabelPt: '6 min do Boa Vista (2,5 km)',
+        area: 50,
+        totalArea: 50,
+        rooms: 2,
+        suites: 0,
+        parking: 1,
+        price: 530000,
+        condo: 459,
+        iptu: 75,
+        terrace: 'none',
+        terraceFr: '🏢 Balcon + Piscine & Lazer complet',
+        terracePt: '🏢 Sacada + Piscina e Lazer completo',
+        isDuplex: false,
+        elevator: true,
+        pool: true,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/25791/sao-bernardo-do-campo-apartamento-apartamento-rudge-ramos-22-10-2026_22-09-20-6adab3c0f1ab3.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Bernardo-do-Campo/Apartamento/Apartamento/Rudge-Ramos/25791',
+        titleFr: 'Rudge Ramos (SBC) - 50 m², 2 ch., piscine & charges basses (Réf. 25791)',
+        titlePt: 'Rudge Ramos (SBC) - 50 m², 2 quartos, piscina e condomínio baixo (Ref. 25791)',
+        descFr: 'NOUVEAU : Rudge Ramos touche directement Boa Vista / Nova Gerty (6 min). Copropriété-club complète (piscine, salle de sport, terrain de sport, barbecue, portaria) avec charges très raisonnables (459 R$/mois) et cuisine planejada.',
+        descPt: 'NOVO: Rudge Ramos faz divisa direta com Boa Vista / Nova Gerty (6 min). Condomínio-clube completo (piscina, academia, quadra, churrasqueira, portaria) com condomínio baixo (R$ 459/mês) e cozinha planejada.'
+      },
+      {
+        id: 'maia_49185',
+        isNew: false,
+        groupOrder: 22,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Oswaldo Cruz',
+        timeMin: 4,
+        timeLabelFr: '4 min de Boa Vista',
+        timeLabelPt: '4 min do Boa Vista',
+        area: 65,
+        totalArea: 65,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 522000,
+        condo: 470,
+        iptu: 71,
+        terrace: 'none',
+        terraceFr: '🏢 Balcon + ascenseur',
+        terracePt: '🏢 Sacada + elevador',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/49185/sao-caetano-do-sul-apartamento-apartamento-osvaldo-cruz-23-11-2026_16-36-04-6b0495a4bd5d2.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Osvaldo-Cruz/49185',
+        titleFr: 'Oswaldo Cruz (SCS) - 65 m², 2 ch. dont 1 suite, balcon (Réf. 49185)',
+        titlePt: 'Oswaldo Cruz (SCS) - 65 m², 2 quartos (1 suíte), sacada (Ref. 49185)',
+        descFr: 'Quartier résidentiel calme juste à côté de Boa Vista : 65 m², 1 suite, salon avec balcon, cuisine planejada, ascenseur et charges basses (470 R$/mois).',
+        descPt: 'Bairro residencial tranquilo colado ao Boa Vista: 65 m², 1 suíte, sala com sacada, cozinha planejada, elevador e condomínio baixo (R$ 470/mês).'
+      },
+      {
+        id: 'maia_48530',
+        isNew: false,
+        groupOrder: 23,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Maria (SCS)',
+        timeMin: 3,
+        timeLabelFr: '3 min de Boa Vista',
+        timeLabelPt: '3 min do Boa Vista',
+        area: 65,
+        totalArea: 65,
+        rooms: 2,
+        suites: 2,
+        parking: 1,
+        price: 550000,
+        condo: 550,
+        iptu: 100,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (2 suites + ascenseur)',
+        terracePt: '🏢 Apartamento (2 suítes + elevador)',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/48530/sao-caetano-do-sul-apartamento-apartamento-santa-maria-23-09-2026_13-06-19-6ab3f8fbd2fc6.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Santa-Maria/48530',
+        titleFr: 'Santa Maria (SCS) - 65 m², 2 suites avec planejados (Réf. 48530)',
+        titlePt: 'Santa Maria (SCS) - 65 m², 2 suítes com planejados (Ref. 48530)',
+        descFr: 'Configuration rare avec 2 suites équipées de planejados, ascenseur et 1 place couverte, à 3 min de Boa Vista.',
+        descPt: 'Configuração rara com 2 suítes planejadas, elevador e 1 vaga coberta, a 3 min do Boa Vista.'
+      },
+      {
+        id: 'yeti_3082149',
+        isNew: false,
+        groupOrder: 24,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Maria (SCS)',
+        timeMin: 3,
+        timeLabelFr: '3 min de Boa Vista',
+        timeLabelPt: '3 min do Boa Vista',
+        area: 94,
+        totalArea: 94,
+        rooms: 2,
+        suites: 1,
+        parking: 1,
+        price: 460000,
+        condo: 515,
+        iptu: 70,
+        terrace: 'none',
+        terraceFr: '🏢 Grand appartement 94 m²',
+        terracePt: '🏢 Amplo apartamento 94 m²',
+        isDuplex: false,
+        elevator: false,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://www.yetiimoveis.com.br/imagens/imoveis/2023120812343387113.jpg',
+        url: 'https://www.yetiimoveis.com.br/imovel/3082149/apartamento-venda-sao-caetano-do-sul-sp-santa-maria',
+        titleFr: 'Santa Maria (SCS) - Grand 94 m², 2 ch. dont 1 suite (Yeti 3082149)',
+        titlePt: 'Santa Maria (SCS) - Amplo 94 m², 2 quartos (1 suíte) (Yeti 3082149)',
+        descFr: 'Le moins cher de toute la sélection (460 000 R$) pour 94 m² à Santa Maria (São Caetano), avec 1 suite et meubles planejados, chez Yeti Imóveis.',
+        descPt: 'O mais barato de toda a seleção (R$ 460 mil) para 94 m² no Santa Maria (São Caetano), com 1 suíte e móveis planejados, na Yeti Imóveis.'
+      },
+      {
+        id: 'maia_48768',
+        isNew: false,
+        groupOrder: 25,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Paula',
+        timeMin: 8,
+        timeLabelFr: '8 min de Boa Vista',
+        timeLabelPt: '8 min do Boa Vista',
+        area: 69,
+        totalArea: 69,
+        rooms: 2,
+        suites: 1,
+        parking: 2,
+        price: 620000,
+        condo: 726,
+        iptu: 115,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement (ascenseur + 2 places)',
+        terracePt: '🏢 Apartamento (elevador + 2 vagas)',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'planejados',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/48768/sao-caetano-do-sul-apartamento-apartamento-santa-paula-14-10-2026_14-49-05-6acfc091022b6.webp',
+        url: 'https://www.maiaimoveis.com/comprar/Sao-Caetano-do-Sul/Apartamento/Apartamento/Santa-Paula/48768',
+        titleFr: 'Santa Paula (SCS) - 69 m², 2 ch. dont 1 suite, 2 places (Réf. 48768)',
+        titlePt: 'Santa Paula (SCS) - 69 m², 2 quartos (1 suíte), 2 vagas (Ref. 48768)',
+        descFr: 'L\'un des rares 2 chambres à Santa Paula avec 1 suite ET 2 places de parking + cuisine planejada. Hors budget à 620 000 R$ sauf négociation.',
+        descPt: 'Um dos raros 2 quartos em Santa Paula com 1 suíte E 2 vagas de garagem + cozinha planejada. Acima do orçamento (R$ 620 mil) salvo negociação.'
+      },
+      {
+        id: 'cnm_santapaula_585k',
+        isNew: false,
+        groupOrder: 26,
+        city: 'SCS',
+        cityFr: 'São Caetano do Sul',
+        cityPt: 'São Caetano do Sul',
+        neighborhood: 'Santa Paula (rue José Paolone)',
+        timeMin: 8,
+        timeLabelFr: '8 min de Boa Vista',
+        timeLabelPt: '8 min do Boa Vista',
+        area: 82,
+        totalArea: 82,
+        rooms: 3,
+        suites: 1,
+        parking: 1,
+        price: 585000,
+        condo: 780,
+        iptu: 120,
+        terrace: 'none',
+        terraceFr: '🏢 Appartement 3 chambres (à vérifier)',
+        terracePt: '🏢 Apartamento 3 quartos (verificar disp.)',
+        isDuplex: false,
+        elevator: true,
+        pool: false,
+        furnished: 'partiel',
+        topPick: false,
+        img: 'https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1585/foto_/2026/48768/sao-caetano-do-sul-apartamento-apartamento-santa-paula-14-10-2026_14-49-05-6acfc0915a279.webp',
+        url: 'https://www.chavesnamao.com.br/imovel/apartamento-a-venda-3-quartos-com-garagem-sp-sao-caetano-do-sul-santa-paula-82m2-RS585000/id-32580978/',
+        titleFr: 'Santa Paula (SCS), rue José Paolone - 82 m², 3 chambres (non MAJ 06/2026)',
+        titlePt: 'Santa Paula (SCS), Rua José Paolone - 82 m², 3 quartos (s/ att 06/2026)',
+        descFr: '3 chambres de 82 m² à Santa Paula pour 585 000 R$, mais annonce non mise à jour depuis le 02/06/2026 (disponibilité à vérifier avant de se déplacer).',
+        descPt: '3 quartos de 82 m² em Santa Paula por R$ 585 mil, mas anúncio sem atualização desde 02/06/2026 (confirmar disponibilidade antes de ir).'
+      }
+    ];
+
+    function fmtBRL(n) {
+      return n.toLocaleString('fr-FR') + ' R$';
+    }
+
+    function toggleFav(id) {
+      if (favs.includes(id)) {
+        favs = favs.filter(x => x !== id);
+      } else {
+        favs.push(id);
+      }
+      localStorage.setItem('scs_favs_2026', JSON.stringify(favs));
+      render();
+    }
+
+    function setFilter(group, val) {
+      filters[group] = val;
+      document.querySelectorAll(`#filter-${group} button`).forEach(btn => {
+        btn.classList.toggle('chip-active', btn.dataset.val === val);
+      });
+      render();
+    }
+
+    function resetFilters() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('sort-select').value = 'terrace_rank';
+      ['terrace', 'duplex', 'city', 'extra'].forEach(g => setFilter(g, 'all'));
+    }
+
+    function quickSort(val) {
+      document.getElementById('sort-select').value = val;
+      render();
+    }
+
+    function setView(v) {
+      currentView = v;
+      document.getElementById('btn-view-cards').classList.toggle('chip-active', v === 'cards');
+      document.getElementById('btn-view-table').classList.toggle('chip-active', v === 'table');
+      document.getElementById('cards-container').classList.toggle('hidden', v !== 'cards');
+      document.getElementById('table-container').classList.toggle('hidden', v !== 'table');
+      render();
+    }
+
+    function setLang(l) {
+      currentLang = l;
+      document.getElementById('btn-lang-fr').classList.toggle('chip-active', l === 'fr');
+      document.getElementById('btn-lang-pt').classList.toggle('chip-active', l === 'pt');
+      document.getElementById('ui-title').textContent = l === 'fr'
+        ? 'Comparateur Appartements & Coberturas (≤ 15 min de Boa Vista, SCS)'
+        : 'Comparador de Apartamentos & Coberturas (≤ 15 min do Boa Vista, SCS)';
+      document.getElementById('ui-subtitle').textContent = l === 'fr'
+        ? '25 biens vérifiés sur photos : tes 17 biens + 8 nouvelles pépites à Santo André / Rudge Ramos à 5-10 min de Boa Vista (09560-000)'
+        : '25 imóveis verificados por foto: seus 17 imóveis + 8 novas oportunidades em Santo André / Rudge Ramos a 5-10 min do Boa Vista (09560-000)';
+      document.getElementById('ui-wa-label').textContent = l === 'fr' ? 'Copier sélection WhatsApp' : 'Copiar seleção WhatsApp';
+      render();
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', currentTheme);
+      document.getElementById('btn-theme').textContent = currentTheme === 'light' ? '🌙 Sombre' : '☀️ Clair';
+    }
+
+    function getFilteredList() {
+      const q = (document.getElementById('search-input').value || '').toLowerCase().trim();
+      const sortBy = document.getElementById('sort-select').value;
+
+      let list = PROPERTIES.filter(p => {
+        if (filters.terrace === 'grande' && p.terrace !== 'grande') return false;
+        if (filters.terrace === 'any_terrace' && p.terrace === 'none') return false;
+        if (filters.terrace === 'none' && p.terrace !== 'none') return false;
+
+        if (filters.duplex === 'duplex' && !p.isDuplex) return false;
+        if (filters.duplex === 'flat' && p.isDuplex) return false;
+
+        if (filters.city !== 'all' && p.city !== filters.city) return false;
+
+        if (filters.extra === 'new' && !p.isNew) return false;
+        if (filters.extra === 'initial' && p.isNew) return false;
+        if (filters.extra === 'budget' && p.price > 580000) return false;
+        if (filters.extra === 'fav' && !favs.includes(p.id)) return false;
+
+        if (q) {
+          const hay = `${p.titleFr} ${p.titlePt} ${p.neighborhood} ${p.cityFr} ${p.descFr} ${p.descPt} ${p.price}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      list.sort((a, b) => {
+        if (sortBy === 'price_asc') return a.price - b.price;
+        if (sortBy === 'price_desc') return b.price - a.price;
+        if (sortBy === 'area_desc') return b.area - a.area;
+        if (sortBy === 'area_asc') return a.area - b.area;
+        if (sortBy === 'condo_asc') return a.condo - b.condo;
+        if (sortBy === 'time_asc') return a.timeMin - b.timeMin || a.price - b.price;
+        return a.groupOrder - b.groupOrder;
+      });
+
+      return list;
+    }
+
+    function renderCard(p) {
+      const isFav = favs.includes(p.id);
+      const title = currentLang === 'fr' ? p.titleFr : p.titlePt;
+      const desc = currentLang === 'fr' ? p.descFr : p.descPt;
+      const cityLbl = currentLang === 'fr' ? p.cityFr : p.cityPt;
+      const timeLbl = currentLang === 'fr' ? p.timeLabelFr : p.timeLabelPt;
+      const terrLbl = currentLang === 'fr' ? p.terraceFr : p.terracePt;
+
+      const budgetBadge = p.price <= 560000
+        ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">✅ ≤ 560k R$</span>`
+        : p.price <= 595000
+          ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200">⚠️ 565k - 595k R$</span>`
+          : `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-200">🔴 > 600k R$</span>`;
+
+      const newBadge = p.isNew
+        ? `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-fuchsia-600 text-white shadow">✨ ${currentLang === 'fr' ? 'Nouveau (< 10 min Boa Vista)' : 'Novo (< 10 min Boa Vista)'}</span>`
+        : `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800/80 text-white">📋 ${currentLang === 'fr' ? 'Liste initiale' : 'Lista inicial'}</span>`;
+
+      const duplexBadge = p.isDuplex
+        ? `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">🪜 Duplex</span>`
+        : `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200">➡️ ${currentLang === 'fr' ? 'Plain-pied' : 'Linear / Padrão'}</span>`;
+
+      return `
+        <article class="card rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="photo-wrap">
+              <img src="${p.img}" alt="${title}" loading="lazy" onerror="this.style.display='none'" />
+              <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+                ${newBadge}
+                ${p.topPick ? `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-slate-950 shadow">⭐ Top</span>` : ''}
+              </div>
+              <button onclick="toggleFav('${p.id}')" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow hover:scale-110 transition" title="Favori">
+                ${isFav ? '❤️' : '🤍'}
+              </button>
+              <div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between gap-1">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-900/85 text-white backdrop-blur-sm">
+                  ${terrLbl}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <h3 class="font-bold text-sm md:text-base leading-snug">${title}</h3>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-1.5 mb-3 text-xs">
+                <span class="px-2 py-0.5 rounded font-semibold bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200">📍 ${cityLbl}</span>
+                <span class="px-2 py-0.5 rounded muted-box font-medium">🚗 ${timeLbl}</span>
+                ${duplexBadge}
+                ${budgetBadge}
+              </div>
+
+              <!-- KPIs -->
+              <div class="grid grid-cols-3 gap-2 p-2.5 rounded-lg muted-box mb-3 text-center">
+                <div>
+                  <div class="text-[11px]" style="color: var(--text-sub);">${currentLang === 'fr' ? 'Prix' : 'Preço'}</div>
+                  <div class="font-extrabold text-sm md:text-base text-sky-600 dark:text-sky-400">${fmtBRL(p.price)}</div>
+                  ${p.oldPrice ? `<div class="text-[10px] line-through opacity-70">${fmtBRL(p.oldPrice)}</div>` : ''}
+                </div>
+                <div class="border-x" style="border-color: var(--border-col);">
+                  <div class="text-[11px]" style="color: var(--text-sub);">${currentLang === 'fr' ? 'Surface' : 'Área'}</div>
+                  <div class="font-extrabold text-sm md:text-base">${p.area} m²</div>
+                  <div class="text-[10px]" style="color: var(--text-sub);">${p.rooms} ch. (${p.suites} suíte)</div>
+                </div>
+                <div>
+                  <div class="text-[11px]" style="color: var(--text-sub);">${currentLang === 'fr' ? 'Charges/mois' : 'Condomínio'}</div>
+                  <div class="font-bold text-sm md:text-base">${p.condo} R$</div>
+                  <div class="text-[10px]" style="color: var(--text-sub);">${p.parking} ${currentLang === 'fr' ? 'place(s)' : 'vaga(s)'}</div>
+                </div>
+              </div>
+
+              <!-- Atouts tags -->
+              <div class="flex flex-wrap gap-1.5 mb-2.5 text-[11px]">
+                ${p.elevator ? `<span class="px-2 py-0.5 rounded border" style="border-color: var(--border-col);">🛗 ${currentLang === 'fr' ? 'Ascenseur' : 'Elevador'}</span>` : ''}
+                ${p.pool ? `<span class="px-2 py-0.5 rounded border" style="border-color: var(--border-col);">🏊 ${currentLang === 'fr' ? 'Piscine copro' : 'Piscina'}</span>` : ''}
+                ${p.furnished === 'meuble' ? `<span class="px-2 py-0.5 rounded border font-semibold text-emerald-600 dark:text-emerald-400" style="border-color: var(--border-col);">🛋️ ${currentLang === 'fr' ? 'Vendu meublé' : 'Mobiliado'}</span>` : ''}
+                ${p.furnished === 'planejados' ? `<span class="px-2 py-0.5 rounded border" style="border-color: var(--border-col);">🗄️ Planejados</span>` : ''}
+                ${p.furnished === 'neuf' ? `<span class="px-2 py-0.5 rounded border font-semibold text-sky-600 dark:text-sky-400" style="border-color: var(--border-col);">🆕 ${currentLang === 'fr' ? 'Neuf / Récent' : 'Novo'}</span>` : ''}
+              </div>
+
+              <p class="text-xs leading-relaxed" style="color: var(--text-sub);">${desc}</p>
+            </div>
+          </div>
+
+          <div class="px-4 pb-4 pt-2 flex items-center justify-between gap-2">
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="w-full text-center py-2 px-3 rounded-lg text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white transition">
+              ${currentLang === 'fr' ? 'Voir l\'annonce & photos ↗' : 'Ver anúncio e fotos ↗'}
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    function render() {
+      const list = getFilteredList();
+      document.getElementById('count-badge').textContent = `${list.length} ${currentLang === 'fr' ? 'biens affichés' : 'imóveis'}`;
+
+      const sortBy = document.getElementById('sort-select').value;
+      const cardsEl = document.getElementById('cards-container');
+
+      if (sortBy === 'terrace_rank' && filters.terrace === 'all') {
+        const g1 = list.filter(p => p.terrace === 'grande');
+        const g2 = list.filter(p => p.terrace === 'petite' && p.isDuplex);
+        const g3 = list.filter(p => p.terrace === 'none' || (!p.isDuplex && p.terrace === 'petite'));
+
+        const sections = [
+          {
+            title: currentLang === 'fr' ? '☀️ 1. Grandes terrasses (Duplex avec vrai espace extérieur)' : '☀️ 1. Grandes terraços (Duplex com amplo espaço externo)',
+            sub: currentLang === 'fr' ? 'Classés d\'après les photos des terrasses (tes 3 biens + 4 nouvelles coberturas avec ascenseur à Santo André à 5-10 min de Boa Vista)' : 'Classificados pelas fotos dos terraços (seus 3 imóveis + 4 novas coberturas com elevador em Santo André a 5-10 min do Boa Vista)',
+            items: g1
+          },
+          {
+            title: currentLang === 'fr' ? '🌤️ 2. Duplex avec petite terrasse ou véranda couverte' : '🌤️ 2. Duplex com pequeno terraço ou cobertura fechada',
+            sub: currentLang === 'fr' ? 'Terrasse plus étroite en couloir ou étage supérieur fermé en véranda avec barbecue' : 'Terraço mais compacto em corredor ou piso superior fechado em varanda gourmet',
+            items: g2
+          },
+          {
+            title: currentLang === 'fr' ? '🏢 3. Appartements classiques & cobertura de plain-pied' : '🏢 3. Apartamentos padrão e cobertura linear (um só andar)',
+            sub: currentLang === 'fr' ? 'Dans les meilleurs quartiers (Cerâmica, Santa Paula, Barcelona, Bairro Jardim, Campestre, Rudge Ramos), souvent avec piscine en copropriété et planejados' : 'Nos melhores bairros (Cerâmica, Santa Paula, Barcelona, Bairro Jardim, Campestre, Rudge Ramos), muitos com piscina e planejados',
+            items: g3
+          }
+        ];
+
+        cardsEl.innerHTML = sections.filter(s => s.items.length > 0).map(s => `
+          <div>
+            <div class="mb-3 pb-2 border-b" style="border-color: var(--border-col);">
+              <h2 class="text-base md:text-lg font-extrabold">${s.title} <span class="text-xs font-normal opacity-75">(${s.items.length})</span></h2>
+              <p class="text-xs" style="color: var(--text-sub);">${s.sub}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${s.items.map(renderCard).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        cardsEl.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${list.map(renderCard).join('')}
+          </div>
+        `;
+      }
+
+      // Table render
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = list.map(p => {
+        const isFav = favs.includes(p.id);
+        const title = currentLang === 'fr' ? p.titleFr : p.titlePt;
+        const terrLbl = currentLang === 'fr' ? p.terraceFr : p.terracePt;
+        const desc = currentLang === 'fr' ? p.descFr : p.descPt;
+        return `
+          <tr class="border-b hover:bg-sky-500/5 transition" style="border-color: var(--border-col);">
+            <td class="p-3 text-center">
+              <button onclick="toggleFav('${p.id}')">${isFav ? '❤️' : '🤍'}</button>
+            </td>
+            <td class="p-3 font-semibold">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                ${p.isNew ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-fuchsia-600 text-white">✨ Nouveau</span>` : ''}
+                <a href="${p.url}" target="_blank" class="text-sky-600 dark:text-sky-400 hover:underline">${title}</a>
+              </div>
+            </td>
+            <td class="p-3 whitespace-nowrap">
+              <div class="font-medium">${p.city} - ${p.neighborhood}</div>
+              <div class="text-[11px]" style="color: var(--text-sub);">🚗 ${currentLang === 'fr' ? p.timeLabelFr : p.timeLabelPt}</div>
+            </td>
+            <td class="p-3 whitespace-nowrap">${terrLbl}</td>
+            <td class="p-3 whitespace-nowrap">${p.isDuplex ? '🪜 Duplex' : '➡️ Plain-pied'}</td>
+            <td class="p-3 text-right font-bold whitespace-nowrap">${p.area} m² <span class="text-[11px] font-normal">(${p.rooms} ch.)</span></td>
+            <td class="p-3 text-right font-extrabold text-sky-600 dark:text-sky-400 whitespace-nowrap">${fmtBRL(p.price)}</td>
+            <td class="p-3 text-right whitespace-nowrap">${p.condo} R$</td>
+            <td class="p-3 text-xs max-w-md" style="color: var(--text-sub);">
+              ${desc}
+              <a href="${p.url}" target="_blank" class="ml-1 font-bold text-sky-600 dark:text-sky-400 hover:underline">[Lien ↗]</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function copyWhatsApp() {
+      const list = favs.length > 0 ? PROPERTIES.filter(p => favs.includes(p.id)) : getFilteredList();
+      const lines = [];
+      if (currentLang === 'fr') {
+        lines.push(`🏡 Sélection (${list.length} biens autour de Boa Vista SCS) :`);
+        list.forEach((p, idx) => {
+          lines.push(`\n${idx + 1}) ${p.titleFr} - ${fmtBRL(p.price)} (charges ${p.condo} R$/mois)`);
+          lines.push(`📍 ${p.cityFr} (${p.timeLabelFr}) | ${p.area} m² | ${p.terraceFr}`);
+          lines.push(`+ ${p.descFr}`);
+          lines.push(p.url);
+        });
+      } else {
+        lines.push(`🏡 Seleção (${list.length} imóveis próximos ao Boa Vista SCS):`);
+        list.forEach((p, idx) => {
+          lines.push(`\n${idx + 1}) ${p.titlePt} - R$ ${p.price.toLocaleString('pt-BR')} (cond. R$ ${p.condo}/mês)`);
+          lines.push(`📍 ${p.cityPt} (${p.timeLabelPt}) | ${p.area} m² | ${p.terracePt}`);
+          lines.push(`+ ${p.descPt}`);
+          lines.push(p.url);
+        });
+      }
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const btn = document.getElementById('ui-wa-label');
+        const old = btn.textContent;
+        btn.textContent = currentLang === 'fr' ? '✅ Copié dans le presse-papiers !' : '✅ Copiado!';
+        setTimeout(() => { btn.textContent = old; }, 2200);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
