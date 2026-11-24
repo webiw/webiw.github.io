@@ -194,9 +194,26 @@
     });
   }
 
+  function wireYoutubeFacades() {
+    document.querySelectorAll("[data-yt-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.ytId;
+        const title = btn.dataset.ytTitle || "Vidéo YouTube";
+        if (!id) return;
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
+        iframe.title = title;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        btn.replaceWith(iframe);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     wireMobileNav();
     wireLightbox();
     wireContactForm();
+    wireYoutubeFacades();
   });
 })();
