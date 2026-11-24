@@ -115,120 +115,111 @@
 </head>
 <body data-theme="light" class="min-h-screen pb-14">
 
-  <!-- HEADER COMPACT AVEC NAVIGATION ÉVIDENTE ENTRE LES 2 SITES -->
+  <!-- HEADER COMPACT -->
   <header class="sticky top-0 z-30 border-b" style="background-color: var(--bg-card); border-color: var(--border-col);">
     <div class="max-w-7xl mx-auto px-3 py-2 flex flex-wrap items-center justify-between gap-2">
-      <!-- Navigation evidente entre les 2 pages du projet -->
       <div class="flex items-center gap-2 flex-wrap">
-        <div class="flex rounded-md border overflow-hidden text-xs font-bold" style="border-color: var(--border-col);">
-          <span id="nav-current" class="px-2.5 py-1.5 bg-slate-900 text-white dark:bg-sky-600">
-            1. Comparateur 26 biens (SCS / SA)
-          </span>
-          <a id="link-apto9" href="https://webiw.github.io/santo-andre-paraiso-apto9/" class="px-2.5 py-1.5 hover:bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center gap-1">
-            <span>2. Visite virtuelle Apto 9 (réf. vendue)</span> <span>↗</span>
-          </a>
-        </div>
-
-        <button onclick="toggleCriteria()" id="btn-criteria" class="px-2.5 py-1 rounded-md text-xs font-medium border hover:opacity-80" style="border-color: var(--border-col); color: var(--text-sub);">
-          Critères & budget ▾
+        <h1 id="ui-title" class="text-sm md:text-base font-bold">Imóveis São Caetano e Santo André (26)</h1>
+        <button onclick="toggleCriteria()" id="btn-criteria" class="px-2 py-1 rounded text-xs font-medium border hover:opacity-80" style="border-color: var(--border-col); color: var(--text-sub);">
+          Critérios e orçamento ▾
         </button>
       </div>
 
-      <!-- Actions : WhatsApp + Mode d'affichage (Cartes / Tableau / Carte) + Langue + Thème -->
+      <!-- Actions : Mode d'affichage bien visible (Fotos / Tabela / Mapa) + WhatsApp + Langue + Thème -->
       <div class="flex items-center gap-1.5 flex-wrap">
-        <button onclick="copyWhatsApp()" id="btn-wa" class="px-3 py-1.5 rounded-md text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
-          Copier la liste WhatsApp
-        </button>
-        <button onclick="clearSelection()" id="btn-clear-sel" class="hidden px-2 py-1.5 rounded-md text-xs border hover:opacity-80" style="border-color: var(--border-col);">
-          Décocher
-        </button>
-
-        <!-- Switch Cartes / Tableau / Carte interactive -->
-        <div class="flex rounded-md border overflow-hidden text-xs font-bold" style="border-color: var(--border-col);">
-          <button id="btn-view-cards" onclick="setView('cards')" class="px-2.5 py-1.5 chip-active">Photos</button>
-          <button id="btn-view-table" onclick="setView('table')" class="px-2.5 py-1.5 border-l" style="border-color: var(--border-col);">Tableau</button>
-          <button id="btn-view-map" onclick="setView('map')" class="px-2.5 py-1.5 border-l" style="border-color: var(--border-col);">Carte (26)</button>
+        <!-- Switch Fotos / Tabela / Mapa bien mis en évidence -->
+        <div class="flex rounded-md border-2 border-sky-600 overflow-hidden text-xs font-bold">
+          <button id="btn-view-cards" onclick="setView('cards')" class="px-3 py-1 chip-active">Fotos (Cards)</button>
+          <button id="btn-view-table" onclick="setView('table')" class="px-3 py-1 border-l" style="border-color: var(--border-col);">Tabela</button>
+          <button id="btn-view-map" onclick="setView('map')" class="px-3 py-1 border-l" style="border-color: var(--border-col);">Mapa (26)</button>
         </div>
+
+        <button onclick="copyWhatsApp()" id="btn-wa" class="px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+          Copiar lista WhatsApp
+        </button>
+        <button onclick="clearSelection()" id="btn-clear-sel" class="hidden px-2 py-1 rounded-md text-xs border hover:opacity-80" style="border-color: var(--border-col);">
+          Limpar
+        </button>
 
         <!-- Langue & Thème -->
         <div class="flex rounded-md border overflow-hidden text-xs font-bold" style="border-color: var(--border-col);">
-          <button id="btn-lang-fr" onclick="setLang('fr')" class="px-2 py-1.5 chip-active">FR</button>
-          <button id="btn-lang-pt" onclick="setLang('pt')" class="px-2 py-1.5">PT</button>
+          <button id="btn-lang-pt" onclick="setLang('pt')" class="px-2 py-1 chip-active">PT</button>
+          <button id="btn-lang-fr" onclick="setLang('fr')" class="px-2 py-1">FR</button>
         </div>
-        <button onclick="toggleTheme()" id="btn-theme" class="px-2 py-1.5 rounded-md border text-xs font-semibold" style="border-color: var(--border-col);">
-          Sombre
+        <button onclick="toggleTheme()" id="btn-theme" class="px-2 py-1 rounded-md border text-xs font-semibold" style="border-color: var(--border-col);">
+          Escuro
         </button>
       </div>
     </div>
 
     <!-- PANNEAU CRITÈRES CACHÉ PAR DÉFAUT -->
-    <div id="criteria-panel" class="hidden border-t px-3 py-2.5 text-xs" style="background-color: var(--bg-muted); border-color: var(--border-col);">
+    <div id="criteria-panel" class="hidden border-t px-3 py-2 text-xs" style="background-color: var(--bg-muted); border-color: var(--border-col);">
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
         <div>
-          <strong id="box1-title" class="block mb-0.5">Objectif & Budget</strong>
-          <span id="box1-text" style="color: var(--text-sub);">Plafond 560 000 R$ hors frais (~585 000 R$ frais inclus), ou 580-595k R$ si déjà meublé / équipé en planejados (économie sur les 35 000 R$ d'aménagement).</span>
+          <strong id="box1-title" class="block mb-0.5">Objetivo e Orçamento</strong>
+          <span id="box1-text" style="color: var(--text-sub);">Teto de R$ 560.000 sem taxas (~R$ 585.000 com taxas), ou R$ 580-595 mil se já mobiliado / com planejados (economia nos R$ 35 mil previstos).</span>
         </div>
         <div>
-          <strong id="box2-title" class="block mb-0.5">Taille des terrasses (vérifiée sur photos)</strong>
-          <span id="box2-text" style="color: var(--text-sub);">Seul Campestre indique la surface (~45 m²). Tous les biens sont classés d'après photos : Grande terrasse, Petite terrasse / Véranda, ou Sans terrasse.</span>
+          <strong id="box2-title" class="block mb-0.5">Tamanho dos terraços (verificado por foto)</strong>
+          <span id="box2-text" style="color: var(--text-sub);">Só o Campestre informa a área (~45 m²). Todos foram classificados pelas fotos: Grande terraço, Pequeno / Coberto, ou Sem terraço.</span>
         </div>
         <div>
-          <strong id="box3-title" class="block mb-0.5">Zone : ≤ 15 min de Boa Vista (09560-000)</strong>
-          <span id="box3-text" style="color: var(--text-sub);">Inclut São Caetano + les meilleurs quartiers frontaliers à 5-10 min (Santa Maria SA, Campestre, Bairro Jardim et Rudge Ramos).</span>
+          <strong id="box3-title" class="block mb-0.5">Região: ≤ 15 min do Boa Vista (09560-000)</strong>
+          <span id="box3-text" style="color: var(--text-sub);">Inclui São Caetano + melhores bairros vizinhos a 5-10 min (Santa Maria SA, Campestre, Bairro Jardim e Rudge Ramos).</span>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-3 pt-3">
+  <main class="max-w-7xl mx-auto px-3 pt-2">
 
-    <!-- BARRE DE FILTRES COMPACTE -->
-    <section class="card rounded-lg p-2.5 mb-3 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
-      <div class="flex flex-wrap items-center gap-1.5">
+    <!-- BARRE DE FILTRES SUR UNE SEULE LIGNE -->
+    <section class="card rounded-lg px-2.5 py-1.5 mb-2.5 shadow-sm flex flex-wrap lg:flex-nowrap items-center justify-between gap-1.5 text-[11px] overflow-x-auto">
+      <div class="flex items-center gap-1.5 whitespace-nowrap">
         <!-- Terrasse -->
         <div class="flex rounded border overflow-hidden" style="border-color: var(--border-col);" id="filter-terrace">
-          <button data-val="all" onclick="setFilter('terrace','all')" class="px-2 py-1 chip-active">Terrasse : Toutes</button>
+          <button data-val="all" onclick="setFilter('terrace','all')" class="px-2 py-1 chip-active">Terraço: Todos</button>
           <button data-val="grande" onclick="setFilter('terrace','grande')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Grande</button>
-          <button data-val="any_terrace" onclick="setFilter('terrace','any_terrace')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Grande + Petite</button>
-          <button data-val="none" onclick="setFilter('terrace','none')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Sans</button>
+          <button data-val="any_terrace" onclick="setFilter('terrace','any_terrace')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">C/ terraço</button>
+          <button data-val="none" onclick="setFilter('terrace','none')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Sem</button>
         </div>
 
         <!-- Duplex -->
         <div class="flex rounded border overflow-hidden" style="border-color: var(--border-col);" id="filter-duplex">
-          <button data-val="all" onclick="setFilter('duplex','all')" class="px-2 py-1 chip-active">Tous types</button>
+          <button data-val="all" onclick="setFilter('duplex','all')" class="px-2 py-1 chip-active">Tipo: Todos</button>
           <button data-val="duplex" onclick="setFilter('duplex','duplex')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Duplex</button>
-          <button data-val="flat" onclick="setFilter('duplex','flat')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Plain-pied</button>
+          <button data-val="flat" onclick="setFilter('duplex','flat')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Linear</button>
         </div>
 
         <!-- Ville -->
         <div class="flex rounded border overflow-hidden" style="border-color: var(--border-col);" id="filter-city">
-          <button data-val="all" onclick="setFilter('city','all')" class="px-2 py-1 chip-active">Toutes villes</button>
-          <button data-val="SCS" onclick="setFilter('city','SCS')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">São Caetano (17)</button>
-          <button data-val="SA" onclick="setFilter('city','SA')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Santo André (8)</button>
-          <button data-val="SBC" onclick="setFilter('city','SBC')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">São Bernardo (1)</button>
+          <button data-val="all" onclick="setFilter('city','all')" class="px-2 py-1 chip-active">Cidade: Todas</button>
+          <button data-val="SCS" onclick="setFilter('city','SCS')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">SCS (17)</button>
+          <button data-val="SA" onclick="setFilter('city','SA')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Sto André (8)</button>
+          <button data-val="SBC" onclick="setFilter('city','SBC')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">SBC (1)</button>
         </div>
 
         <!-- Liste / Budget -->
         <div class="flex rounded border overflow-hidden" style="border-color: var(--border-col);" id="filter-extra">
-          <button data-val="all" onclick="setFilter('extra','all')" class="px-2 py-1 chip-active">Tous (26)</button>
-          <button data-val="new" onclick="setFilter('extra','new')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Nouveaux (9)</button>
-          <button data-val="initial" onclick="setFilter('extra','initial')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Initiaux (17)</button>
-          <button data-val="budget" onclick="setFilter('extra','budget')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">≤ 580k R$</button>
-          <button data-val="sel" onclick="setFilter('extra','sel')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Cochés</button>
+          <button data-val="all" onclick="setFilter('extra','all')" class="px-2 py-1 chip-active">Todos (26)</button>
+          <button data-val="new" onclick="setFilter('extra','new')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Novos (9)</button>
+          <button data-val="initial" onclick="setFilter('extra','initial')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Iniciais (17)</button>
+          <button data-val="budget" onclick="setFilter('extra','budget')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">≤580k</button>
+          <button data-val="sel" onclick="setFilter('extra','sel')" class="px-2 py-1 border-l" style="border-color: var(--border-col);">Selecionados</button>
         </div>
       </div>
 
-      <!-- Recherche + Tri -->
-      <div class="flex items-center gap-1.5 flex-wrap">
-        <input id="search-input" type="text" oninput="render()" placeholder="Quartier, réf..." class="px-2 py-1 rounded border text-xs w-32 bg-transparent" style="border-color: var(--border-col);" />
-        <select id="sort-select" onchange="render()" class="px-2 py-1 rounded border text-xs font-semibold" style="border-color: var(--border-col); background-color: var(--bg-card);">
-          <option value="terrace_rank">Tri : Terrasse & intérêt</option>
-          <option value="price_asc">Tri : Prix croissant</option>
-          <option value="price_desc">Tri : Prix décroissant</option>
-          <option value="area_desc">Tri : Surface (m²) ↓</option>
-          <option value="area_asc">Tri : Surface (m²) ↑</option>
-          <option value="condo_asc">Tri : Charges ↓</option>
-          <option value="time_asc">Tri : Proximité Boa Vista</option>
+      <!-- Recherche + Tri sur la même ligne -->
+      <div class="flex items-center gap-1.5 whitespace-nowrap">
+        <input id="search-input" type="text" oninput="render()" placeholder="Bairro, ref..." class="px-2 py-1 rounded border text-[11px] w-28 bg-transparent" style="border-color: var(--border-col);" />
+        <select id="sort-select" onchange="render()" class="px-2 py-1 rounded border text-[11px] font-semibold" style="border-color: var(--border-col); background-color: var(--bg-card);">
+          <option value="terrace_rank">Ordem: Terraço</option>
+          <option value="price_asc">Ordem: Menor preço</option>
+          <option value="price_desc">Ordem: Maior preço</option>
+          <option value="area_desc">Ordem: Maior m²</option>
+          <option value="area_asc">Ordem: Menor m²</option>
+          <option value="condo_asc">Ordem: Menor cond.</option>
+          <option value="time_asc">Ordem: Perto Boa Vista</option>
         </select>
         <button onclick="resetFilters()" id="btn-reset" class="px-2 py-1 rounded border hover:opacity-80" style="border-color: var(--border-col);">Reset</button>
       </div>
@@ -306,7 +297,7 @@
   </div>
 
   <script>
-    let currentLang = 'fr';
+    let currentLang = 'pt';
     let currentTheme = 'light';
     let currentView = 'cards';
     let filters = { terrace: 'all', duplex: 'all', city: 'all', extra: 'all' };
@@ -804,16 +795,13 @@
       document.getElementById('btn-lang-fr').classList.toggle('chip-active', isFr);
       document.getElementById('btn-lang-pt').classList.toggle('chip-active', !isFr);
 
-      document.getElementById('nav-current').textContent = isFr
-        ? '1. Comparateur 26 biens (SCS / SA)'
-        : '1. Comparador 26 imóveis (SCS / SA)';
-      document.getElementById('link-apto9').innerHTML = isFr
-        ? '<span>2. Visite virtuelle Apto 9 (réf. vendue)</span> <span>↗</span>'
-        : '<span>2. Visita virtual Apto 9 (ref. vendido)</span> <span>↗</span>';
+      document.getElementById('ui-title').textContent = isFr
+        ? 'Comparateur São Caetano & Santo André (26)'
+        : 'Imóveis São Caetano e Santo André (26)';
       document.getElementById('btn-criteria').textContent = isFr
         ? 'Critères & budget ▾'
         : 'Critérios e orçamento ▾';
-      document.getElementById('btn-view-cards').textContent = isFr ? 'Photos' : 'Fotos';
+      document.getElementById('btn-view-cards').textContent = isFr ? 'Photos (Cartes)' : 'Fotos (Cards)';
       document.getElementById('btn-view-table').textContent = isFr ? 'Tableau' : 'Tabela';
       document.getElementById('btn-view-map').textContent = isFr ? 'Carte (26)' : 'Mapa (26)';
       document.getElementById('btn-theme').textContent = currentTheme === 'light'
@@ -834,38 +822,38 @@
         : 'Inclui São Caetano + melhores bairros vizinhos a 5-10 min (Santa Maria SA, Campestre, Bairro Jardim e Rudge Ramos).';
 
       const tBtns = document.querySelectorAll('#filter-terrace button');
-      tBtns[0].textContent = isFr ? 'Terrasse : Toutes' : 'Terraço: Todos';
+      tBtns[0].textContent = isFr ? 'Terrasse: Toutes' : 'Terraço: Todos';
       tBtns[1].textContent = isFr ? 'Grande' : 'Grande';
-      tBtns[2].textContent = isFr ? 'Grande + Petite' : 'Com terraço';
+      tBtns[2].textContent = isFr ? 'Avec' : 'C/ terraço';
       tBtns[3].textContent = isFr ? 'Sans' : 'Sem';
 
       const dBtns = document.querySelectorAll('#filter-duplex button');
-      dBtns[0].textContent = isFr ? 'Tous types' : 'Todos tipos';
+      dBtns[0].textContent = isFr ? 'Type: Tous' : 'Tipo: Todos';
       dBtns[1].textContent = 'Duplex';
       dBtns[2].textContent = isFr ? 'Plain-pied' : 'Linear';
 
       const cBtns = document.querySelectorAll('#filter-city button');
-      cBtns[0].textContent = isFr ? 'Toutes villes' : 'Todas cidades';
-      cBtns[1].textContent = 'São Caetano (17)';
-      cBtns[2].textContent = 'Santo André (8)';
-      cBtns[3].textContent = 'São Bernardo (1)';
+      cBtns[0].textContent = isFr ? 'Ville: Toutes' : 'Cidade: Todas';
+      cBtns[1].textContent = 'SCS (17)';
+      cBtns[2].textContent = 'Sto André (8)';
+      cBtns[3].textContent = 'SBC (1)';
 
       const eBtns = document.querySelectorAll('#filter-extra button');
       eBtns[0].textContent = isFr ? 'Tous (26)' : 'Todos (26)';
       eBtns[1].textContent = isFr ? 'Nouveaux (9)' : 'Novos (9)';
       eBtns[2].textContent = isFr ? 'Initiaux (17)' : 'Iniciais (17)';
-      eBtns[3].textContent = isFr ? '≤ 580k R$' : '≤ R$ 580 mil';
+      eBtns[3].textContent = '≤580k';
       eBtns[4].textContent = isFr ? 'Cochés' : 'Selecionados';
 
       document.getElementById('search-input').placeholder = isFr ? 'Quartier, réf...' : 'Bairro, ref...';
       const sOpts = document.getElementById('sort-select').options;
-      sOpts[0].text = isFr ? 'Tri : Terrasse & intérêt' : 'Ordem: Terraço e destaque';
-      sOpts[1].text = isFr ? 'Tri : Prix croissant' : 'Ordem: Menor preço';
-      sOpts[2].text = isFr ? 'Tri : Prix décroissant' : 'Ordem: Maior preço';
-      sOpts[3].text = isFr ? 'Tri : Surface (m²) ↓' : 'Ordem: Maior área (m²)';
-      sOpts[4].text = isFr ? 'Tri : Surface (m²) ↑' : 'Ordem: Menor área (m²)';
-      sOpts[5].text = isFr ? 'Tri : Charges ↓' : 'Ordem: Menor condomínio';
-      sOpts[6].text = isFr ? 'Tri : Proximité Boa Vista' : 'Ordem: Mais perto Boa Vista';
+      sOpts[0].text = isFr ? 'Tri: Terrasse' : 'Ordem: Terraço';
+      sOpts[1].text = isFr ? 'Tri: Prix ↑' : 'Ordem: Menor preço';
+      sOpts[2].text = isFr ? 'Tri: Prix ↓' : 'Ordem: Maior preço';
+      sOpts[3].text = isFr ? 'Tri: Surface ↓' : 'Ordem: Maior m²';
+      sOpts[4].text = isFr ? 'Tri: Surface ↑' : 'Ordem: Menor m²';
+      sOpts[5].text = isFr ? 'Tri: Charges ↑' : 'Ordem: Menor cond.';
+      sOpts[6].text = isFr ? 'Tri: Proche Boa Vista' : 'Ordem: Perto Boa Vista';
 
       document.getElementById('th-photo').textContent = isFr ? 'Photo' : 'Foto';
       document.getElementById('th-prop').textContent = isFr ? 'Quartier & Bien ↕' : 'Bairro e Imóvel ↕';
@@ -1002,8 +990,8 @@
                   <div class="font-bold">${p.condo} R$</div>
                 </div>
                 <div>
-                  <div class="text-[10px]" style="color: var(--text-sub);">Ch/Park</div>
-                  <div class="font-bold">${p.rooms}ch/${p.parking}pl</div>
+                  <div class="text-[10px]" style="color: var(--text-sub);">${isFr ? 'Ch/Park' : 'Qts/Vaga'}</div>
+                  <div class="font-bold">${p.rooms}${isFr ? 'ch' : 'q'}/${p.parking}${isFr ? 'pl' : 'v'}</div>
                 </div>
               </div>
 
@@ -1319,7 +1307,7 @@
       });
     }
 
-    render();
+    setLang('pt');
   </script>
 </body>
 </html>
