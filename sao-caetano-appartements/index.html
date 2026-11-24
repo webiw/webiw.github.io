@@ -203,14 +203,14 @@
         <thead>
           <tr class="border-b muted-box font-bold" style="border-color: var(--border-col);">
             <th class="p-3">❤️</th>
-            <th class="p-3 cursor-pointer hover:underline" onclick="quickSort('terrace_rank')">Bien & Quartier ↕</th>
-            <th class="p-3 cursor-pointer hover:underline" onclick="quickSort('time_asc')">Ville (dist. Boa Vista) ↕</th>
-            <th class="p-3">Terrasse</th>
-            <th class="p-3">Type</th>
-            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('area_desc')">Surface ↕</th>
-            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('price_asc')">Prix ↕</th>
-            <th class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('condo_asc')">Charges ↕</th>
-            <th class="p-3">Points clés & Lien</th>
+            <th id="th-prop" class="p-3 cursor-pointer hover:underline" onclick="quickSort('terrace_rank')">Bien & Quartier ↕</th>
+            <th id="th-city" class="p-3 cursor-pointer hover:underline" onclick="quickSort('time_asc')">Ville (dist. Boa Vista) ↕</th>
+            <th id="th-terr" class="p-3">Terrasse</th>
+            <th id="th-type" class="p-3">Type</th>
+            <th id="th-area" class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('area_desc')">Surface ↕</th>
+            <th id="th-price" class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('price_asc')">Prix ↕</th>
+            <th id="th-condo" class="p-3 cursor-pointer hover:underline text-right" onclick="quickSort('condo_asc')">Charges ↕</th>
+            <th id="th-desc" class="p-3">Points clés & Lien</th>
           </tr>
         </thead>
         <tbody id="table-body"></tbody>
@@ -1164,22 +1164,111 @@
 
     function setLang(l) {
       currentLang = l;
+      document.documentElement.lang = l === 'fr' ? 'fr' : 'pt-BR';
       document.getElementById('btn-lang-fr').classList.toggle('chip-active', l === 'fr');
       document.getElementById('btn-lang-pt').classList.toggle('chip-active', l === 'pt');
-      document.getElementById('ui-title').textContent = l === 'fr'
+
+      const isFr = l === 'fr';
+      document.getElementById('ui-title').textContent = isFr
         ? 'Comparateur Appartements & Coberturas (≤ 15 min de Boa Vista, SCS)'
         : 'Comparador de Apartamentos & Coberturas (≤ 15 min do Boa Vista, SCS)';
-      document.getElementById('ui-subtitle').textContent = l === 'fr'
-        ? '25 biens vérifiés sur photos : tes 17 biens + 8 nouvelles pépites à Santo André / Rudge Ramos à 5-10 min de Boa Vista (09560-000)'
-        : '25 imóveis verificados por foto: seus 17 imóveis + 8 novas oportunidades em Santo André / Rudge Ramos a 5-10 min do Boa Vista (09560-000)';
-      document.getElementById('ui-wa-label').textContent = l === 'fr' ? 'Copier sélection WhatsApp' : 'Copiar seleção WhatsApp';
+      document.getElementById('ui-subtitle').textContent = isFr
+        ? '26 biens vérifiés sur photos : tes 17 biens + 9 nouvelles pépites à Santo André / Rudge Ramos à 5-10 min de Boa Vista (09560-000)'
+        : '26 imóveis verificados por foto: seus 17 imóveis + 9 novas oportunidades em Santo André / Rudge Ramos a 5-10 min do Boa Vista (09560-000)';
+      document.getElementById('ui-wa-label').textContent = isFr ? 'Copier sélection WhatsApp' : 'Copiar seleção WhatsApp';
+      document.getElementById('btn-view-cards').textContent = isFr ? '🗂️ Cartes' : '🗂️ Cards';
+      document.getElementById('btn-view-table').textContent = isFr ? '📊 Tableau' : '📊 Tabela';
+      document.getElementById('btn-theme').textContent = currentTheme === 'light'
+        ? (isFr ? '🌙 Sombre' : '🌙 Escuro')
+        : (isFr ? '☀️ Clair' : '☀️ Claro');
+
+      // 3 top boxes
+      document.getElementById('box1-title').textContent = isFr ? '🎯 Objectif & Budget' : '🎯 Objetivo e Orçamento';
+      document.getElementById('box1-text').innerHTML = isFr
+        ? 'Remplacer l\'Apto 9 (vendu à 565 000 R$) pour Carla puis location. Plafond idéal : <strong>560 000 R$ hors frais</strong> (~585 000 R$ frais d\'acte/ITBI inclus), ou jusqu\'à <strong>580-595k R$</strong> si déjà meublé / équipé en <em>planejados</em> (économie sur les 35 000 R$ d\'aménagement).'
+        : 'Substituir o Apto 9 (vendido por R$ 565.000) para a Carla morar e depois alugar. Teto ideal: <strong>R$ 560.000 sem taxas</strong> (~R$ 585.000 com escritura/ITBI), ou até <strong>R$ 580-595 mil</strong> se já estiver mobiliado / com <em>móveis planejados</em> (economia nos R$ 35.000 previstos para mobília).';
+
+      document.getElementById('box2-title').textContent = isFr
+        ? '☀️ Vraie taille des terrasses (vérifiée sur photos)'
+        : '☀️ Tamanho real dos terraços (verificado por fotos)';
+      document.getElementById('box2-text').innerHTML = isFr
+        ? 'Les annonces ne donnent presque jamais les m² de terrasse (sauf Campestre : ~45 m²). Chaque bien a été classé d\'après ses photos : <strong>Grande terrasse</strong> (ex: Nova Gerty 17223, Campestre 27607, Santa Maria Yeti 569k), <strong>Petite terrasse / Véranda</strong> ou <strong>Appartement classique</strong>.'
+        : 'Os anúncios quase nunca informam a área do terraço (exceto Campestre: ~45 m²). Cada imóvel foi classificado pelas fotos: <strong>Grande terraço</strong> (ex: Nova Gerty 17223, Campestre 27607, Santa Maria Yeti 569k), <strong>Pequeno terraço / Cobertura fechada</strong> ou <strong>Apartamento padrão</strong>.';
+
+      document.getElementById('box3-title').textContent = isFr
+        ? '🚗 Rayon ≤ 15 min de Boa Vista (09560-000)'
+        : '🚗 Raio ≤ 15 min do Boa Vista (09560-000)';
+      document.getElementById('box3-text').innerHTML = isFr
+        ? 'Boa Vista touche directement <strong>Santa Maria, Campestre et Bairro Jardim</strong> à Santo André (5 à 8 min) et <strong>Rudge Ramos</strong> à São Bernardo (6 min). À budget égal, Santo André offre des coberturas neuves avec ascenseur et 2 places !'
+        : 'O Boa Vista faz divisa direta com <strong>Santa Maria, Campestre e Bairro Jardim</strong> em Santo André (5 a 8 min) e <strong>Rudge Ramos</strong> em São Bernardo (6 min). Pelo mesmo valor, Santo André oferece coberturas novas com elevador e 2 vagas!';
+
+      // Search & Sort controls
+      document.getElementById('search-input').placeholder = isFr
+        ? '🔍 Filtrer par quartier, rue, réf, piscine...'
+        : '🔍 Filtrar por bairro, rua, ref, piscina...';
+      document.getElementById('lbl-sort').textContent = isFr ? 'Trier par :' : 'Ordenar por:';
+      document.getElementById('btn-reset').textContent = isFr ? 'Réinitialiser' : 'Limpar filtros';
+
+      const sortOpts = document.getElementById('sort-select').options;
+      sortOpts[0].text = isFr ? '⭐ Catégorie de terrasse & intérêt (défaut)' : '⭐ Categoria de terraço e destaque (padrão)';
+      sortOpts[1].text = isFr ? '💰 Prix : du - cher au + cher' : '💰 Preço: do menor para o maior';
+      sortOpts[2].text = isFr ? '💰 Prix : du + cher au - cher' : '💰 Preço: do maior para o menor';
+      sortOpts[3].text = isFr ? '📐 Surface (m²) : de la + grande à la + petite' : '📐 Área (m²): da maior para a menor';
+      sortOpts[4].text = isFr ? '📐 Surface (m²) : de la + petite à la + grande' : '📐 Área (m²): da menor para a maior';
+      sortOpts[5].text = isFr ? '🧾 Charges / mois : les + basses d\'abord' : '🧾 Condomínio/mês: do menor para o maior';
+      sortOpts[6].text = isFr ? '🚗 Temps depuis Boa Vista (SCS) : le + proche' : '🚗 Distância do Boa Vista (SCS): mais próximo';
+
+      // Filter group headings
+      document.getElementById('lbl-f-terrace').textContent = isFr ? '☀️ Terrasse' : '☀️ Terraço';
+      document.getElementById('lbl-f-duplex').textContent = isFr ? '🪜 Duplex ou Plain-pied' : '🪜 Duplex ou Linear (1 andar)';
+      document.getElementById('lbl-f-city').textContent = isFr ? '📍 Ville (≤ 12 min Boa Vista)' : '📍 Cidade (≤ 12 min Boa Vista)';
+      document.getElementById('lbl-f-extra').textContent = isFr ? '✨ Sélection & Atouts' : '✨ Seleção e Diferenciais';
+
+      // Filter chips text
+      const tBtns = document.querySelectorAll('#filter-terrace button');
+      tBtns[0].textContent = isFr ? 'Tous' : 'Todos';
+      tBtns[1].textContent = isFr ? '☀️ Grande terrasse' : '☀️ Grande terraço';
+      tBtns[2].textContent = isFr ? '🌤️ Grande ou petite' : '🌤️ Com terraço (todos)';
+      tBtns[3].textContent = isFr ? '🏢 Sans terrasse' : '🏢 Sem terraço (apto)';
+
+      const dBtns = document.querySelectorAll('#filter-duplex button');
+      dBtns[0].textContent = isFr ? 'Tous' : 'Todos';
+      dBtns[1].textContent = '🪜 Duplex';
+      dBtns[2].textContent = isFr ? '➡️ Plain-pied' : '➡️ Linear (1 andar)';
+
+      const cBtns = document.querySelectorAll('#filter-city button');
+      cBtns[0].textContent = isFr ? 'Toutes' : 'Todas';
+      cBtns[1].textContent = 'São Caetano (17)';
+      cBtns[2].textContent = 'Santo André (8)';
+      cBtns[3].textContent = 'São Bernardo (1)';
+
+      const eBtns = document.querySelectorAll('#filter-extra button');
+      eBtns[0].textContent = isFr ? 'Tous (26)' : 'Todos (26)';
+      eBtns[1].textContent = isFr ? '✨ Nouveaux (8)' : '✨ Novos (8)';
+      eBtns[2].textContent = isFr ? '📋 Liste initiale (18)' : '📋 Lista inicial (18)';
+      eBtns[3].textContent = isFr ? '✅ ≤ 580k R$' : '✅ ≤ R$ 580 mil';
+      eBtns[4].textContent = isFr ? '❤️ Favoris' : '❤️ Favoritos';
+
+      // Table headers
+      document.getElementById('th-prop').textContent = isFr ? 'Bien & Quartier ↕' : 'Imóvel e Bairro ↕';
+      document.getElementById('th-city').textContent = isFr ? 'Ville (dist. Boa Vista) ↕' : 'Cidade (dist. Boa Vista) ↕';
+      document.getElementById('th-terr').textContent = isFr ? 'Terrasse' : 'Terraço';
+      document.getElementById('th-type').textContent = isFr ? 'Type' : 'Tipo';
+      document.getElementById('th-area').textContent = isFr ? 'Surface ↕' : 'Área ↕';
+      document.getElementById('th-price').textContent = isFr ? 'Prix ↕' : 'Preço ↕';
+      document.getElementById('th-condo').textContent = isFr ? 'Charges ↕' : 'Condomínio ↕';
+      document.getElementById('th-desc').textContent = isFr ? 'Points clés & Lien' : 'Destaques e Link';
+
       render();
     }
 
     function toggleTheme() {
       currentTheme = currentTheme === 'light' ? 'dark' : 'light';
       document.body.setAttribute('data-theme', currentTheme);
-      document.getElementById('btn-theme').textContent = currentTheme === 'light' ? '🌙 Sombre' : '☀️ Clair';
+      const isFr = currentLang === 'fr';
+      document.getElementById('btn-theme').textContent = currentTheme === 'light'
+        ? (isFr ? '🌙 Sombre' : '🌙 Escuro')
+        : (isFr ? '☀️ Clair' : '☀️ Claro');
     }
 
     function getFilteredList() {
@@ -1284,7 +1373,7 @@
                 <div class="border-x" style="border-color: var(--border-col);">
                   <div class="text-[11px]" style="color: var(--text-sub);">${currentLang === 'fr' ? 'Surface' : 'Área'}</div>
                   <div class="font-extrabold text-sm md:text-base">${p.area} m²</div>
-                  <div class="text-[10px]" style="color: var(--text-sub);">${p.rooms} ch. (${p.suites} suíte)</div>
+                  <div class="text-[10px]" style="color: var(--text-sub);">${p.rooms} ${currentLang === 'fr' ? 'ch.' : 'qts'} (${p.suites} suíte)</div>
                 </div>
                 <div>
                   <div class="text-[11px]" style="color: var(--text-sub);">${currentLang === 'fr' ? 'Charges/mois' : 'Condomínio'}</div>
@@ -1387,13 +1476,13 @@
               <div class="text-[11px]" style="color: var(--text-sub);">🚗 ${currentLang === 'fr' ? p.timeLabelFr : p.timeLabelPt}</div>
             </td>
             <td class="p-3 whitespace-nowrap">${terrLbl}</td>
-            <td class="p-3 whitespace-nowrap">${p.isDuplex ? '🪜 Duplex' : '➡️ Plain-pied'}</td>
-            <td class="p-3 text-right font-bold whitespace-nowrap">${p.area} m² <span class="text-[11px] font-normal">(${p.rooms} ch.)</span></td>
+            <td class="p-3 whitespace-nowrap">${p.isDuplex ? '🪜 Duplex' : (currentLang === 'fr' ? '➡️ Plain-pied' : '➡️ Linear')}</td>
+            <td class="p-3 text-right font-bold whitespace-nowrap">${p.area} m² <span class="text-[11px] font-normal">(${p.rooms} ${currentLang === 'fr' ? 'ch.' : 'qts'})</span></td>
             <td class="p-3 text-right font-extrabold text-sky-600 dark:text-sky-400 whitespace-nowrap">${fmtBRL(p.price)}</td>
             <td class="p-3 text-right whitespace-nowrap">${p.condo} R$</td>
             <td class="p-3 text-xs max-w-md" style="color: var(--text-sub);">
               ${desc}
-              <a href="${p.url}" target="_blank" class="ml-1 font-bold text-sky-600 dark:text-sky-400 hover:underline">[Lien ↗]</a>
+              <a href="${p.url}" target="_blank" class="ml-1 font-bold text-sky-600 dark:text-sky-400 hover:underline">[${currentLang === 'fr' ? 'Lien' : 'Link'} ↗]</a>
             </td>
           </tr>
         `;
