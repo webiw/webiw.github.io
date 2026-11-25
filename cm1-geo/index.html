@@ -7,51 +7,195 @@
 <title>Entraînement Interactif - Géographie CM1</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  input { user-select: text; }
   body {
     font-family: 'Segoe UI', system-ui, Arial, sans-serif;
     background: #f1f5f9;
     color: #1e293b;
-    padding: 14px 20px;
+    padding: 12px 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
   }
-  .topbar {
+  .header-wrap {
     width: 100%;
     max-width: 1080px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .title-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 10px;
   }
-  h1 { font-size: 20px; font-weight: 800; color: #0f172a; }
-  .instructions { font-size: 14px; color: #475569; margin-top: 2px; }
+  h1 { font-size: 19px; font-weight: 800; color: #0f172a; }
+  .mode-tabs {
+    display: flex;
+    gap: 6px;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    border: none;
+    background: transparent;
+    padding: 7px 13px;
+    border-radius: 7px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: #0f172a; }
+  .tab-btn.active {
+    background: #ffffff;
+    color: #1d4ed8;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 16px;
+    border-radius: 11px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  }
+  .instructions { font-size: 14px; font-weight: 600; color: #334155; }
   .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  button {
-    padding: 8px 14px;
+  button.ctrl-btn {
+    padding: 7px 13px;
     border-radius: 8px;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12.5px;
     cursor: pointer;
     color: #1e293b;
     transition: all 0.15s;
   }
-  button:hover { background: #f8fafc; border-color: #94a3b8; }
-  button.primary { background: #2563eb; color: #ffffff; border-color: #1d4ed8; }
-  button.primary:hover { background: #1d4ed8; }
-  .score-pill {
-    padding: 7px 14px;
+  button.ctrl-btn:hover { background: #f8fafc; border-color: #94a3b8; }
+  button.ctrl-btn.primary { background: #2563eb; color: #ffffff; border-color: #1d4ed8; }
+  button.ctrl-btn.primary:hover { background: #1d4ed8; }
+  .pill {
+    padding: 6px 13px;
     border-radius: 20px;
     background: #dbeafe;
     color: #1e40af;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 13.5px;
   }
+  .pill.timer {
+    background: #fef3c7;
+    color: #92400e;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Quiz & Spelling prompt banner */
+  .prompt-banner {
+    display: none;
+    width: 100%;
+    max-width: 1080px;
+    background: #eff6ff;
+    border: 2px solid #93c5fd;
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .prompt-banner.visible { display: flex; }
+  .prompt-question {
+    font-size: 17px;
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+  .prompt-target-word {
+    display: inline-block;
+    background: #2563eb;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 7px;
+    margin-left: 6px;
+  }
+  .feedback-msg {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 7px;
+  }
+  .feedback-msg.ok { background: #dcfce7; color: #15803d; }
+  .feedback-msg.warn { background: #fef3c7; color: #b45309; }
+  .feedback-msg.err { background: #fee2e2; color: #b91c1c; }
+
+  /* Spelling input box */
+  .spell-box {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .spell-box.visible { display: flex; }
+  .spell-input {
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid #64748b;
+    border-radius: 8px;
+    width: 250px;
+    outline: none;
+  }
+  .spell-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
+  .char-btns { display: flex; gap: 4px; }
+  .char-btn {
+    padding: 6px 9px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .char-btn:hover { background: #e2e8f0; }
+
+  /* Ration bonus question inside spelling mode */
+  .ration-choice {
+    display: none;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .ration-choice.visible { display: flex; }
+  .btn-rich {
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 2px solid #4b6b16;
+    background: #7ca832;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .btn-poor {
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 2px solid #a3410e;
+    background: #e66c2c;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
   .board {
     position: relative;
     width: 100%;
@@ -59,16 +203,17 @@
     background: #ffffff;
     border-radius: 14px;
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-    padding: 16px 24px;
+    padding: 16px 22px;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 20px;
   }
   .labels-row {
     display: grid;
     gap: 8px;
     z-index: 3;
   }
+  .labels-row.hidden { display: none; }
   .labels-top { grid-template-columns: repeat(8, 1fr); }
   .labels-bot { grid-template-columns: repeat(9, 1fr); }
   .lbl-card {
@@ -108,10 +253,22 @@
   }
   .target-dot {
     cursor: pointer;
-    transition: r 0.15s;
+    transition: all 0.15s;
   }
-  .target-dot:hover {
-    fill: #2563eb;
+  .target-dot:hover { fill: #2563eb; }
+  @keyframes pulseTarget {
+    0% { stroke-width: 3px; r: 9px; }
+    50% { stroke-width: 6px; r: 12px; }
+    100% { stroke-width: 3px; r: 9px; }
+  }
+  .target-active {
+    fill: #facc15 !important;
+    stroke: #b45309 !important;
+    animation: pulseTarget 1.1s infinite;
+  }
+  .target-done {
+    fill: #22c55e !important;
+    stroke: #14532d !important;
   }
   #lines-overlay {
     position: absolute;
@@ -123,7 +280,7 @@
   }
   .legend-bar {
     display: flex;
-    gap: 22px;
+    gap: 20px;
     align-items: center;
     justify-content: center;
     font-size: 13px;
@@ -143,26 +300,60 @@
   }
   button, .lbl-card, .map-svg { touch-action: manipulation; }
   @media (max-width: 860px) {
-    body { padding: 10px; }
-    .board { padding: 12px; gap: 14px; }
+    body { padding: 8px; }
+    .board { padding: 10px; gap: 12px; }
     .labels-top { grid-template-columns: repeat(4, 1fr); }
     .labels-bot { grid-template-columns: repeat(3, 1fr); }
-    h1 { font-size: 17px; }
+    h1 { font-size: 16.5px; }
+    .spell-input { width: 190px; }
   }
 </style>
 </head>
 <body>
-  <div class="topbar">
-    <div>
+  <div class="header-wrap">
+    <div class="title-row">
       <h1>Repères spatiaux : Se nourrir dans le monde (CM1)</h1>
-      <div class="instructions" id="status-msg">1. Clique sur une étiquette (en haut ou en bas), puis clique sur le point correspondant sur la carte !</div>
+      <div class="mode-tabs">
+        <button class="tab-btn active" id="tab-link" onclick="setMode('link')">1. Relier les étiquettes</button>
+        <button class="tab-btn" id="tab-quiz" onclick="setMode('quiz')">2. Quiz Chrono</button>
+        <button class="tab-btn" id="tab-spell" onclick="setMode('spell')">3. Orthographe (Contrôle)</button>
+      </div>
     </div>
-    <div class="controls">
-      <span class="score-pill" id="score-pill">0 / 17 reliés</span>
-      <button onclick="toggleColors()" id="btn-colors">Masquer les couleurs des pays</button>
-      <button class="primary" onclick="checkAnswers()">Vérifier mes réponses</button>
-      <button onclick="resetGame(true)">Mélanger et recommencer</button>
+
+    <div class="toolbar">
+      <div class="instructions" id="status-msg">Clique sur une étiquette (en haut ou en bas), puis sur le bon point de la carte !</div>
+      <div class="controls">
+        <span class="pill timer" id="timer-pill" style="display:none">00:00</span>
+        <span class="pill" id="score-pill">0 / 17 reliés</span>
+        <button class="ctrl-btn" onclick="toggleColors()" id="btn-colors">Masquer les couleurs des pays</button>
+        <button class="ctrl-btn primary" id="btn-check" onclick="checkAnswers()">Vérifier mes réponses</button>
+        <button class="ctrl-btn" onclick="restartCurrentMode()">Recommencer</button>
+      </div>
     </div>
+  </div>
+
+  <div class="prompt-banner" id="prompt-banner">
+    <div class="prompt-question" id="prompt-question"></div>
+
+    <div class="spell-box" id="spell-box">
+      <input type="text" id="spell-input" class="spell-input" placeholder="Écris le nom ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <div class="char-btns">
+        <button type="button" class="char-btn" onclick="insertChar('é')">é</button>
+        <button type="button" class="char-btn" onclick="insertChar('É')">É</button>
+        <button type="button" class="char-btn" onclick="insertChar('ï')">ï</button>
+        <button type="button" class="char-btn" onclick="insertChar('-')">-</button>
+      </div>
+      <button type="button" class="ctrl-btn primary" onclick="submitSpelling()">Valider</button>
+      <button type="button" class="ctrl-btn" onclick="giveHint()">Indice</button>
+    </div>
+
+    <div class="ration-choice" id="ration-choice">
+      <span style="font-weight:800;color:#1e293b">Bonus alimentation :</span>
+      <button type="button" class="btn-rich" onclick="submitRation('rich')">Ration très riche (vert)</button>
+      <button type="button" class="btn-poor" onclick="submitRation('poor')">Ration insuffisante (orange)</button>
+    </div>
+
+    <div id="feedback-box"></div>
   </div>
 
   <div class="board" id="board">
@@ -194,11 +385,25 @@
   </div>
 
 <script>
-const ITEMS = [{"id": "am_nord", "label": "Amérique du Nord", "lines": ["Amérique", "du Nord"], "cat": "continent", "row": "top", "tx": 251.5, "ty": 88.0}, {"id": "etats_unis", "label": "États-Unis", "lines": ["États-Unis"], "cat": "rich", "row": "top", "tx": 234.2, "ty": 130.4}, {"id": "haiti", "label": "Haïti", "lines": ["Haïti"], "cat": "poor", "row": "top", "tx": 282.5, "ty": 181.7}, {"id": "oc_arctique", "label": "OCÉAN GLACIAL ARCTIQUE", "lines": ["OCÉAN GLACIAL", "ARCTIQUE"], "cat": "ocean", "row": "top", "tx": 489.7, "ty": 33.1}, {"id": "france", "label": "France", "lines": ["France"], "cat": "rich", "row": "top", "tx": 478.6, "ty": 111.2}, {"id": "europe", "label": "Europe", "lines": ["Europe"], "cat": "continent", "row": "top", "tx": 523.2, "ty": 92.9}, {"id": "asie", "label": "Asie", "lines": ["Asie"], "cat": "continent", "row": "top", "tx": 683.2, "ty": 102.7}, {"id": "oc_pacifique_e", "label": "OCÉAN PACIFIQUE", "lines": ["OCÉAN", "PACIFIQUE"], "cat": "ocean", "row": "top", "tx": 890.1, "ty": 189.3}, {"id": "oc_pacifique_o", "label": "OCÉAN PACIFIQUE", "lines": ["OCÉAN", "PACIFIQUE"], "cat": "ocean", "row": "bottom", "tx": 117.1, "ty": 250.9}, {"id": "am_sud", "label": "Amérique du Sud", "lines": ["Amérique", "du Sud"], "cat": "continent", "row": "bottom", "tx": 314.4, "ty": 268.8}, {"id": "oc_atlantique", "label": "OCÉAN ATLANTIQUE", "lines": ["OCÉAN", "ATLANTIQUE"], "cat": "ocean", "row": "bottom", "tx": 424.6, "ty": 291.9}, {"id": "tchad", "label": "Tchad", "lines": ["Tchad"], "cat": "poor", "row": "bottom", "tx": 518.4, "ty": 190.9}, {"id": "afrique", "label": "Afrique", "lines": ["Afrique"], "cat": "continent", "row": "bottom", "tx": 530.1, "ty": 245.7}, {"id": "oc_antarctique", "label": "OCÉAN GLACIAL ANTARCTIQUE", "lines": ["OCÉAN GLACIAL", "ANTARCTIQUE"], "cat": "ocean", "row": "bottom", "tx": 501.0, "ty": 386.8}, {"id": "antarctique", "label": "Antarctique", "lines": ["Antarctique"], "cat": "continent", "row": "bottom", "tx": 510.4, "ty": 426.1}, {"id": "oc_indien", "label": "OCÉAN INDIEN", "lines": ["OCÉAN", "INDIEN"], "cat": "ocean", "row": "bottom", "tx": 671.3, "ty": 281.6}, {"id": "oceanie", "label": "Océanie", "lines": ["Océanie"], "cat": "continent", "row": "bottom", "tx": 812.5, "ty": 294.5}];
-let selectedLabelId = null;
-let links = {}; // labelId -> targetId
-let checked = false;
+const ITEMS = [{"id": "am_nord", "label": "Amérique du Nord", "spell": "Amérique du Nord", "lines": ["Amérique", "du Nord"], "cat": "continent", "row": "top", "tx": 251.5, "ty": 88.0, "hint": "Majuscule à Amérique (avec accent aigu é) et à Nord."}, {"id": "etats_unis", "label": "États-Unis", "spell": "États-Unis", "lines": ["États-Unis"], "cat": "rich", "row": "top", "tx": 234.2, "ty": 130.4, "hint": "Attention à l'accent majuscule É (ou E), au trait d'union et aux deux s : États-Unis."}, {"id": "haiti", "label": "Haïti", "spell": "Haïti", "lines": ["Haïti"], "cat": "poor", "row": "top", "tx": 282.5, "ty": 181.7, "hint": "N'oublie pas le H au début et le tréma sur le ï : Haïti !"}, {"id": "oc_arctique", "label": "OCÉAN GLACIAL ARCTIQUE", "spell": "Océan Glacial Arctique", "lines": ["OCÉAN GLACIAL", "ARCTIQUE"], "cat": "ocean", "row": "top", "tx": 489.7, "ty": 33.1, "hint": "En haut c'est Arctique (avec un c : Ar-c-tique) : Océan Glacial Arctique."}, {"id": "france", "label": "France", "spell": "France", "lines": ["France"], "cat": "rich", "row": "top", "tx": 478.6, "ty": 111.2, "hint": "Majuscule au début : France."}, {"id": "europe", "label": "Europe", "spell": "Europe", "lines": ["Europe"], "cat": "continent", "row": "top", "tx": 523.2, "ty": 92.9, "hint": "Majuscule au début : Europe."}, {"id": "asie", "label": "Asie", "spell": "Asie", "lines": ["Asie"], "cat": "continent", "row": "top", "tx": 683.2, "ty": 102.7, "hint": "Majuscule au début : Asie."}, {"id": "oc_pacifique_e", "label": "OCÉAN PACIFIQUE", "spell": "Océan Pacifique", "lines": ["OCÉAN", "PACIFIQUE"], "cat": "ocean", "row": "top", "tx": 890.1, "ty": 189.3, "hint": "Océan Pacifique (avec c et qu)."}, {"id": "oc_pacifique_o", "label": "OCÉAN PACIFIQUE", "spell": "Océan Pacifique", "lines": ["OCÉAN", "PACIFIQUE"], "cat": "ocean", "row": "bottom", "tx": 117.1, "ty": 250.9, "hint": "Océan Pacifique (avec c et qu)."}, {"id": "am_sud", "label": "Amérique du Sud", "spell": "Amérique du Sud", "lines": ["Amérique", "du Sud"], "cat": "continent", "row": "bottom", "tx": 314.4, "ty": 268.8, "hint": "Majuscule à Amérique (avec accent aigu é) et à Sud."}, {"id": "oc_atlantique", "label": "OCÉAN ATLANTIQUE", "spell": "Océan Atlantique", "lines": ["OCÉAN", "ATLANTIQUE"], "cat": "ocean", "row": "bottom", "tx": 424.6, "ty": 291.9, "hint": "Océan Atlantique (entre Amérique et Afrique)."}, {"id": "tchad", "label": "Tchad", "spell": "Tchad", "lines": ["Tchad"], "cat": "poor", "row": "bottom", "tx": 518.4, "ty": 190.9, "hint": "Attention au T au début : Tchad !"}, {"id": "afrique", "label": "Afrique", "spell": "Afrique", "lines": ["Afrique"], "cat": "continent", "row": "bottom", "tx": 530.1, "ty": 245.7, "hint": "Majuscule au début : Afrique."}, {"id": "oc_antarctique", "label": "OCÉAN GLACIAL ANTARCTIQUE", "spell": "Océan Glacial Antarctique", "lines": ["OCÉAN GLACIAL", "ANTARCTIQUE"], "cat": "ocean", "row": "bottom", "tx": 501.0, "ty": 386.8, "hint": "N'oublie pas le premier c muet dans Antarctique : Océan Glacial Antarctique !"}, {"id": "antarctique", "label": "Antarctique", "spell": "Antarctique", "lines": ["Antarctique"], "cat": "continent", "row": "bottom", "tx": 510.4, "ty": 426.1, "hint": "N'oublie pas le premier c muet : Antarctique !"}, {"id": "oc_indien", "label": "OCÉAN INDIEN", "spell": "Océan Indien", "lines": ["OCÉAN", "INDIEN"], "cat": "ocean", "row": "bottom", "tx": 671.3, "ty": 281.6, "hint": "Océan Indien (sous l'Inde)."}, {"id": "oceanie", "label": "Océanie", "spell": "Océanie", "lines": ["Océanie"], "cat": "continent", "row": "bottom", "tx": 812.5, "ty": 294.5, "hint": "Accent aigu sur le é et e muet à la fin : Océanie."}];
+
+let mode = 'link'; // 'link' | 'quiz' | 'spell'
 let showCountryColors = true;
+
+// Mode 1 state
+let selectedLabelId = null;
+let links = {};
+let checked = false;
+
+// Mode 2 (Quiz Chrono) & Mode 3 (Orthographe) state
+let queue = [];
+let qIndex = 0;
+let firstTryGood = 0;
+let hadMistakeOnCurrent = false;
+let waitingRationFor = null;
+let timerStart = 0;
+let timerInterval = null;
+let bestQuizSeconds = null;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -209,7 +414,87 @@ function shuffle(arr) {
   return a;
 }
 
-function initBoard(reshuffle = true) {
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function startTimer() {
+  stopTimer();
+  timerStart = Date.now();
+  const pill = document.getElementById('timer-pill');
+  pill.textContent = '00:00';
+  timerInterval = setInterval(() => {
+    const sec = Math.floor((Date.now() - timerStart) / 1000);
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(sec % 60).padStart(2, '0');
+    pill.textContent = m + ':' + s;
+  }, 250);
+}
+
+function setFeedback(text, kind) {
+  const box = document.getElementById('feedback-box');
+  if (!text) { box.innerHTML = ''; return; }
+  box.innerHTML = `<span class="feedback-msg ${kind}">${text}</span>`;
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  stopTimer();
+  document.getElementById('tab-link').classList.toggle('active', mode === 'link');
+  document.getElementById('tab-quiz').classList.toggle('active', mode === 'quiz');
+  document.getElementById('tab-spell').classList.toggle('active', mode === 'spell');
+
+  document.getElementById('row-top').classList.toggle('hidden', mode !== 'link');
+  document.getElementById('row-bot').classList.toggle('hidden', mode !== 'link');
+  document.getElementById('btn-check').style.display = (mode === 'link') ? '' : 'none';
+  document.getElementById('timer-pill').style.display = (mode === 'quiz') ? '' : 'none';
+  document.getElementById('prompt-banner').classList.toggle('visible', mode !== 'link');
+  document.getElementById('spell-box').classList.toggle('visible', mode === 'spell');
+  document.getElementById('ration-choice').classList.remove('visible');
+
+  if (mode === 'spell' && showCountryColors) {
+    // Automatically hide country colors in exam/spelling mode so it feels like a real test!
+    toggleColors();
+  }
+
+  restartCurrentMode();
+}
+
+function restartCurrentMode() {
+  setFeedback('', '');
+  waitingRationFor = null;
+  document.getElementById('ration-choice').classList.remove('visible');
+  if (mode === 'link') {
+    links = {};
+    selectedLabelId = null;
+    checked = false;
+    initBoard(true);
+    document.getElementById('score-pill').textContent = '0 / 17 reliés';
+    document.getElementById('status-msg').textContent = 'Clique sur une étiquette (en haut ou en bas), puis sur le bon point de la carte !';
+  } else if (mode === 'quiz') {
+    links = {};
+    initBoard(false);
+    // 16 unique questions (1 of the 2 Pacific Ocean items so we don't ask twice, while accepting clicks on either side!)
+    queue = shuffle(ITEMS.filter(x => x.id !== 'oc_pacifique_o'));
+    qIndex = 0;
+    firstTryGood = 0;
+    hadMistakeOnCurrent = false;
+    document.getElementById('status-msg').textContent = 'Mode Quiz Chrono : clique le plus vite possible sur le lieu demandé !';
+    startTimer();
+    showQuizQuestion();
+  } else if (mode === 'spell') {
+    links = {};
+    initBoard(false);
+    queue = shuffle(ITEMS.filter(x => x.id !== 'oc_pacifique_o'));
+    qIndex = 0;
+    firstTryGood = 0;
+    hadMistakeOnCurrent = false;
+    document.getElementById('status-msg').textContent = 'Mode Spécial Contrôle : écris le nom du point jaune qui clignote sans faute d\'orthographe !';
+    showSpellQuestion();
+  }
+}
+
+function initBoard(reshuffle) {
   const topRow = document.getElementById('row-top');
   const botRow = document.getElementById('row-bot');
   topRow.innerHTML = '';
@@ -221,7 +506,6 @@ function initBoard(reshuffle = true) {
     topItems = shuffle(topItems);
     botItems = shuffle(botItems);
   }
-
   for (const it of topItems) topRow.appendChild(makeCard(it));
   for (const it of botItems) botRow.appendChild(makeCard(it));
 
@@ -232,14 +516,14 @@ function initBoard(reshuffle = true) {
     const hit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     hit.setAttribute('cx', it.tx);
     hit.setAttribute('cy', it.ty);
-    hit.setAttribute('r', '20');
+    hit.setAttribute('r', '22');
     hit.setAttribute('fill', 'transparent');
     hit.style.cursor = 'pointer';
 
     const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     dot.setAttribute('cx', it.tx);
     dot.setAttribute('cy', it.ty);
-    dot.setAttribute('r', '6.5');
+    dot.setAttribute('r', '6.8');
     dot.setAttribute('fill', '#ffffff');
     dot.setAttribute('stroke', '#1e293b');
     dot.setAttribute('stroke-width', '2.2');
@@ -263,33 +547,37 @@ function makeCard(it) {
   return div;
 }
 
+/* ---------------- MODE 1: RELIER ---------------- */
 function onCardClick(id) {
+  if (mode !== 'link') return;
   if (checked) { checked = false; clearCheckStyles(); }
-  if (selectedLabelId === id) {
-    selectedLabelId = null;
-  } else {
-    selectedLabelId = id;
-  }
-  updateUI();
+  selectedLabelId = (selectedLabelId === id) ? null : id;
+  updateLinkUI();
 }
 
 function onTargetClick(targetId) {
+  if (mode === 'quiz') {
+    handleQuizClick(targetId);
+    return;
+  }
+  if (mode === 'spell') {
+    document.getElementById('spell-input').focus();
+    return;
+  }
   if (!selectedLabelId) {
-    // If clicking an already linked target, remove that link
     for (const [k, v] of Object.entries(links)) {
-      if (v === targetId) { delete links[k]; updateUI(); return; }
+      if (v === targetId) { delete links[k]; updateLinkUI(); return; }
     }
     document.getElementById('status-msg').textContent = "Clique d'abord sur une étiquette en haut ou en bas !";
     return;
   }
   if (checked) { checked = false; clearCheckStyles(); }
-  // Remove any previous label pointing to this target
   for (const [k, v] of Object.entries(links)) {
     if (v === targetId) delete links[k];
   }
   links[selectedLabelId] = targetId;
   selectedLabelId = null;
-  updateUI();
+  updateLinkUI();
 }
 
 function clearCheckStyles() {
@@ -299,13 +587,12 @@ function clearCheckStyles() {
 function isMatchCorrect(labelId, targetId) {
   if (!targetId) return false;
   if (labelId === targetId) return true;
-  // Both Pacific Ocean labels are interchangeable!
   const lItem = ITEMS.find(x => x.id === labelId);
   const tItem = ITEMS.find(x => x.id === targetId);
   return lItem && tItem && lItem.label === tItem.label;
 }
 
-function updateUI() {
+function updateLinkUI() {
   document.querySelectorAll('.lbl-card').forEach(el => {
     const id = el.id.replace('card-', '');
     el.classList.toggle('selected', id === selectedLabelId);
@@ -315,7 +602,7 @@ function updateUI() {
   document.getElementById('score-pill').textContent = count + ' / 17 reliés';
   if (selectedLabelId) {
     const item = ITEMS.find(x => x.id === selectedLabelId);
-    document.getElementById('status-msg').textContent = 'Étiquette choisie : "' + item.label + '" -> clique maintenant sur le bon point sur la carte.';
+    document.getElementById('status-msg').textContent = 'Étiquette choisie : "' + item.label + '" -> clique sur le bon point de la carte.';
   } else {
     document.getElementById('status-msg').textContent = 'Clique sur une étiquette, puis sur le point correspondant de la carte.';
   }
@@ -324,6 +611,7 @@ function updateUI() {
 
 function redrawLines() {
   const svg = document.getElementById('lines-overlay');
+  if (mode !== 'link') { svg.innerHTML = ''; return; }
   const boardRect = document.getElementById('board').getBoundingClientRect();
   svg.setAttribute('viewBox', `0 0 ${boardRect.width} ${boardRect.height}`);
   svg.innerHTML = '';
@@ -375,19 +663,196 @@ function checkAnswers() {
   if (good === 17) {
     document.getElementById('status-msg').textContent = 'Bravo ! Sans-faute : 17 / 17 !';
   } else {
-    document.getElementById('status-msg').textContent = good + ' bonnes réponses sur 17. Les erreurs sont en rouge : clique dessus pour les corriger !';
+    document.getElementById('status-msg').textContent = good + ' / 17. Les erreurs sont en rouge : clique dessus pour les corriger !';
   }
   redrawLines();
 }
 
-function resetGame(reshuffle) {
-  links = {};
-  selectedLabelId = null;
-  checked = false;
-  initBoard(reshuffle);
-  document.getElementById('score-pill').textContent = '0 / 17 reliés';
-  document.getElementById('status-msg').textContent = 'C\'est reparti ! Clique sur une étiquette puis sur le bon endroit de la carte.';
+/* ---------------- MODE 2: QUIZ CHRONO ---------------- */
+function showQuizQuestion() {
+  if (qIndex >= queue.length) {
+    stopTimer();
+    const totalSec = Math.floor((Date.now() - timerStart) / 1000);
+    if (firstTryGood === queue.length && (bestQuizSeconds === null || totalSec < bestQuizSeconds)) {
+      bestQuizSeconds = totalSec;
+    }
+    const recTxt = bestQuizSeconds !== null ? ` (Record sans-faute : ${bestQuizSeconds}s)` : '';
+    document.getElementById('prompt-question').innerHTML = `Terminé en ${totalSec}s ! Sans erreur du 1er coup : <span class="prompt-target-word">${firstTryGood} / ${queue.length}</span>${recTxt}`;
+    setFeedback('Clique sur Recommencer pour battre ton chrono !', 'ok');
+    return;
+  }
+  hadMistakeOnCurrent = false;
+  const cur = queue[qIndex];
+  document.getElementById('score-pill').textContent = `Question ${qIndex + 1} / ${queue.length}`;
+  document.getElementById('prompt-question').innerHTML = `Où se trouve : <span class="prompt-target-word">${cur.spell}</span> ?`;
 }
+
+function handleQuizClick(clickedId) {
+  if (qIndex >= queue.length) return;
+  const cur = queue[qIndex];
+  const clickedItem = ITEMS.find(x => x.id === clickedId);
+  if (isMatchCorrect(cur.id, clickedId)) {
+    if (!hadMistakeOnCurrent) firstTryGood++;
+    document.getElementById('dot-' + clickedId).classList.add('target-done');
+    if (cur.label === 'OCÉAN PACIFIQUE') {
+      document.getElementById('dot-oc_pacifique_e').classList.add('target-done');
+      document.getElementById('dot-oc_pacifique_o').classList.add('target-done');
+    }
+    setFeedback('Bravo ! C\'est bien ' + cur.spell + ' !', 'ok');
+    qIndex++;
+    showQuizQuestion();
+  } else {
+    hadMistakeOnCurrent = true;
+    setFeedback('Oups ! Là tu as cliqué sur "' + clickedItem.spell + '". Cherche ' + cur.spell + ' !', 'err');
+  }
+}
+
+/* ---------------- MODE 3: ORTHOGRAPHE (CONTROLE) ---------------- */
+function normalizeLoose(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function normalizeStrict(s) {
+  // Collapse whitespace and standardize hyphens/apostrophes, case-insensitive on 'océan'/'glacial'
+  return s.trim().replace(/\s+/g, ' ').replace(/['’]/g, "'");
+}
+
+function showSpellQuestion() {
+  document.querySelectorAll('.target-dot').forEach(d => d.classList.remove('target-active'));
+  waitingRationFor = null;
+  document.getElementById('ration-choice').classList.remove('visible');
+  document.getElementById('spell-box').classList.add('visible');
+
+  if (qIndex >= queue.length) {
+    document.getElementById('spell-box').classList.remove('visible');
+    document.getElementById('prompt-question').innerHTML = `Contrôle terminé ! Orthographe parfaite du 1er coup : <span class="prompt-target-word">${firstTryGood} / ${queue.length}</span>`;
+    setFeedback('Super travail ! Clique sur Recommencer pour refaire un entraînement.', 'ok');
+    return;
+  }
+
+  hadMistakeOnCurrent = false;
+  const cur = queue[qIndex];
+  document.getElementById('score-pill').textContent = `Lieu ${qIndex + 1} / ${queue.length}`;
+  const kindLbl = cur.cat === 'ocean' ? 'cet océan' : (cur.cat === 'continent' ? 'ce continent' : 'ce pays');
+  document.getElementById('prompt-question').innerHTML = `Comment s'appelle <u>${kindLbl}</u> qui clignote en jaune ?`;
+
+  const dot = document.getElementById('dot-' + cur.id);
+  if (dot) dot.classList.add('target-active');
+  if (cur.label === 'OCÉAN PACIFIQUE') {
+    document.getElementById('dot-oc_pacifique_o').classList.add('target-active');
+  }
+
+  const inp = document.getElementById('spell-input');
+  inp.value = '';
+  inp.focus();
+}
+
+function insertChar(ch) {
+  const inp = document.getElementById('spell-input');
+  const start = inp.selectionStart ?? inp.value.length;
+  const end = inp.selectionEnd ?? inp.value.length;
+  inp.value = inp.value.slice(0, start) + ch + inp.value.slice(end);
+  inp.focus();
+  inp.setSelectionRange(start + ch.length, start + ch.length);
+}
+
+function giveHint() {
+  if (qIndex >= queue.length) return;
+  const cur = queue[qIndex];
+  hadMistakeOnCurrent = true;
+  const firstLetter = cur.spell[0];
+  setFeedback(`Indice : commence par "${firstLetter}..." (${cur.spell.length} lettres). ${cur.hint}`, 'warn');
+  document.getElementById('spell-input').focus();
+}
+
+function isExactSpelling(userStr, cur) {
+  const u = normalizeStrict(userStr);
+  const target = cur.spell;
+  if (cur.cat === 'ocean') {
+    // Accept "Océan Indien", "OCÉAN INDIEN", or just "Indien" / "Pacifique" if Ocean is already implied? Better require full or accept both with exact accents!
+    const uLow = u.toLowerCase();
+    const tLow = target.toLowerCase();
+    const shortLow = tLow.replace(/^océan\s+/, '');
+    return uLow === tLow || uLow === shortLow;
+  }
+  // For continents & countries, check accents + hyphen + letters (case-insensitive on first letter is forgiven? No, in CM1 proper nouns need a capital, let's check!)
+  if (u === target) return true;
+  if (cur.id === 'etats_unis' && (u === 'États-Unis' || u === 'Etats-Unis')) return true;
+  return false;
+}
+
+function isClosePlace(userStr, cur) {
+  const uLoose = normalizeLoose(userStr);
+  const tLoose = normalizeLoose(cur.spell);
+  const shortLoose = normalizeLoose(cur.spell.replace(/^Océan\s+(Glacial\s+)?/i, ''));
+  if (!uLoose) return false;
+  if (uLoose === tLoose || (shortLoose.length >= 4 && uLoose === shortLoose)) return true;
+  // Common CM1 typos: Antartique, Tchad without T, Haiti, Etats Unis...
+  if (cur.id === 'antarctique' && (uLoose === 'antartique' || uLoose === 'lentartique')) return true;
+  if (cur.id === 'oc_antarctique' && uLoose.includes('antartique')) return true;
+  if (cur.id === 'oc_arctique' && uLoose.includes('artique')) return true;
+  if (cur.id === 'tchad' && (uLoose === 'chad' || uLoose === 'tchade')) return true;
+  if (cur.id === 'haiti' && (uLoose === 'aiti' || uLoose === 'haitie')) return true;
+  return false;
+}
+
+function submitSpelling() {
+  if (qIndex >= queue.length || waitingRationFor) return;
+  const inp = document.getElementById('spell-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  const cur = queue[qIndex];
+
+  if (isExactSpelling(val, cur)) {
+    if (!hadMistakeOnCurrent) firstTryGood++;
+    document.getElementById('dot-' + cur.id).classList.remove('target-active');
+    document.getElementById('dot-' + cur.id).classList.add('target-done');
+    if (cur.label === 'OCÉAN PACIFIQUE') {
+      document.getElementById('dot-oc_pacifique_o').classList.remove('target-active');
+      document.getElementById('dot-oc_pacifique_o').classList.add('target-done');
+    }
+
+    // If it's one of the 4 countries, ask the bonus food ration question!
+    if (cur.cat === 'rich' || cur.cat === 'poor') {
+      waitingRationFor = cur;
+      document.getElementById('spell-box').classList.remove('visible');
+      document.getElementById('ration-choice').classList.add('visible');
+      document.getElementById('prompt-question').innerHTML = `Bien écrit : <span class="prompt-target-word">${cur.spell}</span> ! Et comment est la ration alimentaire dans ce pays ?`;
+      setFeedback('Choisis la bonne couleur de la légende :', 'ok');
+      return;
+    }
+
+    setFeedback('Parfait : ' + cur.spell + ' !', 'ok');
+    qIndex++;
+    showSpellQuestion();
+  } else if (isClosePlace(val, cur)) {
+    hadMistakeOnCurrent = true;
+    setFeedback(`Tu as trouvé le bon endroit, mais attention à l'orthographe exacte : "${cur.spell}" (${cur.hint}). Réécris-le sans faute !`, 'warn');
+    inp.select();
+  } else {
+    hadMistakeOnCurrent = true;
+    setFeedback(`Ce n'est pas "${val}". Regarde bien où clignote le point jaune ! (Clique sur Indice si besoin)`, 'err');
+    inp.select();
+  }
+}
+
+function submitRation(choice) {
+  if (!waitingRationFor) return;
+  const cur = waitingRationFor;
+  if (choice === cur.cat) {
+    setFeedback(`Exact ! ${cur.spell} = ${choice === 'rich' ? 'ration alimentaire très riche (vert)' : 'ration alimentaire insuffisante (orange)'} !`, 'ok');
+    waitingRationFor = null;
+    qIndex++;
+    showSpellQuestion();
+  } else {
+    hadMistakeOnCurrent = true;
+    setFeedback(`Oups, regarde où se situe ${cur.spell} ! Essaie l'autre réponse.`, 'err');
+  }
+}
+
+document.getElementById('spell-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') submitSpelling();
+});
 
 function toggleColors() {
   showCountryColors = !showCountryColors;
